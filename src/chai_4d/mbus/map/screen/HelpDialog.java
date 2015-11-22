@@ -34,7 +34,7 @@ public class HelpDialog extends JDialog implements ActionListener
         programName.setFont(programName.getFont().deriveFont(18f));
 
         String desc = "This is program for setting Bus Routes on Bangkok Map.";
-        desc += " Bus is including BTS and MRT.";
+        desc += " Bus is including BTS, MRT, BRT and Airport Link.";
         desc += " The information will be used for searching the Bus Number";
         desc += " according to where are you start and where will you go.";
         TextLabel programDesc = new TextLabel(desc);

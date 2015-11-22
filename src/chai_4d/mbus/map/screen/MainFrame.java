@@ -169,6 +169,11 @@ public class MainFrame extends JFrame
         mapPanel.getMapPoint().clear();
         setMapMode(MapMode.VIEW);
     }
+    
+    public void onCalculateData()
+    {
+        // TODO
+    }
 
     public void onAddBusLine()
     {

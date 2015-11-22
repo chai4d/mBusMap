@@ -280,7 +280,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 mainFrame.onReset();
                 break;
             case 13: // Calculate Data
-                // TODO
+                mainFrame.onCalculateData();
                 break;
             case 21: // Add Bus Line
                 mainFrame.onAddBusLine();
