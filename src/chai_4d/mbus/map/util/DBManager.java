@@ -14,7 +14,7 @@ public class DBManager
 
     private static String getUrl(String host, String port, String sid)
     {
-        return "jdbc:mysql://" + host + ":" + port + "/" + sid;
+        return "jdbc:mysql://" + host + ":" + port + "/" + sid + "?useUnicode=true&characterEncoding=UTF-8";
     }
 
     public static synchronized Connection getConnection()
