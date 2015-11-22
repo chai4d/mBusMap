@@ -30,7 +30,7 @@ public class HelpDialog extends JDialog implements ActionListener
 
     private void initialize()
     {
-        JLabel programName = new JLabel("m-Bus Map Screen");
+        JLabel programName = new JLabel(MainFrame.TITLE_NAME);
         programName.setFont(programName.getFont().deriveFont(18f));
 
         String desc = "This is program for setting Bus Routes on Bangkok Map.";
@@ -47,7 +47,7 @@ public class HelpDialog extends JDialog implements ActionListener
             5,
             15,
             5), 0, 0));
-        content.add(new JLabel("Version : 1.0"), new GridBagConstraints(
+        content.add(new JLabel("Version : " + MainFrame.VERSION), new GridBagConstraints(
             0,
             1,
             1,
@@ -59,7 +59,7 @@ public class HelpDialog extends JDialog implements ActionListener
             new Insets(2, 5, 2, 5),
             0,
             0));
-        content.add(new JLabel("Author : Chai_4D"), new GridBagConstraints(
+        content.add(new JLabel("Author : " + MainFrame.AUTHOR), new GridBagConstraints(
             0,
             2,
             1,

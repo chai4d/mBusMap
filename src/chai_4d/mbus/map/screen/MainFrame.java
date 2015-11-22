@@ -34,8 +34,10 @@ public class MainFrame extends JFrame
 {
     private static final long serialVersionUID = -7237892527602350628L;
 
-    private static final String VERSION = "1.0";
-    private static final String TITLE_NAME = " m-Bus Map Screen";
+    public static final String TITLE_NAME = "m-Bus Map Screen";
+    public static final String VERSION = "1.0";
+    public static final String AUTHOR = "Chai_4D";
+
     private static final String ICON_PATH = "/icons/mbus_icon.gif";
 
     private MapMenuBar mapMenuBar = null;
