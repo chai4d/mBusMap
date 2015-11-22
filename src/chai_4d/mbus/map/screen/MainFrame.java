@@ -2,9 +2,11 @@ package chai_4d.mbus.map.screen;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -13,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import chai_4d.mbus.map.bean.MapDbBean;
 import chai_4d.mbus.map.constant.MapConstants.LineType;
@@ -329,6 +332,17 @@ public class MainFrame extends JFrame
         return mapStatusBar;
     }
 
+    private static void setUIFont(FontUIResource f)
+    {
+        Enumeration keys = UIManager.getLookAndFeelDefaults().keys();
+        while (keys.hasMoreElements())
+        {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value != null && value instanceof FontUIResource) UIManager.put(key, f);
+        }
+    }
+
     public static void main(String[] args)
     {
         try
@@ -341,6 +355,7 @@ public class MainFrame extends JFrame
 
         JFrame.setDefaultLookAndFeelDecorated(false);
         JDialog.setDefaultLookAndFeelDecorated(false);
+        setUIFont(new FontUIResource("Tahoma", Font.PLAIN, 12));
 
         new MainFrame();
     }
