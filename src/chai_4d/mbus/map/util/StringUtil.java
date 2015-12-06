@@ -128,4 +128,12 @@ public class StringUtil
     {
         return NumberFormat.getNumberInstance().format(d);
     }
+
+    public static double distance(int x1, int y1, int x2, int y2)
+    {
+        double dx = Math.abs(x1 - x2);
+        double dy = Math.abs(y1 - y2);
+        double result = Math.sqrt((dx * dx) + (dy * dy));
+        return result;
+    }
 }
