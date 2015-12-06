@@ -81,7 +81,7 @@ public class MapDbBean
             String sql = "";
             sql += "select p1.p_id p1_id, p2.p_id p2_id, \n";
             sql += " p1.axis_x, p1.axis_y, p2.axis_x, p2.axis_y, \n";
-            sql += " b.bus_id, b.type \n";
+            sql += " b.distance, b.bus_id, b.type \n";
             sql += "from bus_line b, point_info p1, point_info p2 \n";
             sql += "where b.bus_id = ? \n";
             sql += " and b.p1_id = p1.p_id \n";
@@ -120,7 +120,7 @@ public class MapDbBean
             String sql = "";
             sql += "select p1.p_id p1_id, p2.p_id p2_id, \n";
             sql += " p1.axis_x, p1.axis_y, p2.axis_x, p2.axis_y, \n";
-            sql += " b.bus_id, bl.type \n";
+            sql += " bl.distance, b.bus_id, bl.type \n";
             sql += "from bus_info b, bus_line bl, point_info p1, point_info p2 \n";
             sql += "where b.bus_id = bl.bus_id \n";
             sql += " and b.bus_no_th in " + SQLUtil.getIn(busNoTh) + " \n";
