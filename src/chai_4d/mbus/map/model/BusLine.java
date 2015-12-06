@@ -14,6 +14,7 @@ public class BusLine extends BaseModel
     private int y1 = 0;
     private int x2 = 0;
     private int y2 = 0;
+    private double distance = 0;
     private long busId = 0;
     private LineType type = null;
 
@@ -27,11 +28,12 @@ public class BusLine extends BaseModel
         y1 = SQLUtil.getInt(rs, ++i);
         x2 = SQLUtil.getInt(rs, ++i);
         y2 = SQLUtil.getInt(rs, ++i);
+        distance = SQLUtil.getInt(rs, ++i);
         busId = SQLUtil.getLong(rs, ++i);
         type = LineType.valueOf(SQLUtil.getInt(rs, ++i));
     }
 
-    public BusLine(long p1Id, long p2Id, int x1, int y1, int x2, int y2, long busId, LineType type)
+    public BusLine(long p1Id, long p2Id, int x1, int y1, int x2, int y2, double distance, long busId, LineType type)
     {
         super(Mode.INSERT);
         this.p1Id = p1Id;
@@ -40,6 +42,7 @@ public class BusLine extends BaseModel
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
+        this.distance = distance;
         this.busId = busId;
         this.type = type;
     }
@@ -82,6 +85,16 @@ public class BusLine extends BaseModel
     public void setY2(int y2)
     {
         this.y2 = y2;
+    }
+
+    public double getDistance()
+    {
+        return distance;
+    }
+
+    public void setDistance(double distance)
+    {
+        this.distance = distance;
     }
 
     public long getBusId()
