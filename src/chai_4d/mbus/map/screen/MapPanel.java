@@ -62,7 +62,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     private int dragX = MapConstants.NULL;
     private int dragY = MapConstants.NULL;
     private PointInfo dragPoint = null;
-    
+
     private int tmpDragX = MapConstants.NULL;
     private int tmpDragY = MapConstants.NULL;
 
@@ -289,12 +289,11 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void drawPointOut(Graphics2D g2d, int x, int y, PointInfo pointInfo)
     {
-        Shape shape1 =
-            new Ellipse2D.Double(
-                x - (MapConstants.pointSizeOut / 2),
-                y - (MapConstants.pointSizeOut / 2),
-                MapConstants.pointSizeOut,
-                MapConstants.pointSizeOut);
+        Shape shape1 = new Ellipse2D.Double(
+            x - (MapConstants.pointSizeOut / 2),
+            y - (MapConstants.pointSizeOut / 2),
+            MapConstants.pointSizeOut,
+            MapConstants.pointSizeOut);
         if (pointInfo.equals(pointSelect))
         {
             g2d.setColor(MapConstants.pointColorSelect);
@@ -308,12 +307,11 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void drawPointIn(Graphics2D g2d, int x, int y)
     {
-        Shape shape2 =
-            new Ellipse2D.Double(
-                x - (MapConstants.pointSizeIn / 2),
-                y - (MapConstants.pointSizeIn / 2),
-                MapConstants.pointSizeIn,
-                MapConstants.pointSizeIn);
+        Shape shape2 = new Ellipse2D.Double(
+            x - (MapConstants.pointSizeIn / 2),
+            y - (MapConstants.pointSizeIn / 2),
+            MapConstants.pointSizeIn,
+            MapConstants.pointSizeIn);
         g2d.setColor(MapConstants.pointColorIn);
         g2d.fill(shape2);
     }
@@ -462,10 +460,9 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         String msg = "";
         if (dragX != MapConstants.NULL && dragY != MapConstants.NULL)
         {
-            msg =
-                "Moving the map to (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - "
-                    + StringUtil.toNumString(endX) + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
-                    + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
+            msg = "Moving the map to (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - "
+                + StringUtil.toNumString(endX) + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
+                + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
         }
         else if (dragPoint != null)
         {
@@ -485,10 +482,9 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         }
         else
         {
-            msg =
-                "Now showing (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - " + StringUtil.toNumString(endX)
-                    + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
-                    + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
+            msg = "Now showing (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - " + StringUtil.toNumString(endX)
+                + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
+                + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
         }
         MapStatusBar.setMessage(msg);
     }
@@ -591,7 +587,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             }
         }
     }
-    
+
     public void mouseEntered(MouseEvent e)
     {
     }
@@ -734,10 +730,13 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             dragX = e.getX();
             dragY = e.getY();
 
-            if (e.isShiftDown()) {
+            if (e.isShiftDown())
+            {
                 tmpDragX = dragX - e.getUnitsToScroll();
                 tmpDragY = dragY;
-            } else {
+            }
+            else
+            {
                 tmpDragX = dragX;
                 tmpDragY = dragY - e.getUnitsToScroll();
             }
@@ -906,9 +905,16 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         BusLine aBusLine = findBusLine(p1, p2);
         if (aBusLine == null)
         {
-            aBusLine =
-                new BusLine(p1.getPId(), p2.getPId(), p1.getAxisX(), p1.getAxisY(), p2.getAxisX(), p2.getAxisY(), busSelect.getBusId(), mainFrame
-                    .getLineType());
+            aBusLine = new BusLine(
+                p1.getPId(),
+                p2.getPId(),
+                p1.getAxisX(),
+                p1.getAxisY(),
+                p2.getAxisX(),
+                p2.getAxisY(),
+                StringUtil.distance(p1.getAxisX(), p1.getAxisY(), p2.getAxisX(), p2.getAxisY()),
+                busSelect.getBusId(),
+                mainFrame.getLineType());
             busSelect.getBusLine().add(aBusLine);
             busSelect.setEdited();
             mainFrame.onSelectBus(busSelect);
