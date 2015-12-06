@@ -645,15 +645,16 @@ public class MapDbBean
         try
         {
             String sql = "";
-            sql += "insert into bus_line (p1_id, p2_id, bus_id, type) \n";
-            sql += "values (?, ?, ?, ?) \n";
+            sql += "insert into bus_line (p1_id, p2_id, distance, bus_id, type) \n";
+            sql += "values (?, ?, ?, ?, ?) \n";
 
             conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busLine.getP1Id());
             pstmt.setLong(2, busLine.getP2Id());
-            pstmt.setLong(3, busId);
-            pstmt.setInt(4, busLine.getType().getValue());
+            pstmt.setDouble(3, busLine.getDistance());
+            pstmt.setLong(4, busId);
+            pstmt.setInt(5, busLine.getType().getValue());
 
             pstmt.executeUpdate();
             busLine.setMode(Mode.SELECT);
