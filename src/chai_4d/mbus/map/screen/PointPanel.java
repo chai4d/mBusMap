@@ -69,10 +69,14 @@ public class PointPanel extends FormPanel implements ActionListener, KeyListener
         setBackground(MapConstants.controlPanel);
 
         add(lblId, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(txtId, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            txtId,
+            new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         add(lblXY, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(txtXY, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            txtXY,
+            new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         ButtonGroup groupPointType = new ButtonGroup();
         groupPointType.add(rdoTypeLink);
@@ -83,56 +87,25 @@ public class PointPanel extends FormPanel implements ActionListener, KeyListener
         pnlRdoType.setBackground(MapConstants.controlPanel);
         rdoTypeLink.setBackground(MapConstants.controlPanel);
         rdoTypeName.setBackground(MapConstants.controlPanel);
-        pnlRdoType.add(rdoTypeLink, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(
-            2,
-            2,
-            2,
-            2), 0, 0));
-        pnlRdoType.add(rdoTypeName, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(
-            2,
-            2,
-            2,
-            2), 0, 0));
-        add(pnlRdoType, new GridBagConstraints(
-            1,
-            2,
-            2,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.WEST,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
+        pnlRdoType.add(
+            rdoTypeLink,
+            new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        pnlRdoType.add(
+            rdoTypeName,
+            new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            pnlRdoType,
+            new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         add(lblNameTh, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(txtNameTh, new GridBagConstraints(
-            1,
-            3,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.WEST,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
+        add(
+            txtNameTh,
+            new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         add(lblNameEn, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(txtNameEn, new GridBagConstraints(
-            1,
-            4,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.WEST,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
+        add(
+            txtNameEn,
+            new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
         add(butAddName, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
         JScrollPane sclName = new JScrollPane(tblName);
@@ -146,18 +119,9 @@ public class PointPanel extends FormPanel implements ActionListener, KeyListener
         add(
             sclName,
             new GridBagConstraints(0, 5, 2, 1, 1.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(2, 2, 2, 2), 0, 0));
-        add(butDelName, new GridBagConstraints(
-            2,
-            5,
-            1,
-            1,
-            0.0,
-            0.0,
-            GridBagConstraints.NORTHWEST,
-            GridBagConstraints.NONE,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
+        add(
+            butDelName,
+            new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
         txtId.setEnabled(false);
         txtXY.setEnabled(false);
@@ -288,7 +252,7 @@ public class PointPanel extends FormPanel implements ActionListener, KeyListener
             ((NamedPointModel) tblName.getModel()).setData(pointInfo.getPointName());
         }
 
-        if (this.pointInfo == null || mainFrame.getMapMode() == MapMode.VIEW)
+        if (this.pointInfo == null || mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
         {
             txtNameTh.setEnabled(false);
             txtNameEn.setEnabled(false);

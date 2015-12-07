@@ -210,7 +210,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 }
 
                 Color hColor = null;
-                if (mainFrame.getMapMode() == MapMode.VIEW)
+                if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
                 {
                     if (hLineColor.containsKey(busLine.getBusId()))
                     {
@@ -231,11 +231,12 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 switch (busLine.getType())
                 {
                     case BIDIRECT:
-                        if (mainFrame.getMapMode() == MapMode.VIEW && !mainFrame.containsViewType(ViewType.VIEW_TWO_WAY))
+                        if ((mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+                            && !mainFrame.containsViewType(ViewType.VIEW_TWO_WAY))
                         {
                             break;
                         }
-                        if (mainFrame.getMapMode() == MapMode.VIEW)
+                        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
                         {
                             g2d.setColor(hColor);
                         }
@@ -247,11 +248,12 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                         g2d.drawLine(x1, y1, x2, y2);
                         break;
                     case P1_P2:
-                        if (mainFrame.getMapMode() == MapMode.VIEW && !mainFrame.containsViewType(ViewType.VIEW_ONE_WAY))
+                        if ((mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+                            && !mainFrame.containsViewType(ViewType.VIEW_ONE_WAY))
                         {
                             break;
                         }
-                        if (mainFrame.getMapMode() == MapMode.VIEW)
+                        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
                         {
                             g2d.setColor(hColor);
                         }
@@ -264,11 +266,12 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                         drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
                         break;
                     case P2_P1:
-                        if (mainFrame.getMapMode() == MapMode.VIEW && !mainFrame.containsViewType(ViewType.VIEW_ONE_WAY))
+                        if ((mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+                            && !mainFrame.containsViewType(ViewType.VIEW_ONE_WAY))
                         {
                             break;
                         }
-                        if (mainFrame.getMapMode() == MapMode.VIEW)
+                        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
                         {
                             g2d.setColor(hColor);
                         }
@@ -355,14 +358,16 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
                     if (pointInfo.getType() == PointType.LINK)
                     {
-                        if (!(mainFrame.getMapMode() == MapMode.VIEW && !mainFrame.containsViewType(ViewType.VIEW_POINT_LINK)))
+                        if (!((mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+                            && !mainFrame.containsViewType(ViewType.VIEW_POINT_LINK)))
                         {
                             drawPointOut(g2d, p_x, p_y, pointInfo);
                         }
                     }
                     else if (pointInfo.getType() == PointType.NAME)
                     {
-                        if (!(mainFrame.getMapMode() == MapMode.VIEW && !mainFrame.containsViewType(ViewType.VIEW_POINT_NAME)))
+                        if (!((mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+                            && !mainFrame.containsViewType(ViewType.VIEW_POINT_NAME)))
                         {
                             drawPointOut(g2d, p_x, p_y, pointInfo);
                             drawPointIn(g2d, p_x, p_y);
@@ -377,7 +382,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void drawBusNo(Graphics2D g2d)
     {
-        if (busSelect != null && mainFrame.getMapMode() == MapMode.VIEW && mainFrame.containsViewType(ViewType.VIEW_BUS_NO))
+        if (busSelect != null && (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+            && mainFrame.containsViewType(ViewType.VIEW_BUS_NO))
         {
             LinkedHashMap<String, String> hLabel = new LinkedHashMap<String, String>();
             Hashtable<Long, BusInfo> hBusNo = new Hashtable<Long, BusInfo>();
@@ -540,7 +546,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 mainFrame.onSelectPoint(pointSelect);
                 repaint();
             }
-            else if (mainFrame.getMapMode() == MapMode.EDIT_POINT || mainFrame.getMapMode() == MapMode.VIEW)
+            else if (mainFrame.getMapMode() == MapMode.EDIT_POINT || mainFrame.getMapMode() == MapMode.VIEW
+                || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
             {
                 PointInfo aPoint = findPoint(e.getX(), e.getY());
                 if (aPoint != null)
@@ -601,7 +608,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     {
         if (e.getButton() == MapConstants.MOUSE_BUTTON_LEFT && e.getClickCount() == 1)
         {
-            if (mainFrame.getMapMode() == MapMode.VIEW)
+            if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
             {
                 dragX = e.getX();
                 dragY = e.getY();
@@ -632,7 +639,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
         if (e.getButton() == MapConstants.MOUSE_BUTTON_LEFT && e.getClickCount() == 1)
         {
-            if (mainFrame.getMapMode() == MapMode.VIEW)
+            if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
             {
                 dragX = MapConstants.NULL;
                 dragY = MapConstants.NULL;
@@ -662,8 +669,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     {
         MapStatusBar.setCoordinate(StringUtil.toNumString(x) + " : " + StringUtil.toNumString(y));
 
-        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-            || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE || mainFrame.getMapMode() == MapMode.ADD_BUS
+            || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
         {
             if (dragX != MapConstants.NULL && dragY != MapConstants.NULL)
             {
@@ -750,6 +757,10 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         switch (mode)
         {
             case VIEW:
+                pointSelect = null;
+                busSelect = null;
+                break;
+            case TEST_ROUTE:
                 pointSelect = null;
                 busSelect = null;
                 break;

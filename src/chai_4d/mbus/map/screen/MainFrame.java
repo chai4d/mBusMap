@@ -179,6 +179,12 @@ public class MainFrame extends JFrame
         busPathCalculator.setVisible(true);
     }
 
+    public void onTestRoute()
+    {
+        // TODO
+        setMapMode(MapMode.TEST_ROUTE);
+    }
+
     public void onAddBusLine()
     {
         setMapMode(MapMode.ADD_BUS);
@@ -249,7 +255,7 @@ public class MainFrame extends JFrame
     {
         _mapMode = mode;
         mapMenuBar.setActiveMenuItem();
-        if (_mapMode == MapMode.VIEW)
+        if (_mapMode == MapMode.VIEW || _mapMode == MapMode.TEST_ROUTE)
         {
             _viewBusLine = ViewBusLine.VIEW_NONE;
             mapMenuBar.setActiveViewType();

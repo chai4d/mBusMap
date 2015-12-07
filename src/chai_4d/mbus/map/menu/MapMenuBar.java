@@ -31,6 +31,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
     private JMenuItem save = null;
     private JMenuItem reset = null;
     private JMenuItem calculate = null;
+    private JMenuItem testRoute = null;
     private JMenuItem exit = null;
 
     private JMenuItem addLine = null;
@@ -91,11 +92,14 @@ public class MapMenuBar extends JMenuBar implements ActionListener
         save = createMenu("Save", 11);
         reset = createMenu("Reset", 12);
         calculate = createMenu("Calculate Data", 13);
+        testRoute = createMenu("Test Route", 14);
         exit = createMenu("Exit", 0);
         menu_program.add(save);
         menu_program.add(reset);
         menu_program.addSeparator();
         menu_program.add(calculate);
+        menu_program.addSeparator();
+        menu_program.add(testRoute);
         menu_program.addSeparator();
         menu_program.add(exit);
 
@@ -160,9 +164,11 @@ public class MapMenuBar extends JMenuBar implements ActionListener
         switch (mode)
         {
             case VIEW:
+            case TEST_ROUTE:
                 save.setEnabled(false);
                 reset.setEnabled(false);
                 calculate.setEnabled(true);
+                testRoute.setEnabled(true);
 
                 addLine.setEnabled(true);
                 editLine.setEnabled(true);
@@ -186,6 +192,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 save.setEnabled(true);
                 reset.setEnabled(true);
                 calculate.setEnabled(false);
+                testRoute.setEnabled(false);
 
                 addLine.setEnabled(false);
                 editLine.setEnabled(false);
@@ -207,6 +214,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 save.setEnabled(true);
                 reset.setEnabled(true);
                 calculate.setEnabled(false);
+                testRoute.setEnabled(false);
 
                 addLine.setEnabled(false);
                 editLine.setEnabled(false);
@@ -281,6 +289,9 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 break;
             case 13: // Calculate Data
                 mainFrame.onCalculateData();
+                break;
+            case 14: // Test Route
+                mainFrame.onTestRoute();
                 break;
             case 21: // Add Bus Line
                 mainFrame.onAddBusLine();
