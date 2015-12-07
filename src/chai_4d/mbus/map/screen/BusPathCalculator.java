@@ -82,6 +82,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
                             }
                         }
                         //System.out.println(busPath);
+                        MapDbBean.insertBusPath(sourcePoint.getId(), destinationPoint.getId(), busPath);
                         txtTaskOutput.append(concat + destinationPoint.getId());
                         concat = ", ";
                     }

@@ -1027,4 +1027,32 @@ public class MapDbBean
         }
         return result;
     }
+
+    public static void insertBusPath(long sourceId, long destinationId, String busPath)
+    {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try
+        {
+            String sql = "";
+            sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
+            sql += "values (?, ?, ?) \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, sourceId);
+            pstmt.setLong(2, destinationId);
+            pstmt.setString(3, busPath);
+
+            pstmt.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+    }
 }
