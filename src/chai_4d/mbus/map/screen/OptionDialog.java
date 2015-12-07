@@ -43,55 +43,24 @@ public class OptionDialog extends JDialog implements ActionListener
 
         JPanel control = new JPanel(new GridBagLayout());
         control.setBackground(MapConstants.controlPanel);
-        control.add(butOK, new GridBagConstraints(
-            0,
-            0,
-            1,
-            1,
-            0.0,
-            0.0,
-            GridBagConstraints.CENTER,
-            GridBagConstraints.NONE,
-            new Insets(2, 10, 5, 10),
-            0,
-            0));
-        control.add(butCancel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
-            2,
-            10,
-            5,
-            10), 0, 0));
+        control.add(
+            butOK,
+            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 10, 5, 10), 0, 0));
+        control.add(
+            butCancel,
+            new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 10, 5, 10), 0, 0));
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(MapConstants.controlPanel);
-        contentPane.add(form, new GridBagConstraints(
-            0,
-            0,
-            1,
-            1,
-            1.0,
-            1.0,
-            GridBagConstraints.CENTER,
-            GridBagConstraints.BOTH,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
-        contentPane.add(new JSeparator(SwingConstants.HORIZONTAL), new GridBagConstraints(
-            0,
-            1,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.CENTER,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
-        contentPane.add(control, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(
-            2,
-            2,
-            2,
-            2), 0, 0));
+        contentPane.add(
+            form,
+            new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(2, 2, 2, 2), 0, 0));
+        contentPane.add(
+            new JSeparator(SwingConstants.HORIZONTAL),
+            new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        contentPane.add(
+            control,
+            new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         setContentPane(contentPane);
         pack();

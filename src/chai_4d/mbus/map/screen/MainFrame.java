@@ -50,6 +50,7 @@ public class MainFrame extends JFrame
     private List<ViewType> _viewType = new ArrayList<ViewType>()
     {
         private static final long serialVersionUID = -6898590205538578737L;
+
         {
             add(ViewType.VIEW_POINT_LINK);
             add(ViewType.VIEW_POINT_NAME);
@@ -171,10 +172,11 @@ public class MainFrame extends JFrame
         mapPanel.getMapPoint().clear();
         setMapMode(MapMode.VIEW);
     }
-    
+
     public void onCalculateData()
     {
-        // TODO
+        BusPathCalculator busPathCalculator = new BusPathCalculator(this, "Calculate Data");
+        busPathCalculator.setVisible(true);
     }
 
     public void onAddBusLine()
