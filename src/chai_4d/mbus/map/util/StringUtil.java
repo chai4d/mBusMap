@@ -142,7 +142,7 @@ public class StringUtil
         // text = "abc abc (id)"
         // return = "id"
         long result = 0;
-        if (text != null)
+        if (isEmpty(text) == false)
         {
             result = toLong(text.substring(text.lastIndexOf("(") + 1, text.length() - 1));
         }

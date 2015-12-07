@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -16,7 +18,7 @@ import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.util.StringUtil;
 import chai_4d.mbus.map.util.SwingUtil;
 
-public class RouteSelectPanel extends FormPanel
+public class RouteSelectPanel extends FormPanel implements ActionListener
 {
     private static final long serialVersionUID = 8609470588116606782L;
 
@@ -57,6 +59,15 @@ public class RouteSelectPanel extends FormPanel
         txtDestinationTh.setSelectedIndex(0);
         txtDestinationEn.setSelectedIndex(0);
 
+        txtSourceTh.setActionCommand("sourceTh");
+        txtSourceTh.addActionListener(this);
+        txtSourceEn.setActionCommand("sourceEn");
+        txtSourceEn.addActionListener(this);
+        txtDestinationTh.setActionCommand("destinationTh");
+        txtDestinationTh.addActionListener(this);
+        txtDestinationEn.setActionCommand("destinationEn");
+        txtDestinationEn.addActionListener(this);
+
         add(lblSource, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
         add(
             txtSourceTh,
@@ -74,6 +85,43 @@ public class RouteSelectPanel extends FormPanel
         add(
             txtDestinationEn,
             new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    }
+
+    private void autoSelectItem(JComboBox box1, JComboBox box2)
+    {
+        if (!StringUtil.isEmpty((String) box1.getSelectedItem()))
+        {
+            long id1 = StringUtil.getIdValue((String) box1.getSelectedItem());
+            for (int i = 0; i < box2.getItemCount(); i++)
+            {
+                long id2 = StringUtil.getIdValue((String) box2.getItemAt(i));
+                if (id1 == id2)
+                {
+                    box2.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void actionPerformed(ActionEvent evt)
+    {
+        if ("sourceTh" == evt.getActionCommand())
+        {
+            autoSelectItem(txtSourceTh, txtSourceEn);
+        }
+        else if ("sourceEn" == evt.getActionCommand())
+        {
+            autoSelectItem(txtSourceEn, txtSourceTh);
+        }
+        else if ("destinationTh" == evt.getActionCommand())
+        {
+            autoSelectItem(txtDestinationTh, txtDestinationEn);
+        }
+        else if ("destinationEn" == evt.getActionCommand())
+        {
+            autoSelectItem(txtDestinationEn, txtDestinationTh);
+        }
     }
 
     public boolean validateForm()

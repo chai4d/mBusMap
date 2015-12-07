@@ -48,32 +48,14 @@ public class BusSelectPanel extends FormPanel
         txtBusNoEn.setSelectedIndex(0);
 
         add(lblBusNoTh, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-        add(txtBusNoTh, new GridBagConstraints(
-            1,
-            0,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.WEST,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(5, 5, 5, 5),
-            0,
-            0));
+        add(
+            txtBusNoTh,
+            new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
         add(lblBusNoEn, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-        add(txtBusNoEn, new GridBagConstraints(
-            1,
-            1,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.WEST,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(5, 5, 5, 5),
-            0,
-            0));
+        add(
+            txtBusNoEn,
+            new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     }
 
     public boolean validateForm()
