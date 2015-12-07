@@ -25,18 +25,17 @@ public class MapConstants
     public static final Color lineColorBiDirect = new Color(0, 128, 255, 80);
     public static final Color lineColorOneWay = new Color(255, 128, 128, 150);
 
-    public static final Color[] lineColor =
-        new Color[] {
-            new Color(0, 128, 255, 120),
-            new Color(255, 128, 0, 135),
-            new Color(0, 128, 64, 90),
-            new Color(255, 0, 128, 120),
-            new Color(128, 0, 255, 100),
-            new Color(128, 0, 0, 90),
-            new Color(230, 230, 50, 130),
-            new Color(64, 128, 128, 120),
-            new Color(128, 128, 0, 90),
-            new Color(128, 128, 128, 110) };
+    public static final Color[] lineColor = new Color[] {
+        new Color(0, 128, 255, 120),
+        new Color(255, 128, 0, 135),
+        new Color(0, 128, 64, 90),
+        new Color(255, 0, 128, 120),
+        new Color(128, 0, 255, 100),
+        new Color(128, 0, 0, 90),
+        new Color(230, 230, 50, 130),
+        new Color(64, 128, 128, 120),
+        new Color(128, 128, 0, 90),
+        new Color(128, 128, 128, 110) };
 
     public static final Color labelBG = new Color(255, 255, 255, 150);
     public static final Color labelFG = Color.black;

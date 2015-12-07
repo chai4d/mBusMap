@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Random;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,8 +24,14 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+import javax.swing.text.DefaultCaret;
 
+import chai_4d.mbus.map.bean.MapDbBean;
 import chai_4d.mbus.map.constant.MapConstants;
+import chai_4d.mbus.map.dijkstra.engine.DijkstraAlgorithm;
+import chai_4d.mbus.map.dijkstra.model.Graph;
+import chai_4d.mbus.map.dijkstra.model.Line;
+import chai_4d.mbus.map.dijkstra.model.Point;
 
 public class BusPathCalculator extends JDialog implements ActionListener, PropertyChangeListener
 {
@@ -37,37 +45,54 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
 
     class Task extends SwingWorker<Void, Void>
     {
-        /*
-         * Main task. Executed in background thread.
-         */
-        @Override
         public Void doInBackground()
         {
-            Random random = new Random();
-            int progress = 0;
-            //Initialize progress property.
             setProgress(0);
-            while (progress < 100)
+            MapDbBean.resetBusPath();
+
+            Map<Integer, Point> points = MapDbBean.loadPointInfo();
+            List<Line> lines = MapDbBean.loadBusLine(points);
+            Graph graph = new Graph(points, lines);
+            DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+
+            int total = points.size();
+            int i = 1;
+            for (Map.Entry source : points.entrySet())
             {
-                //Sleep for up to one second.
-                try
+                Point sourcePoint = (Point) source.getValue();
+                dijkstra.execute(sourcePoint);
+                txtTaskOutput.append(sourcePoint + " ...");
+                String concat = " ";
+                for (Map.Entry destination : points.entrySet())
                 {
-                    Thread.sleep(random.nextInt(1000));
+                    Point destinationPoint = (Point) destination.getValue();
+                    LinkedList<Point> path = dijkstra.getPath(destinationPoint);
+                    if (path != null && path.size() > 0)
+                    {
+                        String busPath = "";
+                        for (Point point : path)
+                        {
+                            if (busPath.equals(""))
+                            {
+                                busPath += "" + point.getId();
+                            }
+                            else
+                            {
+                                busPath += "->" + point.getId();
+                            }
+                        }
+                        //System.out.println(busPath);
+                        txtTaskOutput.append(concat + destinationPoint.getId());
+                        concat = ", ";
+                    }
                 }
-                catch (InterruptedException ignore)
-                {
-                }
-                //Make random progress.
-                progress += random.nextInt(5);
-                setProgress(Math.min(progress, 100));
+                setProgress((i / total) * 100);
+                i++;
+                txtTaskOutput.append(" completed.\n");
             }
             return null;
         }
 
-        /*
-         * Executed in event dispatching thread
-         */
-        @Override
         public void done()
         {
             Toolkit.getDefaultToolkit().beep();
@@ -106,6 +131,8 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
 
         txtTaskOutput.setMargin(new Insets(5, 5, 5, 5));
         txtTaskOutput.setEditable(false);
+        DefaultCaret caret = (DefaultCaret) txtTaskOutput.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         JSeparator line = new JSeparator(SwingConstants.HORIZONTAL);
         line.setPreferredSize(new Dimension(400, 1));
@@ -125,11 +152,6 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
         setContentPane(contentPane);
         pack();
         setLocationRelativeTo(null);
-    }
-
-    public boolean validateForm()
-    {
-        return true;
     }
 
     public void actionPerformed(ActionEvent evt)
@@ -158,7 +180,6 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
         {
             int progress = (Integer) evt.getNewValue();
             prgTaskProgress.setValue(progress);
-            txtTaskOutput.append(String.format("Completed %d%% of task.\n", task.getProgress()));
         }
     }
 }

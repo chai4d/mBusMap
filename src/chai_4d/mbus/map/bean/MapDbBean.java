@@ -8,8 +8,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
+import chai_4d.mbus.map.constant.MapConstants.LineType;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
+import chai_4d.mbus.map.dijkstra.model.Line;
+import chai_4d.mbus.map.dijkstra.model.Point;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.BusLine;
 import chai_4d.mbus.map.model.PointInfo;
@@ -906,5 +910,121 @@ public class MapDbBean
             }
         }
         return "true";
+    }
+
+    public static void resetBusPath()
+    {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try
+        {
+            String sql = "";
+            sql += "delete from bus_path \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+    }
+
+    public static Map<Integer, Point> loadPointInfo()
+    {
+        Map<Integer, Point> result = new HashMap<Integer, Point>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select p_id, axis_x, axis_y \n";
+            sql += "from point_info \n";
+            sql += "order by 1 \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+                int id = rs.getInt(1);
+                int axisX = rs.getInt(2);
+                int axisY = rs.getInt(3);
+                result.put(id, new Point(id, axisX, axisY));
+            }
+            SQLUtil.printSQL(sql);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
+    }
+
+    public static List<Line> loadBusLine(Map<Integer, Point> points)
+    {
+        List<Line> result = new ArrayList<Line>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select p1_id, p2_id, distance, type \n";
+            sql += "from bus_line \n";
+            sql += "order by 1 \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+                Point p1Id = points.get(rs.getInt(1));
+                Point p2Id = points.get(rs.getInt(2));
+                double distance = rs.getDouble(3);
+                int type = rs.getInt(4);
+
+                switch (LineType.valueOf(type))
+                {
+                    case BIDIRECT:
+                        result.add(new Line(p1Id, p2Id, distance));
+                        result.add(new Line(p2Id, p1Id, distance));
+                        break;
+                    case P1_P2:
+                        result.add(new Line(p1Id, p2Id, distance));
+                        break;
+                    case P2_P1:
+                        result.add(new Line(p2Id, p1Id, distance));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            SQLUtil.printSQL(sql);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
     }
 }

@@ -20,7 +20,7 @@ public class DijkstraAlgorithm
     private Set<Point> settledNodes;
     private Set<Point> unSettledNodes;
     private Map<Point, Point> predecessors;
-    private Map<Point, Integer> distance;
+    private Map<Point, Double> distance;
 
     public DijkstraAlgorithm(Graph graph)
     {
@@ -33,9 +33,9 @@ public class DijkstraAlgorithm
     {
         settledNodes = new HashSet<Point>();
         unSettledNodes = new HashSet<Point>();
-        distance = new HashMap<Point, Integer>();
+        distance = new HashMap<Point, Double>();
         predecessors = new HashMap<Point, Point>();
-        distance.put(source, 0);
+        distance.put(source, 0.0);
         unSettledNodes.add(source);
         while (unSettledNodes.size() > 0)
         {
@@ -61,7 +61,7 @@ public class DijkstraAlgorithm
 
     }
 
-    private int getDistance(Point node, Point target)
+    private double getDistance(Point node, Point target)
     {
         for (Line line : lines)
         {
@@ -111,12 +111,12 @@ public class DijkstraAlgorithm
         return settledNodes.contains(vertex);
     }
 
-    private int getShortestDistance(Point destination)
+    private double getShortestDistance(Point destination)
     {
-        Integer d = distance.get(destination);
+        Double d = distance.get(destination);
         if (d == null)
         {
-            return Integer.MAX_VALUE;
+            return Double.MAX_VALUE;
         }
         else
         {
