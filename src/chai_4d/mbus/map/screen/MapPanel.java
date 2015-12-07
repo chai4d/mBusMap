@@ -73,6 +73,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private PointInfo pointSelect = null;
     private BusInfo busSelect = null;
+    private PointInfo sourcePoint = null;
+    private PointInfo destinationPoint = null;
 
     public MapPanel(MainFrame mainFrame)
     {
@@ -403,7 +405,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 }
                 else
                 {
-                    busInfo = MapDbBean.loadBusInfo(busLine.getBusId());
+                    busInfo = MapDbBean.loadBusInfoById(busLine.getBusId());
                     hBusNo.put(busLine.getBusId(), busInfo);
                 }
 
@@ -759,26 +761,38 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             case VIEW:
                 pointSelect = null;
                 busSelect = null;
+                sourcePoint = null;
+                destinationPoint = null;
                 break;
             case TEST_ROUTE:
                 pointSelect = null;
                 busSelect = null;
+                //sourcePoint = new PointInfo(); // From Popup Route Select screen
+                //destinationPoint = new PointInfo(); // From Popup Route Select screen
                 break;
             case ADD_BUS:
                 pointSelect = null;
                 busSelect = new BusInfo();
+                sourcePoint = null;
+                destinationPoint = null;
                 break;
             case EDIT_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
+                sourcePoint = null;
+                destinationPoint = null;
                 break;
             case DEL_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
+                sourcePoint = null;
+                destinationPoint = null;
                 break;
             case EDIT_POINT:
                 pointSelect = null;
                 busSelect = null;
+                sourcePoint = null;
+                destinationPoint = null;
                 break;
         }
         mainFrame.onSelectPoint(pointSelect);
@@ -960,6 +974,26 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     public void setBusSelect(BusInfo busSelect)
     {
         this.busSelect = busSelect;
+    }
+
+    public PointInfo getSourcePoint()
+    {
+        return sourcePoint;
+    }
+
+    public void setSourcePoint(PointInfo sourcePoint)
+    {
+        this.sourcePoint = sourcePoint;
+    }
+
+    public PointInfo getDestinationPoint()
+    {
+        return destinationPoint;
+    }
+
+    public void setDestinationPoint(PointInfo destinationPoint)
+    {
+        this.destinationPoint = destinationPoint;
     }
 
     public int getStartX()

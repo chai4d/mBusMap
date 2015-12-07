@@ -48,7 +48,7 @@ public class BusInfo extends BaseModel
         {
             if (busId > 0)
             {
-                busLine = MapDbBean.loadBusLine(busId);
+                busLine = MapDbBean.loadBusLineById(busId);
             }
             else
             {

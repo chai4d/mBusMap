@@ -136,4 +136,16 @@ public class StringUtil
         double result = Math.sqrt((dx * dx) + (dy * dy));
         return result;
     }
+
+    public static long getIdValue(String text)
+    {
+        // text = "abc abc (id)"
+        // return = "id"
+        long result = 0;
+        if (text != null)
+        {
+            result = toLong(text.substring(text.lastIndexOf("(") + 1, text.length() - 1));
+        }
+        return result;
+    }
 }

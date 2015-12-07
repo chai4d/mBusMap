@@ -42,7 +42,7 @@ public class PointInfo extends BaseModel
         {
             if (pId > 0)
             {
-                pointName = MapDbBean.loadPointName(pId);
+                pointName = MapDbBean.loadPointNameById(pId);
             }
             else
             {

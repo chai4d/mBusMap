@@ -74,7 +74,43 @@ public class MapDbBean
         return result;
     }
 
-    public static List<BusLine> loadBusLine(long busId)
+    public static PointInfo loadPointInfoById(long pId)
+    {
+        PointInfo result = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select * \n";
+            sql += "from point_info \n";
+            sql += "where p_id = ? \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, pId);
+
+            rs = pstmt.executeQuery();
+            if (rs.next())
+            {
+                result = new PointInfo(rs);
+            }
+            SQLUtil.printSQL(sql + "[" + pId + "]");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
+    }
+
+    public static List<BusLine> loadBusLineById(long busId)
     {
         List<BusLine> result = new ArrayList<BusLine>();
         Connection conn = null;
@@ -154,7 +190,7 @@ public class MapDbBean
         }
     }
 
-    public static List<PointName> loadPointName(long pId)
+    public static List<PointName> loadPointNameById(long pId)
     {
         List<PointName> result = new ArrayList<PointName>();
         Connection conn = null;
@@ -177,6 +213,43 @@ public class MapDbBean
                 result.add(new PointName(rs));
             }
             SQLUtil.printSQL(sql + "[" + pId + "]");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
+    }
+
+    public static List<String> loadPointName(int colNo)
+    {
+        List<String> result = new ArrayList<String>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String col = (colNo == 1 ? "name_th" : "name_en");
+
+            String sql = "";
+            sql += "select concat(" + col + ", ' (', p_id, ')') \n";
+            sql += "from point_name \n";
+            sql += "order by 1 \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+                result.add(rs.getString(1));
+            }
+            SQLUtil.printSQL(sql);
         }
         catch (Exception e)
         {
@@ -265,7 +338,7 @@ public class MapDbBean
         return result;
     }
 
-    public static BusInfo loadBusInfo(long busId)
+    public static BusInfo loadBusInfoById(long busId)
     {
         BusInfo result = null;
         Connection conn = null;

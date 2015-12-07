@@ -181,8 +181,18 @@ public class MainFrame extends JFrame
 
     public void onTestRoute()
     {
-        // TODO
+        RouteSelectPanel routeSelectPanel = new RouteSelectPanel(this);
+        OptionDialog dialog = new OptionDialog(this, "Rote Select", routeSelectPanel);
+        dialog.setVisible(true);
+
+        if (dialog.isOK() == false)
+        {
+            return;
+        }
+        mapPanel.setSourcePoint(routeSelectPanel.getSourcePoint());
+        mapPanel.setDestinationPoint(routeSelectPanel.getDestinationPoint());
         setMapMode(MapMode.TEST_ROUTE);
+        // TODO new MapFocus();
     }
 
     public void onAddBusLine()
