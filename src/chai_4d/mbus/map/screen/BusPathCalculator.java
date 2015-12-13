@@ -61,8 +61,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
             {
                 Point sourcePoint = (Point) source.getValue();
                 dijkstra.execute(sourcePoint);
-                txtTaskOutput.append(sourcePoint + " ...");
-                String concat = " ";
+                txtTaskOutput.append(sourcePoint + " : ");
                 for (Map.Entry destination : points.entrySet())
                 {
                     Point destinationPoint = (Point) destination.getValue();
@@ -83,11 +82,10 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
                         }
                         //System.out.println(busPath);
                         MapDbBean.insertBusPath(sourcePoint.getId(), destinationPoint.getId(), busPath);
-                        txtTaskOutput.append(concat + destinationPoint.getId());
-                        concat = ", ";
+                        txtTaskOutput.append(".");
                     }
                 }
-                setProgress((i / total) * 100);
+                setProgress((i * 100) / total);
                 i++;
                 txtTaskOutput.append(" completed.\n");
             }
@@ -115,7 +113,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         contentPane.setBackground(MapConstants.controlPanel);
-        contentPane.setPreferredSize(new Dimension(400, 300));
+        contentPane.setPreferredSize(new Dimension(800, 300));
         contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         butStart.setActionCommand("start");
@@ -123,7 +121,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
 
         prgTaskProgress.setValue(0);
         prgTaskProgress.setStringPainted(true);
-        prgTaskProgress.setPreferredSize(new Dimension(300, 20));
+        prgTaskProgress.setPreferredSize(new Dimension(700, 20));
 
         JPanel panelProgress = new JPanel();
         panelProgress.setBackground(MapConstants.controlPanel);
@@ -136,7 +134,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         JSeparator line = new JSeparator(SwingConstants.HORIZONTAL);
-        line.setPreferredSize(new Dimension(400, 1));
+        line.setPreferredSize(new Dimension(800, 1));
 
         butClose.setActionCommand("close");
         butClose.addActionListener(this);
