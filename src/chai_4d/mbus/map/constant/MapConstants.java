@@ -24,6 +24,7 @@ public class MapConstants
 
     public static final Color lineColorBiDirect = new Color(0, 128, 255, 80);
     public static final Color lineColorOneWay = new Color(255, 128, 128, 150);
+    public static final Color lineColorRoute = new Color(125, 245, 0);
 
     public static final Color[] lineColor = new Color[] {
         new Color(0, 128, 255, 120),

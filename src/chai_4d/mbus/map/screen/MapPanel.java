@@ -73,8 +73,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private PointInfo pointSelect = null;
     private BusInfo busSelect = null;
-    private PointInfo sourcePoint = null;
-    private PointInfo destinationPoint = null;
+    private List<BusLine> busPath = null;
 
     public MapPanel(MainFrame mainFrame)
     {
@@ -281,6 +280,44 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                         {
                             g2d.setColor(MapConstants.lineColorOneWay);
                         }
+                        g2d.setStroke(lineStroke);
+                        g2d.drawLine(x2, y2, x1, y1);
+                        drawArrow(g2d, x2, y2, x1, y1, MapConstants.lineSize);
+                        break;
+                }
+            }
+
+            g2d.setStroke(oldStroke);
+        }
+        else if (busPath != null)
+        {
+            Stroke oldStroke = g2d.getStroke();
+            BasicStroke lineStroke = new BasicStroke(MapConstants.lineSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+
+            List<BusLine> mapBusLine = busPath;
+            for (int i = 0; i < mapBusLine.size(); i++)
+            {
+                BusLine busLine = mapBusLine.get(i);
+                if (busLine.getMode() == Mode.DELETE)
+                {
+                    continue;
+                }
+
+                int x1 = busLine.getX1() - startX;
+                int y1 = busLine.getY1() - startY;
+                int x2 = busLine.getX2() - startX;
+                int y2 = busLine.getY2() - startY;
+
+                switch (busLine.getType())
+                {
+                    case P1_P2:
+                        g2d.setColor(MapConstants.lineColorRoute);
+                        g2d.setStroke(lineStroke);
+                        g2d.drawLine(x1, y1, x2, y2);
+                        drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
+                        break;
+                    case P2_P1:
+                        g2d.setColor(MapConstants.lineColorRoute);
                         g2d.setStroke(lineStroke);
                         g2d.drawLine(x2, y2, x1, y1);
                         drawArrow(g2d, x2, y2, x1, y1, MapConstants.lineSize);
@@ -761,38 +798,32 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             case VIEW:
                 pointSelect = null;
                 busSelect = null;
-                sourcePoint = null;
-                destinationPoint = null;
+                busPath = null;
                 break;
             case TEST_ROUTE:
                 pointSelect = null;
                 busSelect = null;
-                //sourcePoint = new PointInfo(); // From Popup Route Select screen
-                //destinationPoint = new PointInfo(); // From Popup Route Select screen
+                //busPath = new ArrayList<BusLine>(); // From Popup Route Select Screen
                 break;
             case ADD_BUS:
                 pointSelect = null;
                 busSelect = new BusInfo();
-                sourcePoint = null;
-                destinationPoint = null;
+                busPath = null;
                 break;
             case EDIT_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
-                sourcePoint = null;
-                destinationPoint = null;
+                busPath = null;
                 break;
             case DEL_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
-                sourcePoint = null;
-                destinationPoint = null;
+                busPath = null;
                 break;
             case EDIT_POINT:
                 pointSelect = null;
                 busSelect = null;
-                sourcePoint = null;
-                destinationPoint = null;
+                busPath = null;
                 break;
         }
         mainFrame.onSelectPoint(pointSelect);
@@ -976,24 +1007,14 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         this.busSelect = busSelect;
     }
 
-    public PointInfo getSourcePoint()
+    public List<BusLine> getBusPath()
     {
-        return sourcePoint;
+        return busPath;
     }
 
-    public void setSourcePoint(PointInfo sourcePoint)
+    public void setBusPath(List<BusLine> busPath)
     {
-        this.sourcePoint = sourcePoint;
-    }
-
-    public PointInfo getDestinationPoint()
-    {
-        return destinationPoint;
-    }
-
-    public void setDestinationPoint(PointInfo destinationPoint)
-    {
-        this.destinationPoint = destinationPoint;
+        this.busPath = busPath;
     }
 
     public int getStartX()
