@@ -110,11 +110,11 @@ public class MapFocus extends Thread
         int pointX = MapConstants.NULL;
         int pointY = MapConstants.NULL;
 
-        focusX1 = Math.min(sourcePoint.getAxisX(), destinationPoint.getAxisX());
-        focusY1 = Math.min(sourcePoint.getAxisY(), destinationPoint.getAxisY());
+        focusX1 = sourcePoint.getAxisX();
+        focusY1 = sourcePoint.getAxisY();
 
-        focusX2 = Math.max(sourcePoint.getAxisX(), destinationPoint.getAxisX());
-        focusY2 = Math.max(sourcePoint.getAxisY(), destinationPoint.getAxisY());
+        focusX2 = destinationPoint.getAxisX();
+        focusY2 = destinationPoint.getAxisY();
 
         pointX = sourcePoint.getAxisX();
         pointY = sourcePoint.getAxisY();
