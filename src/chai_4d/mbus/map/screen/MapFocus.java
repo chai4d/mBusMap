@@ -6,6 +6,7 @@ import chai_4d.mbus.map.constant.MapConstants;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.BusLine;
+import chai_4d.mbus.map.model.PointInfo;
 
 public class MapFocus extends Thread
 {
@@ -16,6 +17,8 @@ public class MapFocus extends Thread
 
     private MapPanel mapPanel = null;
     private BusInfo busSelect = null;
+    private PointInfo sourcePoint = null;
+    private PointInfo destinationPoint = null;
 
     public MapFocus(MapPanel mapPanel, BusInfo busSelect)
     {
@@ -23,13 +26,15 @@ public class MapFocus extends Thread
         this.busSelect = busSelect;
     }
 
-    public void run()
+    public MapFocus(MapPanel mapPanel, PointInfo sourcePoint, PointInfo destinationPoint)
     {
-        int startX = mapPanel.getStartX();
-        int startY = mapPanel.getStartY();
-        int newStartX = MapConstants.NULL;
-        int newStartY = MapConstants.NULL;
+        this.mapPanel = mapPanel;
+        this.sourcePoint = sourcePoint;
+        this.destinationPoint = destinationPoint;
+    }
 
+    private int[] calcFocus(BusInfo busSelect)
+    {
         int focusX1 = MapConstants.NULL;
         int focusX2 = MapConstants.NULL;
         int focusY1 = MapConstants.NULL;
@@ -91,6 +96,63 @@ public class MapFocus extends Thread
                 pointY = busLine.getY2();
             }
         }
+        int[] result = { focusX1, focusX2, focusY1, focusY2, pointX, pointY };
+        return result;
+    }
+
+    private int[] calcFocus(PointInfo sourcePoint, PointInfo destinationPoint)
+    {
+        int focusX1 = MapConstants.NULL;
+        int focusX2 = MapConstants.NULL;
+        int focusY1 = MapConstants.NULL;
+        int focusY2 = MapConstants.NULL;
+
+        int pointX = MapConstants.NULL;
+        int pointY = MapConstants.NULL;
+
+        focusX1 = Math.min(sourcePoint.getAxisX(), destinationPoint.getAxisX());
+        focusY1 = Math.min(sourcePoint.getAxisY(), destinationPoint.getAxisY());
+
+        focusX2 = Math.max(sourcePoint.getAxisX(), destinationPoint.getAxisX());
+        focusY2 = Math.max(sourcePoint.getAxisY(), destinationPoint.getAxisY());
+
+        pointX = sourcePoint.getAxisX();
+        pointY = sourcePoint.getAxisY();
+
+        int[] result = { focusX1, focusX2, focusY1, focusY2, pointX, pointY };
+        return result;
+    }
+
+    public void run()
+    {
+        int startX = mapPanel.getStartX();
+        int startY = mapPanel.getStartY();
+        int newStartX = MapConstants.NULL;
+        int newStartY = MapConstants.NULL;
+
+        int focusX1 = MapConstants.NULL;
+        int focusX2 = MapConstants.NULL;
+        int focusY1 = MapConstants.NULL;
+        int focusY2 = MapConstants.NULL;
+
+        int pointX = MapConstants.NULL;
+        int pointY = MapConstants.NULL;
+
+        int[] result = null;
+        if (busSelect != null)
+        {
+            result = calcFocus(busSelect);
+        }
+        else
+        {
+            result = calcFocus(sourcePoint, destinationPoint);
+        }
+        focusX1 = result[0];
+        focusX2 = result[1];
+        focusY1 = result[2];
+        focusY2 = result[3];
+        pointX = result[4];
+        pointY = result[5];
 
         if (focusX1 != MapConstants.NULL && focusY1 != MapConstants.NULL && focusX2 != MapConstants.NULL && focusY2 != MapConstants.NULL)
         {

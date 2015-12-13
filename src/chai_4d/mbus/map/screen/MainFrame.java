@@ -192,7 +192,7 @@ public class MainFrame extends JFrame
         mapPanel.setSourcePoint(routeSelectPanel.getSourcePoint());
         mapPanel.setDestinationPoint(routeSelectPanel.getDestinationPoint());
         setMapMode(MapMode.TEST_ROUTE);
-        // TODO new MapFocus();
+        new MapFocus(mapPanel, mapPanel.getSourcePoint(), mapPanel.getDestinationPoint()).start();
     }
 
     public void onAddBusLine()
