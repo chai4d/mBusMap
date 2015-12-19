@@ -183,7 +183,7 @@ public class MainFrame extends JFrame
     public void onTestRoute()
     {
         RouteSelectPanel routeSelectPanel = new RouteSelectPanel(this);
-        OptionDialog dialog = new OptionDialog(this, "Rote Select", routeSelectPanel);
+        OptionDialog dialog = new OptionDialog(this, "Route Select", routeSelectPanel);
         dialog.setVisible(true);
 
         if (dialog.isOK() == false)
