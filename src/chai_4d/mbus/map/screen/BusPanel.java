@@ -9,19 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 import chai_4d.mbus.map.constant.MapConstants;
 import chai_4d.mbus.map.constant.MapConstants.MapMode;
 import chai_4d.mbus.map.constant.MapConstants.ViewType;
 import chai_4d.mbus.map.model.BusInfo;
+import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.ImageUtil;
 import chai_4d.mbus.map.util.StringUtil;
 import chai_4d.mbus.map.util.SwingUtil;
@@ -58,6 +62,13 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
 
     private JPanel pnlOneWay = new LineItem(ViewType.VIEW_ONE_WAY);
     private JLabel lblOneWay = new JLabel("(0)");
+
+    private JLabel lblBusHours = new JLabel("Bus Hours");
+    private JSpinner spnStartTime = new JSpinner(new SpinnerDateModel());
+    private JSpinner spnEndTime = new JSpinner(new SpinnerDateModel());
+
+    private JLabel lblBusPrice = new JLabel("Bus Price");
+    private JTextField txtBusPrice = new JTextField();
 
     public BusPanel(MainFrame mainFrame)
     {
@@ -145,6 +156,34 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             pnlBusLine,
             new GridBagConstraints(0, 9, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
+        JSpinner.DateEditor edtStartTime = new JSpinner.DateEditor(spnStartTime, "HH:mm");
+        JSpinner.DateEditor edtEndTime = new JSpinner.DateEditor(spnEndTime, "HH:mm");
+        spnStartTime.setEditor(edtStartTime);
+        spnEndTime.setEditor(edtEndTime);
+        spnStartTime.setValue(DateUtil.createTime(0, 0, 0));
+        spnEndTime.setValue(DateUtil.createTime(0, 0, 0));
+        JPanel pnlBusHours = new JPanel(new GridBagLayout());
+        pnlBusHours.setBackground(MapConstants.controlPanel);
+        pnlBusHours.add(
+            spnStartTime,
+            new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        pnlBusHours.add(
+            spnEndTime,
+            new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            lblBusHours,
+            new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            pnlBusHours,
+            new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+
+        add(
+            lblBusPrice,
+            new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            txtBusPrice,
+            new GridBagConstraints(1, 11, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+
         txtId.setEnabled(false);
         txtPicture.setEnabled(false);
 
@@ -153,6 +192,9 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
         txtDetailTh.addKeyListener(this);
         txtDetailEn.addKeyListener(this);
         butPicture.addActionListener(this);
+        spnStartTime.addKeyListener(this);
+        spnEndTime.addKeyListener(this);
+        txtBusPrice.addKeyListener(this);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -216,6 +258,21 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             busInfo.setDetailEn(txtDetailEn.getText());
             busInfo.setEdited();
         }
+        else if (e.getComponent().equals(spnStartTime))
+        {
+            busInfo.setStartTime((Date) spnStartTime.getValue());
+            busInfo.setEdited();
+        }
+        else if (e.getComponent().equals(spnEndTime))
+        {
+            busInfo.setEndTime((Date) spnEndTime.getValue());
+            busInfo.setEdited();
+        }
+        else if (e.getComponent().equals(txtBusPrice))
+        {
+            busInfo.setBusPrice(txtBusPrice.getText());
+            busInfo.setEdited();
+        }
     }
 
     public void keyTyped(KeyEvent e)
@@ -235,6 +292,9 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             pnlPicture.setFile(null);
             lblTwoWay.setText("(0)");
             lblOneWay.setText("(0)");
+            spnStartTime.setValue(DateUtil.createTime(0, 0, 0));
+            spnEndTime.setValue(DateUtil.createTime(0, 0, 0));
+            txtBusPrice.setText("");
         }
         else
         {
@@ -247,6 +307,9 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             pnlPicture.setFile(ImageUtil.getFile(busInfo.getBusPic()));
             lblTwoWay.setText("(" + StringUtil.toNumString(busInfo.getCountTwoWay()) + ")");
             lblOneWay.setText("(" + StringUtil.toNumString(busInfo.getCountOneWay()) + ")");
+            spnStartTime.setValue(busInfo.getStartTime());
+            spnEndTime.setValue(busInfo.getEndTime());
+            txtBusPrice.setText(busInfo.getBusPrice());
         }
 
         if (this.busInfo == null || mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
@@ -256,6 +319,9 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             txtDetailTh.setEnabled(false);
             txtDetailEn.setEnabled(false);
             butPicture.setEnabled(false);
+            spnStartTime.setEnabled(false);
+            spnEndTime.setEnabled(false);
+            txtBusPrice.setEnabled(false);
         }
         else
         {
@@ -264,6 +330,9 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             txtDetailTh.setEnabled(true);
             txtDetailEn.setEnabled(true);
             butPicture.setEnabled(true);
+            spnStartTime.setEnabled(true);
+            spnEndTime.setEnabled(true);
+            txtBusPrice.setEnabled(true);
         }
     }
 
@@ -279,6 +348,12 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
         {
             SwingUtil.alertWarning("Please enter Bus No (EN).");
             txtBusNoEn.requestFocus();
+            return false;
+        }
+        else if (StringUtil.isEmpty(txtBusPrice.getText()))
+        {
+            SwingUtil.alertWarning("Please enter Bus Price.");
+            txtBusPrice.requestFocus();
             return false;
         }
         return true;

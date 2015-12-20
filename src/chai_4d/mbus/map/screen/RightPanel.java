@@ -39,30 +39,12 @@ public class RightPanel extends JPanel
         busPanel = new BusPanel(mainFrame);
         pointPanel = new PointPanel(mainFrame);
 
-        add(busPanel, new GridBagConstraints(
-            0,
-            0,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.CENTER,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
-        add(new JSeparator(SwingConstants.HORIZONTAL), new GridBagConstraints(
-            0,
-            1,
-            1,
-            1,
-            1.0,
-            0.0,
-            GridBagConstraints.CENTER,
-            GridBagConstraints.HORIZONTAL,
-            new Insets(2, 2, 2, 2),
-            0,
-            0));
+        add(
+            busPanel,
+            new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(
+            new JSeparator(SwingConstants.HORIZONTAL),
+            new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
         add(
             pointPanel,
             new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(2, 2, 2, 2), 0, 0));

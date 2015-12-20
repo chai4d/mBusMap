@@ -2,11 +2,13 @@ package chai_4d.mbus.map.model;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import chai_4d.mbus.map.bean.MapDbBean;
 import chai_4d.mbus.map.constant.MapConstants.LineType;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
+import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.SQLUtil;
 
 public class BusInfo extends BaseModel
@@ -17,6 +19,9 @@ public class BusInfo extends BaseModel
     private String detailTh = null;
     private String detailEn = null;
     private String busPic = null;
+    private Date startTime = null;
+    private Date endTime = null;
+    private String busPrice = null;
     private List<BusLine> busLine = null;
 
     public BusInfo(ResultSet rs)
@@ -29,6 +34,9 @@ public class BusInfo extends BaseModel
         detailTh = SQLUtil.getString(rs, ++i);
         detailEn = SQLUtil.getString(rs, ++i);
         busPic = SQLUtil.getString(rs, ++i);
+        startTime = SQLUtil.getDate(rs, ++i);
+        endTime = SQLUtil.getDate(rs, ++i);
+        busPrice = SQLUtil.getString(rs, ++i);
     }
 
     public BusInfo()
@@ -40,6 +48,9 @@ public class BusInfo extends BaseModel
         this.detailTh = "";
         this.detailEn = "";
         this.busPic = "";
+        this.startTime = DateUtil.createTime(0, 0, 0);
+        this.endTime = DateUtil.createTime(0, 0, 0);
+        this.busPrice = "";
     }
 
     public List<BusLine> getBusLine()
@@ -146,5 +157,35 @@ public class BusInfo extends BaseModel
     public void setBusPic(String busPic)
     {
         this.busPic = busPic;
+    }
+
+    public Date getStartTime()
+    {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime)
+    {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime()
+    {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime)
+    {
+        this.endTime = endTime;
+    }
+
+    public String getBusPrice()
+    {
+        return busPrice;
+    }
+
+    public void setBusPrice(String busPrice)
+    {
+        this.busPrice = busPrice;
     }
 }
