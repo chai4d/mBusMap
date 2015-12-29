@@ -21,6 +21,7 @@ import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.model.PointName;
 import chai_4d.mbus.map.screen.MapPanel;
 import chai_4d.mbus.map.util.DBManager;
+import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.SQLUtil;
 import chai_4d.mbus.map.util.StringUtil;
 
@@ -860,8 +861,8 @@ public class MapDbBean
         try
         {
             String sql = "";
-            sql += "insert into bus_info (bus_no_th, bus_no_en, detail_th, detail_en, bus_pic) \n";
-            sql += "values (?, ?, ?, ?, ?) \n";
+            sql += "insert into bus_info (bus_no_th, bus_no_en, detail_th, detail_en, bus_pic, start_time, end_time, bus_price) \n";
+            sql += "values (?, ?, ?, ?, ?, ?, ?, ?) \n";
 
             conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -870,6 +871,9 @@ public class MapDbBean
             pstmt.setString(3, busInfo.getDetailTh());
             pstmt.setString(4, busInfo.getDetailEn());
             pstmt.setString(5, busInfo.getBusPic());
+            pstmt.setDate(6, DateUtil.createSQLDate(busInfo.getStartTime()));
+            pstmt.setDate(7, DateUtil.createSQLDate(busInfo.getEndTime()));
+            pstmt.setString(8, busInfo.getBusPrice());
 
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
@@ -897,7 +901,8 @@ public class MapDbBean
         try
         {
             String sql = "";
-            sql += "update bus_info set bus_no_th = ?, bus_no_en = ?, detail_th = ?, detail_en = ?, bus_pic = ? \n";
+            sql += "update bus_info set bus_no_th = ?, bus_no_en = ?, detail_th = ?, detail_en = ?, bus_pic = ?, \n";
+            sql += " start_time = ?, end_time = ?, bus_price = ? \n";
             sql += "where bus_id = ? \n";
 
             conn = DBManager.getConnection();
@@ -907,7 +912,10 @@ public class MapDbBean
             pstmt.setString(3, busInfo.getDetailTh());
             pstmt.setString(4, busInfo.getDetailEn());
             pstmt.setString(5, busInfo.getBusPic());
-            pstmt.setLong(6, busInfo.getBusId());
+            pstmt.setDate(6, DateUtil.createSQLDate(busInfo.getStartTime()));
+            pstmt.setDate(7, DateUtil.createSQLDate(busInfo.getEndTime()));
+            pstmt.setString(8, busInfo.getBusPrice());
+            pstmt.setLong(9, busInfo.getBusId());
 
             pstmt.executeUpdate();
             busInfo.setMode(Mode.SELECT);

@@ -51,6 +51,18 @@ public class DateUtil
         return createDate(dd, mm, yyyy);
     }
 
+    public static java.sql.Date createSQLDate(Date date)
+    {
+        if (date != null)
+        {
+            return new java.sql.Date(date.getTime());
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public static Date createDateTime(String strDate, int hh, int mi, int ss)
     {
         if (StringUtil.isEmpty(strDate) || strDate.length() < 10)
