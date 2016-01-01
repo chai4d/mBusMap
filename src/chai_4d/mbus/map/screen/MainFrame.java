@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.status.MapStatusBar;
 import chai_4d.mbus.map.util.DBManager;
+import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.ImageUtil;
 import chai_4d.mbus.map.util.SwingUtil;
 
@@ -192,7 +194,8 @@ public class MainFrame extends JFrame
         }
         PointInfo sourcePoint = routeSelectPanel.getSourcePoint();
         PointInfo destinationPoint = routeSelectPanel.getDestinationPoint();
-        List<BusChoice> busChoices = MapDbBean.calcBusChoices(sourcePoint.getPId(), destinationPoint.getPId());
+        Date timeToGo = DateUtil.getCurrentTime();
+        List<BusChoice> busChoices = MapDbBean.calcBusChoices(sourcePoint.getPId(), destinationPoint.getPId(), timeToGo);
         mapPanel.setBusChoices(busChoices);
         setMapMode(MapMode.TEST_ROUTE);
         new MapFocus(mapPanel, sourcePoint, destinationPoint).start();

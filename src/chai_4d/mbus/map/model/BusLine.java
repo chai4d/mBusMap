@@ -16,6 +16,9 @@ public class BusLine extends BaseModel
     private int y2 = 0;
     private double distance = 0;
     private long busId = 0;
+    private String busNoTh = null;
+    private String busNoEn = null;
+    private String busPrice = null;
     private LineType type = null;
 
     public BusLine(ResultSet rs)
@@ -30,10 +33,25 @@ public class BusLine extends BaseModel
         y2 = SQLUtil.getInt(rs, ++i);
         distance = SQLUtil.getInt(rs, ++i);
         busId = SQLUtil.getLong(rs, ++i);
+        busNoTh = SQLUtil.getString(rs, ++i);
+        busNoEn = SQLUtil.getString(rs, ++i);
+        busPrice = SQLUtil.getString(rs, ++i);
         type = LineType.valueOf(SQLUtil.getInt(rs, ++i));
     }
 
-    public BusLine(long p1Id, long p2Id, int x1, int y1, int x2, int y2, double distance, long busId, LineType type)
+    public BusLine(
+        long p1Id,
+        long p2Id,
+        int x1,
+        int y1,
+        int x2,
+        int y2,
+        double distance,
+        long busId,
+        String busNoTh,
+        String busNoEn,
+        String busPrice,
+        LineType type)
     {
         super(Mode.INSERT);
         this.p1Id = p1Id;
@@ -44,6 +62,9 @@ public class BusLine extends BaseModel
         this.y2 = y2;
         this.distance = distance;
         this.busId = busId;
+        this.busNoTh = busNoTh;
+        this.busNoEn = busNoEn;
+        this.busPrice = busPrice;
         this.type = type;
     }
 
@@ -135,5 +156,35 @@ public class BusLine extends BaseModel
     public void setP2Id(long id)
     {
         p2Id = id;
+    }
+
+    public String getBusNoTh()
+    {
+        return busNoTh;
+    }
+
+    public void setBusNoTh(String busNoTh)
+    {
+        this.busNoTh = busNoTh;
+    }
+
+    public String getBusNoEn()
+    {
+        return busNoEn;
+    }
+
+    public void setBusNoEn(String busNoEn)
+    {
+        this.busNoEn = busNoEn;
+    }
+
+    public String getBusPrice()
+    {
+        return busPrice;
+    }
+
+    public void setBusPrice(String busPrice)
+    {
+        this.busPrice = busPrice;
     }
 }

@@ -42,6 +42,7 @@ public class MapConstants
     public static final Color labelFG = Color.black;
 
     public static final int MAX_CHOICES = 20;
+    public static final int PREFER_CHOICES = 5;
 
     private MapConstants()
     {

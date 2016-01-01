@@ -37,6 +37,18 @@ public class DateUtil
         return createDateTime(1, 1, 1000, hh, mi, ss);
     }
 
+    public static Date getCurrentDate()
+    {
+        Date d = new Date();
+        return createDate(getDate(d), getMonth(d), getYear(d));
+    }
+
+    public static Date getCurrentTime()
+    {
+        Date d = new Date();
+        return createTime(getHour(d), getMinute(d), getSecond(d));
+    }
+
     public static Date createDate(String strDate)
     {
         if (StringUtil.isEmpty(strDate) || strDate.length() < 10)
@@ -75,6 +87,18 @@ public class DateUtil
         int yyyy = StringUtil.toInt(strDate.substring(6, 10));
 
         return createDateTime(dd, mm, yyyy, hh, mi, ss);
+    }
+
+    public static java.sql.Time createSQLTime(Date date)
+    {
+        if (date != null)
+        {
+            return new java.sql.Time(date.getTime());
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public static String getDateStr(Date date)
@@ -124,6 +148,39 @@ public class DateUtil
         Calendar cal = Calendar.getInstance(Locale.US);
         cal.setTime(d);
         return cal.get(Calendar.YEAR);
+    }
+
+    public static int getHour(Date d)
+    {
+        if (d == null)
+        {
+            return 0;
+        }
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(d);
+        return cal.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static int getMinute(Date d)
+    {
+        if (d == null)
+        {
+            return 0;
+        }
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(d);
+        return cal.get(Calendar.MINUTE);
+    }
+
+    public static int getSecond(Date d)
+    {
+        if (d == null)
+        {
+            return 0;
+        }
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(d);
+        return cal.get(Calendar.SECOND);
     }
 
     public static Date trimDate(Date d)

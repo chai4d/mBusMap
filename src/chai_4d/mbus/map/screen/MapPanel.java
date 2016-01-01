@@ -296,24 +296,27 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             Stroke oldStroke = g2d.getStroke();
             BasicStroke lineStroke = new BasicStroke(MapConstants.lineSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-            for (int i = 0; i < busChoices.size(); i++)
+            for (int i = 0; i < busChoices.size() && i < MapConstants.PREFER_CHOICES; i++)
             {
                 BusChoice busChoice = busChoices.get(i);
+                //System.out.print("No." + (i + 1) + " :");
                 List<BusPath> busPaths = busChoice.getBusPaths();
                 for (int j = 0; j < busPaths.size(); j++)
                 {
                     BusPath busPath = busPaths.get(j);
+                    //System.out.print(" " + busPath.getP1Id() + "->" + busPath.getP2Id() + "(" + busPath.getBusId() + ")");
 
                     int x1 = busPath.getX1() - startX;
                     int y1 = busPath.getY1() - startY;
                     int x2 = busPath.getX2() - startX;
                     int y2 = busPath.getY2() - startY;
 
-                    g2d.setColor(MapConstants.lineColorRoute);
+                    g2d.setColor(MapConstants.lineColor[i]);
                     g2d.setStroke(lineStroke);
                     g2d.drawLine(x1, y1, x2, y2);
                     drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
                 }
+                //System.out.println();
             }
 
             g2d.setStroke(oldStroke);
@@ -961,6 +964,9 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 p2.getAxisY(),
                 StringUtil.distance(p1.getAxisX(), p1.getAxisY(), p2.getAxisX(), p2.getAxisY()),
                 busSelect.getBusId(),
+                busSelect.getBusNoTh(),
+                busSelect.getBusNoEn(),
+                busSelect.getBusPrice(),
                 mainFrame.getLineType());
             busSelect.getBusLine().add(aBusLine);
             busSelect.setEdited();
