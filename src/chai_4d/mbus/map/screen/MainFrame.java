@@ -23,8 +23,8 @@ import chai_4d.mbus.map.constant.MapConstants.MapMode;
 import chai_4d.mbus.map.constant.MapConstants.ViewBusLine;
 import chai_4d.mbus.map.constant.MapConstants.ViewType;
 import chai_4d.mbus.map.menu.MapMenuBar;
+import chai_4d.mbus.map.model.BusChoice;
 import chai_4d.mbus.map.model.BusInfo;
-import chai_4d.mbus.map.model.BusLine;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.status.MapStatusBar;
 import chai_4d.mbus.map.util.DBManager;
@@ -192,8 +192,8 @@ public class MainFrame extends JFrame
         }
         PointInfo sourcePoint = routeSelectPanel.getSourcePoint();
         PointInfo destinationPoint = routeSelectPanel.getDestinationPoint();
-        List<BusLine> busPath = MapDbBean.loadBusPath(sourcePoint.getPId(), destinationPoint.getPId());
-        mapPanel.setBusPath(busPath);
+        List<BusChoice> busChoices = MapDbBean.calcBusChoices(sourcePoint.getPId(), destinationPoint.getPId());
+        mapPanel.setBusChoices(busChoices);
         setMapMode(MapMode.TEST_ROUTE);
         new MapFocus(mapPanel, sourcePoint, destinationPoint).start();
     }

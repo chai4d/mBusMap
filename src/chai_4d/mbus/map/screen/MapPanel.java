@@ -31,8 +31,10 @@ import chai_4d.mbus.map.constant.MapConstants.MapMode;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
 import chai_4d.mbus.map.constant.MapConstants.PointType;
 import chai_4d.mbus.map.constant.MapConstants.ViewType;
+import chai_4d.mbus.map.model.BusChoice;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.BusLine;
+import chai_4d.mbus.map.model.BusPath;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.status.MapStatusBar;
 import chai_4d.mbus.map.util.ImageUtil;
@@ -73,7 +75,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private PointInfo pointSelect = null;
     private BusInfo busSelect = null;
-    private List<BusLine> busPath = null;
+    private List<BusChoice> busChoices = null;
 
     public MapPanel(MainFrame mainFrame)
     {
@@ -289,39 +291,28 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
             g2d.setStroke(oldStroke);
         }
-        else if (busPath != null)
+        else if (busChoices != null)
         {
             Stroke oldStroke = g2d.getStroke();
             BasicStroke lineStroke = new BasicStroke(MapConstants.lineSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-            List<BusLine> mapBusLine = busPath;
-            for (int i = 0; i < mapBusLine.size(); i++)
+            for (int i = 0; i < busChoices.size(); i++)
             {
-                BusLine busLine = mapBusLine.get(i);
-                if (busLine.getMode() == Mode.DELETE)
+                BusChoice busChoice = busChoices.get(i);
+                List<BusPath> busPaths = busChoice.getBusPaths();
+                for (int j = 0; j < busPaths.size(); j++)
                 {
-                    continue;
-                }
+                    BusPath busPath = busPaths.get(j);
 
-                int x1 = busLine.getX1() - startX;
-                int y1 = busLine.getY1() - startY;
-                int x2 = busLine.getX2() - startX;
-                int y2 = busLine.getY2() - startY;
+                    int x1 = busPath.getX1() - startX;
+                    int y1 = busPath.getY1() - startY;
+                    int x2 = busPath.getX2() - startX;
+                    int y2 = busPath.getY2() - startY;
 
-                switch (busLine.getType())
-                {
-                    case P1_P2:
-                        g2d.setColor(MapConstants.lineColorRoute);
-                        g2d.setStroke(lineStroke);
-                        g2d.drawLine(x1, y1, x2, y2);
-                        drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
-                        break;
-                    case P2_P1:
-                        g2d.setColor(MapConstants.lineColorRoute);
-                        g2d.setStroke(lineStroke);
-                        g2d.drawLine(x2, y2, x1, y1);
-                        drawArrow(g2d, x2, y2, x1, y1, MapConstants.lineSize);
-                        break;
+                    g2d.setColor(MapConstants.lineColorRoute);
+                    g2d.setStroke(lineStroke);
+                    g2d.drawLine(x1, y1, x2, y2);
+                    drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
                 }
             }
 
@@ -798,32 +789,32 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             case VIEW:
                 pointSelect = null;
                 busSelect = null;
-                busPath = null;
+                busChoices = null;
                 break;
             case TEST_ROUTE:
                 pointSelect = null;
                 busSelect = null;
-                //busPath = new ArrayList<BusLine>(); // From Popup Route Select Screen
+                //busChoices = new ArrayList<BusChoice>(); // From Popup Route Select Screen
                 break;
             case ADD_BUS:
                 pointSelect = null;
                 busSelect = new BusInfo();
-                busPath = null;
+                busChoices = null;
                 break;
             case EDIT_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
-                busPath = null;
+                busChoices = null;
                 break;
             case DEL_BUS:
                 pointSelect = null;
                 //busSelect = new BusInfo(); // From Popup Bus Select screen
-                busPath = null;
+                busChoices = null;
                 break;
             case EDIT_POINT:
                 pointSelect = null;
                 busSelect = null;
-                busPath = null;
+                busChoices = null;
                 break;
         }
         mainFrame.onSelectPoint(pointSelect);
@@ -1007,14 +998,14 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         this.busSelect = busSelect;
     }
 
-    public List<BusLine> getBusPath()
+    public List<BusChoice> getBusChoices()
     {
-        return busPath;
+        return busChoices;
     }
 
-    public void setBusPath(List<BusLine> busPath)
+    public void setBusChoices(List<BusChoice> busChoices)
     {
-        this.busPath = busPath;
+        this.busChoices = busChoices;
     }
 
     public int getStartX()

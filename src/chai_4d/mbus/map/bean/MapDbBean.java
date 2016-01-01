@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import chai_4d.mbus.map.constant.MapConstants;
 import chai_4d.mbus.map.constant.MapConstants.LineType;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
 import chai_4d.mbus.map.dijkstra.model.Line;
 import chai_4d.mbus.map.dijkstra.model.Point;
+import chai_4d.mbus.map.model.BusChoice;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.BusLine;
+import chai_4d.mbus.map.model.BusPath;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.model.PointName;
 import chai_4d.mbus.map.screen.MapPanel;
@@ -191,6 +194,61 @@ public class MapDbBean
                 result.add(new BusLine(rs));
             }
             SQLUtil.printSQL(sql + "[" + pId1 + ", " + pId2 + "]");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
+    }
+
+    public static BusLine loadNextBusLine(long busId, long pId1, long pId2)
+    {
+        BusLine result = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "(select p1.p_id p1_id, p2.p_id p2_id, \n";
+            sql += " p1.axis_x, p1.axis_y, p2.axis_x, p2.axis_y, \n";
+            sql += " b.distance, b.bus_id, 1 type \n";
+            sql += "from bus_line b, point_info p1, point_info p2 \n";
+            sql += "where b.p1_id = p1.p_id \n";
+            sql += " and b.p2_id = p2.p_id \n";
+            sql += " and b.bus_id = ? \n";
+            sql += " and b.p1_id = ? and b.p2_id <> ? and b.type in (0, 1)) \n";
+            sql += "union \n";
+            sql += "(select p1.p_id p1_id, p2.p_id p2_id, \n";
+            sql += " p1.axis_x, p1.axis_y, p2.axis_x, p2.axis_y, \n";
+            sql += " b.distance, b.bus_id, 2 type \n";
+            sql += "from bus_line b, point_info p1, point_info p2 \n";
+            sql += "where b.p1_id = p1.p_id \n";
+            sql += " and b.p2_id = p2.p_id \n";
+            sql += " and b.bus_id = ? \n";
+            sql += " and b.p2_id = ? and b.p1_id <> ? and b.type in (0, 2)) \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, busId);
+            pstmt.setLong(2, pId2);
+            pstmt.setLong(3, pId1);
+            pstmt.setLong(4, busId);
+            pstmt.setLong(5, pId2);
+            pstmt.setLong(6, pId1);
+
+            rs = pstmt.executeQuery();
+            if (rs.next())
+            {
+                result = new BusLine(rs);
+            }
+            SQLUtil.printSQL(sql + "[" + busId + ", " + pId1 + ", " + pId2 + "]");
         }
         catch (Exception e)
         {
@@ -1228,6 +1286,74 @@ public class MapDbBean
         return result;
     }
 
+    private static void selectBusChoice(List<BusChoice> busChoices, BusLine busLine, long p1, long p2)
+    {
+        if (busChoices.size() == 0)
+        {
+            BusChoice busChoice = new BusChoice();
+            busChoice.getBusPaths().add(new BusPath(busLine, p1, p2));
+            busChoices.add(busChoice);
+        }
+        else
+        {
+            BusChoice busChoice = null;
+            for (int i = 0; i < busChoices.size(); i++)
+            {
+                if (busChoices.get(i).getLastBusPath().getP2Id() == p1)
+                {
+                    busChoice = busChoices.get(i);
+                    break;
+                }
+            }
+
+            if (busChoice != null)
+            {
+                BusPath lastBusPath = busChoice.getLastBusPath();
+                if (lastBusPath.getBusId() != busLine.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
+                {
+                    BusChoice busChoice2 = busChoice.clone();
+                    BusLine busLine2 = loadNextBusLine(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
+                    if (busLine2 != null)
+                    {
+                        busChoice2.getBusPaths().add(new BusPath(busLine2, p1, -1));
+                        busChoices.add(busChoice2);
+                    }
+                }
+                busChoice.getBusPaths().add(new BusPath(busLine, p1, p2));
+            }
+        }
+    }
+
+    private static void recursiveCalcBusChoice(List<BusChoice> busChoices, long sourceId, long destinationId)
+    {
+        String busPath = getBusPath(sourceId, destinationId);
+        if (StringUtil.isEmpty(busPath) == false)
+        {
+            StringTokenizer token = new StringTokenizer(busPath, "->");
+            String sP1 = token.nextToken();
+            long p1 = StringUtil.toLong(sP1);
+            if (token.hasMoreTokens())
+            {
+                String sP2 = token.nextToken();
+                long p2 = StringUtil.toLong(sP2);
+                List<BusLine> busLines = loadBusLineByP1P2(p1, p2);
+                for (int i = 0; i < busLines.size(); i++)
+                {
+                    BusLine busLine = busLines.get(i);
+                    selectBusChoice(busChoices, busLine, p1, p2);
+                    recursiveCalcBusChoice(busChoices, p2, destinationId);
+                }
+            }
+        }
+    }
+
+    public static List<BusChoice> calcBusChoices(long sourceId, long destinationId)
+    {
+        List<BusChoice> busChoices = new ArrayList<BusChoice>();
+        recursiveCalcBusChoice(busChoices, sourceId, destinationId);
+        return busChoices;
+    }
+    /*
     public static List<BusLine> loadBusPath(long sourceId, long destinationId)
     {
         List<BusLine> result = new ArrayList<BusLine>();
@@ -1249,4 +1375,5 @@ public class MapDbBean
         }
         return result;
     }
+    */
 }
