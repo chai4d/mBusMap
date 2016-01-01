@@ -123,7 +123,7 @@ public class MainFrame extends JFrame
         {
             case ADD_BUS:
                 BusPanel busPanel = new BusPanel(this);
-                busPanel.setPreferredSize(new Dimension(400, 370));
+                busPanel.setPreferredSize(new Dimension(400, 420));
                 busPanel.setBusInfo(mapPanel.getBusSelect());
                 OptionDialog dialog = new OptionDialog(this, "Bus Info", busPanel);
                 dialog.setVisible(true);
