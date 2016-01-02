@@ -1383,10 +1383,10 @@ public class MapDbBean
     {
         List<BusChoice> busChoices = new ArrayList<BusChoice>();
 
-        // Calculate potential Bus Choices 
+        // 1. Calculate potential Bus Choices 
         recursiveCalcBusChoice(busChoices, sourceId, sourceId, destinationId, timeToGo);
 
-        // Remove the Bus Choice that can't reach to destination
+        // 2. Remove the Bus Choice that can't reach to destination
         for (int i = busChoices.size() - 1; i >= 0; i--)
         {
             BusChoice busChoice = busChoices.get(i);
@@ -1396,9 +1396,54 @@ public class MapDbBean
             }
         }
 
-        // Sorting the Bus Choice per score
-        // XXX
+        // 3. Calculate score per each Bus Choice
+        int maxInterchange = 0;
+        double maxPrice = 0.0;
+        double maxDistance = 0.0;
+        for (int i = 0; i < busChoices.size(); i++)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            busChoice.calcScore();
 
-        return busChoices;
+            maxInterchange = Integer.max(maxInterchange, busChoice.getNoOfInterchange());
+            maxPrice = Double.max(maxPrice, busChoice.getTotalPrice());
+            maxDistance = Double.max(maxDistance, busChoice.getTotalDistance());
+        }
+        for (int i = 0; i < busChoices.size(); i++)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            busChoice.calcScorePercent(maxInterchange, maxPrice, maxDistance);
+        }
+
+        // 4. Sorting the Bus Choice per scorePercent
+        List<BusChoice> result = new ArrayList<BusChoice>();
+        for (int i = 0; i < busChoices.size(); i++)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            double score = busChoice.getScorePercent();
+
+            int index = result.size();
+            for (int j = 0; j < result.size(); j++)
+            {
+                BusChoice resultChoice = result.get(j);
+                if (score > resultChoice.getScorePercent())
+                {
+                    index = j;
+                    break;
+                }
+            }
+            result.add(index, busChoice);
+        }
+        for (int i = 0; i < result.size(); i++)
+        {
+            BusChoice resultChoice = result.get(i);
+
+            System.out.println("[Choice " + (i + 1) + "]");
+            System.out.print(resultChoice.printPath());
+            System.out.println(
+                " -> Score (" + StringUtil.toNumString(resultChoice.getScorePercent()) + "%) : Interchange=" + resultChoice.getNoOfInterchange()
+                    + ", Price=" + resultChoice.getTotalPrice() + ", Distance=" + resultChoice.getTotalDistance());
+        }
+        return result;
     }
 }

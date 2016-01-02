@@ -4,6 +4,8 @@ import java.text.NumberFormat;
 
 public class StringUtil
 {
+    public static final String NEW_LINE = System.getProperty("line.separator");
+
     private StringUtil()
     {
     }

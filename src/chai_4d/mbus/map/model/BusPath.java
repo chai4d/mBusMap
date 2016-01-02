@@ -10,6 +10,9 @@ public class BusPath
     private int y2 = 0;
     private double distance = 0;
     private long busId = 0;
+    private String busNoTh = null;
+    private String busNoEn = null;
+    private String busPrice = null;
 
     public BusPath(BusLine busLine, long p1, long p2)
     {
@@ -33,6 +36,9 @@ public class BusPath
         }
         this.distance = busLine.getDistance();
         this.busId = busLine.getBusId();
+        this.busNoTh = busLine.getBusNoTh();
+        this.busNoEn = busLine.getBusNoEn();
+        this.busPrice = busLine.getBusPrice();
     }
 
     public BusPath(BusPath busPath)
@@ -45,6 +51,9 @@ public class BusPath
         this.y2 = busPath.getY2();
         this.distance = busPath.getDistance();
         this.busId = busPath.getBusId();
+        this.busNoTh = busPath.getBusNoTh();
+        this.busNoEn = busPath.getBusNoEn();
+        this.busPrice = busPath.getBusPrice();
     }
 
     public int getX1()
@@ -125,5 +134,35 @@ public class BusPath
     public void setP2Id(long id)
     {
         p2Id = id;
+    }
+
+    public String getBusNoTh()
+    {
+        return busNoTh;
+    }
+
+    public void setBusNoTh(String busNoTh)
+    {
+        this.busNoTh = busNoTh;
+    }
+
+    public String getBusNoEn()
+    {
+        return busNoEn;
+    }
+
+    public void setBusNoEn(String busNoEn)
+    {
+        this.busNoEn = busNoEn;
+    }
+
+    public String getBusPrice()
+    {
+        return busPrice;
+    }
+
+    public void setBusPrice(String busPrice)
+    {
+        this.busPrice = busPrice;
     }
 }
