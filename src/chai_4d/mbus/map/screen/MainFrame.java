@@ -332,13 +332,19 @@ public class MainFrame extends JFrame
                 }
                 mapPanel.setBusSelect(busSelectViewPanel.getBusSelect());
                 _viewBusLine = busLine;
+                _mapMode = MapMode.VIEW;
+                mapPanel.setBusChoices(null);
                 mapPanel.repaint();
+                MapStatusBar.setMode(_mapMode.name());
                 new MapFocus(mapPanel, mapPanel.getBusSelect()).start();
                 break;
             case VIEW_NONE:
                 mapPanel.setBusSelect(null);
                 _viewBusLine = busLine;
+                _mapMode = MapMode.VIEW;
+                mapPanel.setBusChoices(null);
                 mapPanel.repaint();
+                MapStatusBar.setMode(_mapMode.name());
                 break;
         }
     }

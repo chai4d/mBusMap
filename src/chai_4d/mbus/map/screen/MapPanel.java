@@ -136,6 +136,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         g2d.setStroke(new BasicStroke(1f));
 
         drawBusNo(g2d);
+        drawBusChoices(g2d);
 
         updateStatusMessage();
         g2d.dispose();
@@ -495,6 +496,56 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
                 g2d.setColor(MapConstants.labelFG);
                 g2d.drawString(label, x - (w / 2), y);
+            }
+        }
+    }
+
+    private void drawBusChoices(Graphics2D g2d)
+    {
+        if (busChoices != null)
+        {
+            g2d.setFont(new Font("Tahoma", Font.BOLD, 12));
+
+            int marginX = 20;
+            int marginY = 25;
+            int x = marginX;
+            int y = marginY;
+            for (int i = 0; i < busChoices.size(); i++)
+            {
+                BusChoice busChoice = busChoices.get(i);
+
+                String concat = "";
+                String busInfo = (i + 1) + ". [";
+                List<ABus> buses = busChoice.getBuses();
+                for (int j = 0; j < buses.size(); j++)
+                {
+                    ABus aBus = buses.get(j);
+                    String busNo = aBus.getBusNo();
+                    String busPrice = StringUtil.toAmountString(aBus.getBusPrice());
+
+                    busInfo = busInfo + concat + busNo + "(" + busPrice + ")";
+                    concat = " -> ";
+                }
+                busInfo = busInfo + "]";
+
+                int w = g2d.getFontMetrics().stringWidth(busInfo);
+                int h = (int) g2d.getFontMetrics().getLineMetrics(busInfo, g2d).getHeight();
+
+                Color bg = MapConstants.labelBusBG;
+                Color fg = MapConstants.labelBusFG;
+                if (i == busChoiceIndex)
+                {
+                    bg = MapConstants.labelBusBGHL;
+                    fg = MapConstants.labelBusFGHL;
+                }
+
+                g2d.setColor(bg);
+                g2d.fillRect(x - 2, y - h + 1, w + 4, h + 5);
+
+                g2d.setColor(fg);
+                g2d.drawString(busInfo, x, y);
+
+                y = marginY + ((i + 1) * (h + 10));
             }
         }
     }

@@ -1,10 +1,13 @@
 package chai_4d.mbus.map.util;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class StringUtil
 {
     public static final String NEW_LINE = System.getProperty("line.separator");
+
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,###,###,###,###,###.##");
 
     private StringUtil()
     {
@@ -129,6 +132,11 @@ public class StringUtil
     public static String toNumString(double d)
     {
         return NumberFormat.getNumberInstance().format(d);
+    }
+
+    public static String toAmountString(double d)
+    {
+        return decimalFormat.format(d);
     }
 
     public static double distance(int x1, int y1, int x2, int y2)

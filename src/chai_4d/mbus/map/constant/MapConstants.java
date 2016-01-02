@@ -44,6 +44,11 @@ public class MapConstants
     public static final int MAX_CHOICES = 20;
     public static final int PREFER_CHOICES = 5;
 
+    public static final Color labelBusBG = new Color(255, 255, 255, 200);
+    public static final Color labelBusFG = Color.black;
+    public static final Color labelBusBGHL = new Color(122, 200, 255, 200);
+    public static final Color labelBusFGHL = Color.blue;
+
     private MapConstants()
     {
     }
