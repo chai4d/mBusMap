@@ -10,6 +10,8 @@ import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -32,6 +34,7 @@ import chai_4d.mbus.map.constant.MapConstants.Mode;
 import chai_4d.mbus.map.constant.MapConstants.PointType;
 import chai_4d.mbus.map.constant.MapConstants.ViewType;
 import chai_4d.mbus.map.model.BusChoice;
+import chai_4d.mbus.map.model.BusChoice.ABus;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.BusLine;
 import chai_4d.mbus.map.model.BusPath;
@@ -41,7 +44,7 @@ import chai_4d.mbus.map.util.ImageUtil;
 import chai_4d.mbus.map.util.MapCache;
 import chai_4d.mbus.map.util.StringUtil;
 
-public class MapPanel extends JComponent implements MouseInputListener, MouseWheelListener
+public class MapPanel extends JComponent implements MouseInputListener, MouseWheelListener, KeyListener
 {
     private static final long serialVersionUID = -3380532741187727970L;
 
@@ -76,6 +79,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     private PointInfo pointSelect = null;
     private BusInfo busSelect = null;
     private List<BusChoice> busChoices = null;
+    private int busChoiceIndex = 0;
 
     public MapPanel(MainFrame mainFrame)
     {
@@ -88,10 +92,12 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         setSize(new Dimension(800, 600));
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(650, 540));
+        setFocusable(true);
 
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
+        addKeyListener(this);
     }
 
     private void validateXY(Dimension size)
@@ -296,27 +302,26 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             Stroke oldStroke = g2d.getStroke();
             BasicStroke lineStroke = new BasicStroke(MapConstants.lineSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-            for (int i = 0; i < busChoices.size() && i < MapConstants.PREFER_CHOICES; i++)
+            BusChoice busChoice = busChoices.get(busChoiceIndex);
+            List<ABus> buses = busChoice.getBuses();
+            for (int i = 0; i < buses.size(); i++)
             {
-                BusChoice busChoice = busChoices.get(i);
-                //System.out.print("No." + (i + 1) + " :");
-                List<BusPath> busPaths = busChoice.getBusPaths();
+                ABus aBus = buses.get(i);
+                List<BusPath> busPaths = aBus.getBusPaths();
                 for (int j = 0; j < busPaths.size(); j++)
                 {
                     BusPath busPath = busPaths.get(j);
-                    //System.out.print(" " + busPath.getP1Id() + "->" + busPath.getP2Id() + "(" + busPath.getBusId() + ")");
 
                     int x1 = busPath.getX1() - startX;
                     int y1 = busPath.getY1() - startY;
                     int x2 = busPath.getX2() - startX;
                     int y2 = busPath.getY2() - startY;
 
-                    g2d.setColor(MapConstants.lineColor[i]);
+                    g2d.setColor(MapConstants.lineColor[i % MapConstants.lineColor.length]);
                     g2d.setStroke(lineStroke);
                     g2d.drawLine(x1, y1, x2, y2);
                     drawArrow(g2d, x1, y1, x2, y2, MapConstants.lineSize);
                 }
-                //System.out.println();
             }
 
             g2d.setStroke(oldStroke);
@@ -784,6 +789,52 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         }
     }
 
+    public void keyTyped(KeyEvent e)
+    {
+    }
+
+    public void keyPressed(KeyEvent e)
+    {
+        onPressed(e);
+    }
+
+    public void keyReleased(KeyEvent e)
+    {
+    }
+
+    private void onPressed(KeyEvent e)
+    {
+        if (busChoices != null)
+        {
+            int keyCode = e.getKeyCode();
+            if (e.isActionKey() && (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN))
+            {
+                int maxIndex = busChoices.size() - 1;
+                int nowIndex = this.busChoiceIndex;
+
+                if (keyCode == KeyEvent.VK_UP)
+                {
+                    nowIndex--;
+                }
+                else if (keyCode == KeyEvent.VK_DOWN)
+                {
+                    nowIndex++;
+                }
+
+                if (nowIndex > maxIndex)
+                {
+                    nowIndex = 0;
+                }
+                else if (nowIndex < 0)
+                {
+                    nowIndex = maxIndex;
+                }
+                this.busChoiceIndex = nowIndex;
+                repaint();
+            }
+        }
+    }
+
     public void refreshMode()
     {
         MapMode mode = mainFrame.getMapMode();
@@ -1012,6 +1063,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     public void setBusChoices(List<BusChoice> busChoices)
     {
         this.busChoices = busChoices;
+        this.busChoiceIndex = 0;
     }
 
     public int getStartX()

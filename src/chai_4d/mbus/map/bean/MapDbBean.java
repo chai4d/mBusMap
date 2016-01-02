@@ -1434,6 +1434,13 @@ public class MapDbBean
             }
             result.add(index, busChoice);
         }
+        for (int i = result.size() - 1; i >= 0; i--)
+        {
+            if (i >= MapConstants.PREFER_CHOICES)
+            {
+                result.remove(i);
+            }
+        }
         for (int i = 0; i < result.size(); i++)
         {
             BusChoice resultChoice = result.get(i);

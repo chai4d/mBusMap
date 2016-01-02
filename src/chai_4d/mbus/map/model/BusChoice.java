@@ -32,7 +32,7 @@ public class BusChoice
         return cloned;
     }
 
-    private class ABus
+    public class ABus
     {
         private String busNo = null;
         private List<BusPath> busPaths = new ArrayList<BusPath>();
@@ -200,6 +200,16 @@ public class BusChoice
     public void setBusPaths(List<BusPath> busPaths)
     {
         this.busPaths = busPaths;
+    }
+
+    public List<ABus> getBuses()
+    {
+        return buses;
+    }
+
+    public void setBuses(List<ABus> buses)
+    {
+        this.buses = buses;
     }
 
     public int getNoOfInterchange()
