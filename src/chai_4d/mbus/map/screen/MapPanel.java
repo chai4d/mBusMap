@@ -298,7 +298,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
             g2d.setStroke(oldStroke);
         }
-        else if (busChoices != null)
+        else if (busChoices != null && busChoices.size() > 0)
         {
             Stroke oldStroke = g2d.getStroke();
             BasicStroke lineStroke = new BasicStroke(MapConstants.lineSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -502,7 +502,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void drawBusChoices(Graphics2D g2d)
     {
-        if (busChoices != null)
+        if (busChoices != null && busChoices.size() > 0)
         {
             g2d.setFont(new Font("Tahoma", Font.BOLD, 12));
 
@@ -855,7 +855,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void onPressed(KeyEvent e)
     {
-        if (busChoices != null)
+        if (busChoices != null && busChoices.size() > 0)
         {
             int keyCode = e.getKeyCode();
             if (e.isActionKey() && (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN))
