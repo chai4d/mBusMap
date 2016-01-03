@@ -14,7 +14,7 @@ public class BusPath
     private String busNoEn = null;
     private String busPrice = null;
 
-    public BusPath(BusLine busLine, long p1, long p2)
+    public BusPath(BusLine busLine, long p1)
     {
         if (busLine.getP1Id() == p1)
         {
@@ -54,6 +54,11 @@ public class BusPath
         this.busNoTh = busPath.getBusNoTh();
         this.busNoEn = busPath.getBusNoEn();
         this.busPrice = busPath.getBusPrice();
+    }
+
+    public void printPath()
+    {
+        System.out.println(this.getBusNoEn() + ", P1=" + this.getP1Id() + ", P2=" + this.getP2Id());
     }
 
     public int getX1()
