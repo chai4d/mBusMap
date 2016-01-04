@@ -476,7 +476,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 hLabel.put(key, label);
             }
 
-            g2d.setFont(new Font("Tahoma", Font.PLAIN, 10));
+            g2d.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
             Iterator<String> it = hLabel.keySet().iterator();
             while (it.hasNext())
