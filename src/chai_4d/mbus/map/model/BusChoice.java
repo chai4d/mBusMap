@@ -9,6 +9,18 @@ public class BusChoice
 {
     private List<BusPath> busPaths = new ArrayList<BusPath>();
 
+    public BusPath getFirstBusPath()
+    {
+        if (busPaths.size() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return busPaths.get(0);
+        }
+    }
+
     public BusPath getLastBusPath()
     {
         if (busPaths.size() == 0)
@@ -30,6 +42,26 @@ public class BusChoice
             cloned.getBusPaths().add(new BusPath(originalBusPath));
         }
         return cloned;
+    }
+
+    public boolean equalChoice(BusChoice anotherChoice)
+    {
+        if (anotherChoice == null || anotherChoice.getBusPaths() == null || anotherChoice.getBusPaths().size() != busPaths.size())
+        {
+            return false;
+        }
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            BusPath anotherBusPath = anotherChoice.getBusPaths().get(i);
+
+            if (busPath.getBusId() != anotherBusPath.getBusId() || busPath.getP1Id() != anotherBusPath.getP1Id()
+                || busPath.getP2Id() != anotherBusPath.getP2Id())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public class ABus

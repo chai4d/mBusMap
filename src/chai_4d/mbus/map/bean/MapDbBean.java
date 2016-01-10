@@ -1332,7 +1332,7 @@ public class MapDbBean
 
     private static BusChoice hasAlternativeChoice(List<BusChoice> busChoices, BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = true;
+        boolean debug = false;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath != null && lastBusPath.getBusId() != busPath.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
         {
@@ -1355,7 +1355,7 @@ public class MapDbBean
 
     private static BusPath addBusPath(BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = true;
+        boolean debug = false;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath == null)
         {
@@ -1451,7 +1451,11 @@ public class MapDbBean
         for (int i = busChoices.size() - 1; i >= 0; i--)
         {
             BusChoice busChoice = busChoices.get(i);
-            if (busChoice.getLastBusPath().getP2Id() != destinationId)
+            if (busChoice.getFirstBusPath().getP1Id() != sourceId)
+            {
+                busChoices.remove(i);
+            }
+            else if (busChoice.getLastBusPath().getP2Id() != destinationId)
             {
                 busChoices.remove(i);
             }
@@ -1495,6 +1499,25 @@ public class MapDbBean
             }
             result.add(index, busChoice);
         }
+
+        // 5. Remove duplicated and cut only top prefer choices
+        BusChoice previousBusChoice = null;
+        for (int i = result.size() - 1; i >= 0; i--)
+        {
+            BusChoice busChoice = result.get(i);
+            if (previousBusChoice == null)
+            {
+                previousBusChoice = busChoice;
+            }
+            else
+            {
+                if (busChoice.equalChoice(previousBusChoice))
+                {
+                    result.remove(i + 1);
+                }
+                previousBusChoice = busChoice;
+            }
+        }
         for (int i = result.size() - 1; i >= 0; i--)
         {
             if (i >= MapConstants.PREFER_CHOICES)
@@ -1502,7 +1525,9 @@ public class MapDbBean
                 result.remove(i);
             }
         }
-        boolean debug = true;
+
+        // 6. (Debug) Printing the Bus Choices
+        boolean debug = false;
         if (debug)
         {
             for (int i = 0; i < result.size(); i++)
