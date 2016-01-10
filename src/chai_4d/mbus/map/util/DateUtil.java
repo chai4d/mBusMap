@@ -34,7 +34,7 @@ public class DateUtil
 
     public static Date createTime(int hh, int mi, int ss)
     {
-        return createDateTime(1, 1, 1000, hh, mi, ss);
+        return createDateTime(1, 1, 1543, hh, mi, ss);
     }
 
     public static Date getCurrentDate()
@@ -89,11 +89,11 @@ public class DateUtil
         return createDateTime(dd, mm, yyyy, hh, mi, ss);
     }
 
-    public static java.sql.Time createSQLTime(Date date)
+    public static java.sql.Timestamp createSQLTime(Date date)
     {
         if (date != null)
         {
-            return new java.sql.Time(date.getTime());
+            return new java.sql.Timestamp(date.getTime());
         }
         else
         {

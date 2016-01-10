@@ -20,6 +20,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import chai_4d.mbus.map.constant.MapConstants;
 import chai_4d.mbus.map.constant.MapConstants.MapMode;
@@ -30,7 +32,7 @@ import chai_4d.mbus.map.util.ImageUtil;
 import chai_4d.mbus.map.util.StringUtil;
 import chai_4d.mbus.map.util.SwingUtil;
 
-public class BusPanel extends FormPanel implements ActionListener, KeyListener
+public class BusPanel extends FormPanel implements ActionListener, KeyListener, ChangeListener
 {
     private static final long serialVersionUID = 7624694135806662143L;
 
@@ -192,8 +194,8 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
         txtDetailTh.addKeyListener(this);
         txtDetailEn.addKeyListener(this);
         butPicture.addActionListener(this);
-        spnStartTime.addKeyListener(this);
-        spnEndTime.addKeyListener(this);
+        spnStartTime.addChangeListener(this);
+        spnEndTime.addChangeListener(this);
         txtBusPrice.addKeyListener(this);
     }
 
@@ -258,16 +260,6 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
             busInfo.setDetailEn(txtDetailEn.getText());
             busInfo.setEdited();
         }
-        else if (e.getComponent().equals(spnStartTime))
-        {
-            busInfo.setStartTime((Date) spnStartTime.getValue());
-            busInfo.setEdited();
-        }
-        else if (e.getComponent().equals(spnEndTime))
-        {
-            busInfo.setEndTime((Date) spnEndTime.getValue());
-            busInfo.setEdited();
-        }
         else if (e.getComponent().equals(txtBusPrice))
         {
             busInfo.setBusPrice(txtBusPrice.getText());
@@ -277,6 +269,25 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener
 
     public void keyTyped(KeyEvent e)
     {
+    }
+
+    public void stateChanged(ChangeEvent e)
+    {
+        if (busInfo != null)
+        {
+            if (e.getSource().equals(spnStartTime) && spnStartTime.getValue() != null)
+            {
+                Date d = (Date) spnStartTime.getValue();
+                busInfo.setStartTime(DateUtil.createTime(DateUtil.getHour(d), DateUtil.getMinute(d), DateUtil.getSecond(d)));
+                busInfo.setEdited();
+            }
+            else if (e.getSource().equals(spnEndTime) && spnEndTime.getValue() != null)
+            {
+                Date d = (Date) spnEndTime.getValue();
+                busInfo.setEndTime(DateUtil.createTime(DateUtil.getHour(d), DateUtil.getMinute(d), DateUtil.getSecond(d)));
+                busInfo.setEdited();
+            }
+        }
     }
 
     private void setActivePanel()

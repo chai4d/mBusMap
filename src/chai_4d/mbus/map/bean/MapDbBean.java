@@ -3,7 +3,7 @@ package chai_4d.mbus.map.bean;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -188,18 +188,18 @@ public class MapDbBean
             sql += " and cast(i.start_time as time) <= ? and cast(i.end_time as time) >= ?) \n";
             sql += "order by bus_id \n";
 
-            Time sqlTimeToGo = DateUtil.createSQLTime(timeToGo);
+            Timestamp sqlTimeToGo = DateUtil.createSQLTime(timeToGo);
 
             conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId1);
             pstmt.setLong(2, pId2);
-            pstmt.setTime(3, sqlTimeToGo);
-            pstmt.setTime(4, sqlTimeToGo);
+            pstmt.setTimestamp(3, sqlTimeToGo);
+            pstmt.setTimestamp(4, sqlTimeToGo);
             pstmt.setLong(5, pId1);
             pstmt.setLong(6, pId2);
-            pstmt.setTime(7, sqlTimeToGo);
-            pstmt.setTime(8, sqlTimeToGo);
+            pstmt.setTimestamp(7, sqlTimeToGo);
+            pstmt.setTimestamp(8, sqlTimeToGo);
 
             rs = pstmt.executeQuery();
             while (rs.next())
@@ -944,8 +944,8 @@ public class MapDbBean
             pstmt.setString(3, busInfo.getDetailTh());
             pstmt.setString(4, busInfo.getDetailEn());
             pstmt.setString(5, busInfo.getBusPic());
-            pstmt.setDate(6, DateUtil.createSQLDate(busInfo.getStartTime()));
-            pstmt.setDate(7, DateUtil.createSQLDate(busInfo.getEndTime()));
+            pstmt.setTimestamp(6, DateUtil.createSQLTime(busInfo.getStartTime()));
+            pstmt.setTimestamp(7, DateUtil.createSQLTime(busInfo.getEndTime()));
             pstmt.setString(8, busInfo.getBusPrice());
 
             pstmt.executeUpdate();
@@ -985,8 +985,8 @@ public class MapDbBean
             pstmt.setString(3, busInfo.getDetailTh());
             pstmt.setString(4, busInfo.getDetailEn());
             pstmt.setString(5, busInfo.getBusPic());
-            pstmt.setDate(6, DateUtil.createSQLDate(busInfo.getStartTime()));
-            pstmt.setDate(7, DateUtil.createSQLDate(busInfo.getEndTime()));
+            pstmt.setTimestamp(6, DateUtil.createSQLTime(busInfo.getStartTime()));
+            pstmt.setTimestamp(7, DateUtil.createSQLTime(busInfo.getEndTime()));
             pstmt.setString(8, busInfo.getBusPrice());
             pstmt.setLong(9, busInfo.getBusId());
 
@@ -1332,7 +1332,7 @@ public class MapDbBean
 
     private static BusChoice hasAlternativeChoice(List<BusChoice> busChoices, BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = false;
+        boolean debug = true;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath != null && lastBusPath.getBusId() != busPath.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
         {
@@ -1355,7 +1355,7 @@ public class MapDbBean
 
     private static BusPath addBusPath(BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = false;
+        boolean debug = true;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath == null)
         {
@@ -1502,7 +1502,7 @@ public class MapDbBean
                 result.remove(i);
             }
         }
-        boolean debug = false;
+        boolean debug = true;
         if (debug)
         {
             for (int i = 0; i < result.size(); i++)
