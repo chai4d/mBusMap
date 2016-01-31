@@ -64,6 +64,19 @@ public class BusChoice
         return true;
     }
 
+    public boolean isContainPoint(long pId)
+    {
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            if (busPath.getP1Id() == pId || busPath.getP2Id() == pId)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class ABus
     {
         private String busNo = null;

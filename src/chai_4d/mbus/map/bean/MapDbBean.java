@@ -1370,12 +1370,15 @@ public class MapDbBean
         {
             if (lastBusPath.getP1Id() != busPath.getP2Id())
             {
-                busChoice.getBusPaths().add(busPath);
-                if (debug)
+                if (busChoice.isContainPoint(busPath.getP2Id()) == false)
                 {
-                    busPath.printPath();
+                    busChoice.getBusPaths().add(busPath);
+                    if (debug)
+                    {
+                        busPath.printPath();
+                    }
+                    return busPath;
                 }
-                return busPath;
             }
             else
             {
