@@ -317,6 +317,41 @@ public class MapDbBean
         }
     }
 
+    public static List<PointName> loadPointName(String lang)
+    {
+        List<PointName> result = new ArrayList<PointName>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select * \n";
+            sql += "from point_name \n";
+            sql += "order by " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " \n";
+
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+                result.add(new PointName(rs));
+            }
+            SQLUtil.printSQL(sql + "[" + lang + "]");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+        }
+        return result;
+    }
+
     public static List<PointName> loadPointNameById(long pId)
     {
         List<PointName> result = new ArrayList<PointName>();
