@@ -1508,9 +1508,9 @@ public class MapDbBean
             BusChoice busChoice = busChoices.get(i);
             busChoice.calcScore();
 
-            maxInterchange = Integer.max(maxInterchange, busChoice.getNoOfInterchange());
-            maxPrice = Double.max(maxPrice, busChoice.getTotalPrice());
-            maxDistance = Double.max(maxDistance, busChoice.getTotalDistance());
+            maxInterchange = Math.max(maxInterchange, busChoice.getNoOfInterchange());
+            maxPrice = Math.max(maxPrice, busChoice.getTotalPrice());
+            maxDistance = Math.max(maxDistance, busChoice.getTotalDistance());
         }
         for (int i = 0; i < busChoices.size(); i++)
         {

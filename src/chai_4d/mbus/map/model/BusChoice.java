@@ -106,7 +106,7 @@ public class BusChoice
                     String[] prices = busPrice.split(",");
                     for (int i = 0; i < prices.length; i++)
                     {
-                        price = Double.min(price, StringUtil.toDouble(prices[i]));
+                        price = Math.min(price, StringUtil.toDouble(prices[i]));
                     }
                     if (price != Double.MAX_VALUE)
                     {
@@ -124,7 +124,7 @@ public class BusChoice
                     double unit = StringUtil.toDouble(priceUnit);
 
                     totalPrice = min + (busPaths.size() * unit);
-                    totalPrice = Double.min(totalPrice, max);
+                    totalPrice = Math.min(totalPrice, max);
                 }
             }
             this.busPrice = totalPrice;
