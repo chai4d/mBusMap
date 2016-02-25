@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 public class DBManager
 {
     private static Connection conn = null;
@@ -17,6 +19,19 @@ public class DBManager
         return "jdbc:mysql://" + host + ":" + port + "/" + sid + "?useUnicode=true&characterEncoding=UTF-8";
     }
 
+    public static void test()
+    {
+        String str = "chai";
+
+        // encode data on your side using BASE64
+        byte[] bytesEncoded = Base64.encodeBase64(str.getBytes());
+        System.out.println("ecncoded value is " + new String(bytesEncoded));
+
+        // Decode data on other side, by processing encoded data
+        byte[] valueDecoded = Base64.decodeBase64(bytesEncoded);
+        System.out.println("Decoded value is " + new String(valueDecoded));
+    }
+
     public static synchronized Connection getConnection()
     {
         if (conn == null)
@@ -25,7 +40,8 @@ public class DBManager
             String port = PropertyUtil.DB.getString("port");
             String sid = PropertyUtil.DB.getString("sid");
             String user = PropertyUtil.DB.getString("user");
-            String password = PropertyUtil.DB.getString("password");
+            byte[] pwdEncoded = PropertyUtil.DB.getString("password").getBytes();
+            String password = new String(Base64.decodeBase64(pwdEncoded));
 
             try
             {
