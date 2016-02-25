@@ -41,7 +41,7 @@ public class MainFrame extends JFrame
     public static final String VERSION = "1.0";
     public static final String AUTHOR = "Chai_4D";
 
-    private static final String ICON_PATH = "/icons/mbus_icon.gif";
+    private static final String ICON_PATH = "/icons/mbus_icon.png";
 
     private MapMenuBar mapMenuBar = null;
     private MapPanel mapPanel = null;
