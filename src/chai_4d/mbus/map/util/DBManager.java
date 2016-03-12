@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DBManager
 {
+    private static final Logger log = LogManager.getLogger(DBManager.class);
     private static Connection conn = null;
 
     private DBManager()
@@ -25,11 +28,11 @@ public class DBManager
 
         // encode data on your side using BASE64
         byte[] bytesEncoded = Base64.encodeBase64(str.getBytes());
-        System.out.println("ecncoded value is " + new String(bytesEncoded));
+        log.debug("ecncoded value is " + new String(bytesEncoded));
 
         // Decode data on other side, by processing encoded data
         byte[] valueDecoded = Base64.decodeBase64(bytesEncoded);
-        System.out.println("Decoded value is " + new String(valueDecoded));
+        log.debug("Decoded value is " + new String(valueDecoded));
     }
 
     public static synchronized Connection getConnection()
@@ -48,12 +51,12 @@ public class DBManager
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(getUrl(host, port, sid), user, password);
                 conn.setAutoCommit(true);
-                System.out.println("New connection object has been created.");
+                log.debug("New connection object has been created.");
             }
             catch (Throwable t)
             {
-                System.err.println("Can't create connection object.");
-                t.printStackTrace();
+                log.error("Can't create connection object.");
+                log.error(t);
             }
         }
         return conn;
@@ -66,7 +69,7 @@ public class DBManager
             try
             {
                 conn.close();
-                System.out.println("The connection object has been destroyed.");
+                log.debug("The connection object has been destroyed.");
             }
             catch (SQLException e)
             {

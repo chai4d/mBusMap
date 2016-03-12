@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import chai_4d.mbus.map.constant.MapConstants;
 import chai_4d.mbus.map.constant.MapConstants.LineType;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
@@ -32,6 +35,8 @@ import chai_4d.mbus.map.util.StringUtil;
 
 public class MapDbBean
 {
+    private static final Logger log = LogManager.getLogger(MapDbBean.class);
+
     private MapDbBean()
     {
     }
@@ -71,7 +76,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -107,7 +112,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -148,7 +153,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -210,7 +215,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -267,7 +272,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -308,7 +313,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -342,7 +347,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -378,7 +383,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -415,7 +420,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -452,7 +457,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -490,7 +495,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -526,7 +531,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -563,7 +568,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -601,7 +606,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -711,7 +716,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -739,7 +744,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -803,7 +808,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -834,7 +839,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -869,7 +874,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -900,7 +905,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -928,7 +933,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -994,7 +999,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1031,7 +1036,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1066,7 +1071,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1170,7 +1175,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1206,7 +1211,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1260,7 +1265,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1290,7 +1295,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1326,7 +1331,7 @@ public class MapDbBean
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e);
         }
         finally
         {
@@ -1575,8 +1580,14 @@ public class MapDbBean
                 System.out.println("[Choice " + (i + 1) + "]");
                 System.out.print(resultChoice.printPath());
                 System.out.println(
-                    " -> Score (" + StringUtil.toNumString(resultChoice.getScorePercent()) + "%) : Interchange=" + resultChoice.getNoOfInterchange()
-                        + ", Price=" + resultChoice.getTotalPrice() + ", Distance=" + resultChoice.getTotalDistance());
+                    " -> Score ("
+                        + StringUtil.toNumString(resultChoice.getScorePercent())
+                        + "%) : Interchange="
+                        + resultChoice.getNoOfInterchange()
+                        + ", Price="
+                        + resultChoice.getTotalPrice()
+                        + ", Distance="
+                        + resultChoice.getTotalDistance());
             }
         }
         return result;

@@ -9,9 +9,12 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class SQLUtil
 {
-    private static final boolean debug_sql = false;
+    private static final Logger log = LogManager.getLogger(SQLUtil.class);
 
     private SQLUtil()
     {
@@ -237,12 +240,9 @@ public class SQLUtil
 
     public static void printSQL(String sql)
     {
-        if (debug_sql)
-        {
-            System.out.println("======== sql ========");
-            System.out.println(sql);
-            System.out.println("=====================");
-        }
+        log.debug("======== sql ========");
+        log.debug(sql);
+        log.debug("=====================");
     }
 
     public static long genId()

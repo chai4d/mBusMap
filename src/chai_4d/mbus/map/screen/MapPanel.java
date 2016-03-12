@@ -50,8 +50,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private MainFrame mainFrame = null;
 
-    public static final int MAP_MAX_WIDTH = 3000;
-    public static final int MAP_MAX_HEIGHT = 3000;
+    public static final int MAP_MAX_WIDTH = 10000;
+    public static final int MAP_MAX_HEIGHT = 20000;
 
     public static final int MAP_PIECE_WIDTH = 1000;
     public static final int MAP_PIECE_HEIGHT = 1000;
@@ -107,15 +107,21 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             startX = (MAP_MAX_WIDTH - size.width) / 2;
             startY = (MAP_MAX_HEIGHT - size.height) / 2;
         }
-        if (startX < 0) startX = 0;
-        if (startY < 0) startY = 0;
-        if ((startX + size.width) >= MAP_MAX_WIDTH) startX = MAP_MAX_WIDTH - size.width;
-        if ((startY + size.height) >= MAP_MAX_HEIGHT) startY = MAP_MAX_HEIGHT - size.height;
+        if (startX < 0)
+            startX = 0;
+        if (startY < 0)
+            startY = 0;
+        if ((startX + size.width) >= MAP_MAX_WIDTH)
+            startX = MAP_MAX_WIDTH - size.width;
+        if ((startY + size.height) >= MAP_MAX_HEIGHT)
+            startY = MAP_MAX_HEIGHT - size.height;
 
         endX = startX + size.width;
         endY = startY + size.height;
-        if (size.width > 0) endX -= 1;
-        if (size.height > 0) endY -= 1;
+        if (size.width > 0)
+            endX -= 1;
+        if (size.height > 0)
+            endY -= 1;
     }
 
     protected void paintComponent(Graphics g)
@@ -154,7 +160,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
             for (int x = mapPieceX1; x <= mapPieceX2; x++)
             {
                 String mapNumber = (x < 10 ? "0" + x : "" + x) + (y < 10 ? "0" + y : "" + y);
-                String mapName = "/maps/map" + mapNumber + ".gif";
+                String mapName = "/maps/map" + mapNumber + ".jpg";
 
                 ImageIcon icon = null;
                 if (mapCache.containsKey(mapName))
@@ -421,7 +427,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private void drawBusNo(Graphics2D g2d)
     {
-        if (busSelect != null && (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+        if (busSelect != null
+            && (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
             && mainFrame.containsViewType(ViewType.VIEW_BUS_NO))
         {
             LinkedHashMap<String, String> hLabel = new LinkedHashMap<String, String>();
@@ -555,9 +562,19 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         String msg = "";
         if (dragX != MapConstants.NULL && dragY != MapConstants.NULL)
         {
-            msg = "Moving the map to (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - "
-                + StringUtil.toNumString(endX) + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
-                + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
+            msg = "Moving the map to ("
+                + StringUtil.toNumString(startX)
+                + " : "
+                + StringUtil.toNumString(startY)
+                + " - "
+                + StringUtil.toNumString(endX)
+                + " : "
+                + StringUtil.toNumString(endY)
+                + ") of ("
+                + StringUtil.toNumString(MAP_MAX_WIDTH)
+                + " : "
+                + StringUtil.toNumString(MAP_MAX_HEIGHT)
+                + ")";
         }
         else if (dragPoint != null)
         {
@@ -567,8 +584,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         {
             if (pointSelect.getType() == PointType.LINK)
             {
-                msg =
-                    "Linked Point (" + StringUtil.toNumString(pointSelect.getAxisX()) + " : " + StringUtil.toNumString(pointSelect.getAxisY()) + ")";
+                msg = "Linked Point (" + StringUtil.toNumString(pointSelect.getAxisX()) + " : " + StringUtil.toNumString(pointSelect.getAxisY()) + ")";
             }
             else if (pointSelect.getType() == PointType.NAME)
             {
@@ -577,9 +593,19 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         }
         else
         {
-            msg = "Now showing (" + StringUtil.toNumString(startX) + " : " + StringUtil.toNumString(startY) + " - " + StringUtil.toNumString(endX)
-                + " : " + StringUtil.toNumString(endY) + ") of (" + StringUtil.toNumString(MAP_MAX_WIDTH) + " : "
-                + StringUtil.toNumString(MAP_MAX_HEIGHT) + ")";
+            msg = "Now showing ("
+                + StringUtil.toNumString(startX)
+                + " : "
+                + StringUtil.toNumString(startY)
+                + " - "
+                + StringUtil.toNumString(endX)
+                + " : "
+                + StringUtil.toNumString(endY)
+                + ") of ("
+                + StringUtil.toNumString(MAP_MAX_WIDTH)
+                + " : "
+                + StringUtil.toNumString(MAP_MAX_HEIGHT)
+                + ")";
         }
         MapStatusBar.setMessage(msg);
     }
@@ -635,8 +661,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 mainFrame.onSelectPoint(pointSelect);
                 repaint();
             }
-            else if (mainFrame.getMapMode() == MapMode.EDIT_POINT || mainFrame.getMapMode() == MapMode.VIEW
-                || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
+            else if (mainFrame.getMapMode() == MapMode.EDIT_POINT || mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE)
             {
                 PointInfo aPoint = findPoint(e.getX(), e.getY());
                 if (aPoint != null)
@@ -649,8 +674,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
         }
         else if (e.getButton() == MapConstants.MOUSE_BUTTON_RIGHT)
         {
-            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-                || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
             {
                 PointInfo aPoint = findPoint(e.getX(), e.getY());
                 if (aPoint != null)
@@ -668,16 +692,14 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     {
         if (e.getButton() == MapConstants.MOUSE_BUTTON_LEFT)
         {
-            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-                || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
             {
                 mainFrame.onSave();
             }
         }
         else if (e.getButton() == MapConstants.MOUSE_BUTTON_RIGHT)
         {
-            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-                || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+            if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
             {
                 mainFrame.onReset();
             }
@@ -702,8 +724,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 dragX = e.getX();
                 dragY = e.getY();
             }
-            else if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-                || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+            else if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
             {
                 PointInfo aPoint = findPoint(e.getX(), e.getY());
                 if (aPoint == null)
@@ -734,8 +755,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 dragY = MapConstants.NULL;
                 updateStatusMessage();
             }
-            else if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS
-                || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+            else if (mainFrame.getMapMode() == MapMode.ADD_BUS || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
             {
                 dragX = MapConstants.NULL;
                 dragY = MapConstants.NULL;
@@ -758,8 +778,11 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
     {
         MapStatusBar.setCoordinate(StringUtil.toNumString(x) + " : " + StringUtil.toNumString(y));
 
-        if (mainFrame.getMapMode() == MapMode.VIEW || mainFrame.getMapMode() == MapMode.TEST_ROUTE || mainFrame.getMapMode() == MapMode.ADD_BUS
-            || mainFrame.getMapMode() == MapMode.EDIT_BUS || mainFrame.getMapMode() == MapMode.EDIT_POINT)
+        if (mainFrame.getMapMode() == MapMode.VIEW
+            || mainFrame.getMapMode() == MapMode.TEST_ROUTE
+            || mainFrame.getMapMode() == MapMode.ADD_BUS
+            || mainFrame.getMapMode() == MapMode.EDIT_BUS
+            || mainFrame.getMapMode() == MapMode.EDIT_POINT)
         {
             if (dragX != MapConstants.NULL && dragY != MapConstants.NULL)
             {

@@ -5,8 +5,13 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ImageUtil
 {
+    private static final Logger log = LogManager.getLogger(ImageUtil.class);
+
     public static final String bmp = "bmp";
     public static final String jpeg = "jpeg";
     public static final String jpg = "jpg";
@@ -24,12 +29,11 @@ public class ImageUtil
         URL imgURL = ImageUtil.class.getResource(path);
         if (imgURL != null)
         {
-            //System.out.println("imgURL: " + path);
             return new ImageIcon(imgURL);
         }
         else
         {
-            System.err.println("Couldn't find file: " + path);
+            log.error("Couldn't find file: " + path);
             return null;
         }
     }
