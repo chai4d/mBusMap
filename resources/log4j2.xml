@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC
+  "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<Configuration>
+	<Properties>
+		<Property name="log-path">${sys:user.home}/logs</Property>
+		<Property name="archive-path">${log-path}/archive</Property>
+		<Property name="pattern">[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+7} [%t][%.5X{sessionId}][%X{clientIpAddress}] %c{1} - %msg%n</Property>
+	</Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<Pattern>${pattern}</Pattern>
+			</PatternLayout>
+        </Console>
+		<RollingFile name="file-log" fileName="${log-path}/mBusWeb.log"
+					 filePattern="${archive-path}/mBusWeb-%d{yyyy-MM-dd}{GMT+7}.log">
+			<PatternLayout>
+				<Pattern>${pattern}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${archive-path}" maxDepth="2">
+					<IfFileName glob="*/mBusWeb-*.log" />
+					<IfLastModified age="90d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="chai_4d.mbus" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file-log"/>
+        </Logger>
+        <Root level="warn">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
