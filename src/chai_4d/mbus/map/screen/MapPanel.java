@@ -50,7 +50,7 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
 
     private MainFrame mainFrame = null;
 
-    public static final int MAP_MAX_WIDTH = 16000;
+    public static final int MAP_MAX_WIDTH = 20000;
     public static final int MAP_MAX_HEIGHT = 20000;
 
     public static final int MAP_PIECE_WIDTH = 1000;
