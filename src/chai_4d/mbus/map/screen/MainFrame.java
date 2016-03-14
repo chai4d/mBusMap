@@ -28,7 +28,7 @@ import chai_4d.mbus.map.model.BusChoice;
 import chai_4d.mbus.map.model.BusInfo;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.status.MapStatusBar;
-import chai_4d.mbus.map.util.DBManager;
+import chai_4d.mbus.map.util.DBPoolManager;
 import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.ImageUtil;
 import chai_4d.mbus.map.util.SwingUtil;
@@ -114,7 +114,7 @@ public class MainFrame extends JFrame
 
     public void onExit()
     {
-        DBManager.destroy();
+        DBPoolManager.destroy();
         System.exit(0);
     }
 
@@ -376,7 +376,8 @@ public class MainFrame extends JFrame
         {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if (value != null && value instanceof FontUIResource) UIManager.put(key, f);
+            if (value != null && value instanceof FontUIResource)
+                UIManager.put(key, f);
         }
     }
 

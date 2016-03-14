@@ -28,7 +28,7 @@ import chai_4d.mbus.map.model.BusPath;
 import chai_4d.mbus.map.model.PointInfo;
 import chai_4d.mbus.map.model.PointName;
 import chai_4d.mbus.map.screen.MapPanel;
-import chai_4d.mbus.map.util.DBManager;
+import chai_4d.mbus.map.util.DBPoolManager;
 import chai_4d.mbus.map.util.DateUtil;
 import chai_4d.mbus.map.util.SQLUtil;
 import chai_4d.mbus.map.util.StringUtil;
@@ -60,7 +60,7 @@ public class MapDbBean
             int p3 = (mapPointY - 1) * MapPanel.MAP_POINT_HEIGHT;
             int p4 = (mapPointY * MapPanel.MAP_POINT_HEIGHT) - 1;
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, p1);
             pstmt.setInt(2, p2);
@@ -82,6 +82,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -99,7 +100,7 @@ public class MapDbBean
             sql += "from point_info \n";
             sql += "where p_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId);
 
@@ -118,6 +119,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -140,7 +142,7 @@ public class MapDbBean
             sql += " and b.p2_id = p2.p_id \n";
             sql += " and b.bus_id = i.bus_id \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busId);
 
@@ -159,6 +161,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -195,7 +198,7 @@ public class MapDbBean
 
             Timestamp sqlTimeToGo = DateUtil.createSQLTime(timeToGo);
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId1);
             pstmt.setLong(2, pId2);
@@ -221,6 +224,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -254,7 +258,7 @@ public class MapDbBean
             sql += " and b.bus_id = ? \n";
             sql += " and b.p2_id = ? and b.p1_id <> ? and b.type in (0, 2)) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busId);
             pstmt.setLong(2, pId2);
@@ -278,6 +282,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -301,7 +306,7 @@ public class MapDbBean
             sql += " and bl.p2_id = p2.p_id \n";
             sql += "order by b.bus_id \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -319,6 +324,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -335,7 +341,7 @@ public class MapDbBean
             sql += "from point_name \n";
             sql += "order by " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -353,6 +359,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -370,7 +377,7 @@ public class MapDbBean
             sql += "from point_name \n";
             sql += "where p_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId);
 
@@ -389,6 +396,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -408,7 +416,7 @@ public class MapDbBean
             sql += "from point_name \n";
             sql += "order by 1 \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -426,6 +434,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -445,7 +454,7 @@ public class MapDbBean
             sql += "from bus_info \n";
             sql += "order by 1 \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -463,6 +472,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -482,7 +492,7 @@ public class MapDbBean
             sql += "from bus_info \n";
             sql += "where " + col + " = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, busNo);
 
@@ -501,6 +511,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -518,7 +529,7 @@ public class MapDbBean
             sql += "from bus_info \n";
             sql += "where bus_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busId);
 
@@ -537,6 +548,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -554,7 +566,7 @@ public class MapDbBean
             sql += "from bus_line \n";
             sql += "where p1_id = ? or p2_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId);
             pstmt.setLong(2, pId);
@@ -574,6 +586,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -591,7 +604,7 @@ public class MapDbBean
             sql += "from bus_info \n";
             sql += "where bus_id <> ? and (bus_no_th = ? or bus_no_en = ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busId);
             pstmt.setString(2, busNoTh);
@@ -612,6 +625,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -705,7 +719,7 @@ public class MapDbBean
             sql += "insert into point_name (p_id, name_th, name_en) \n";
             sql += "values (?, ?, ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId);
             pstmt.setString(2, pointName.getNameTh());
@@ -721,6 +735,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -734,7 +749,7 @@ public class MapDbBean
             sql += "delete from point_name \n";
             sql += "where p_id = ? and name_th = ? and name_en = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pId);
             pstmt.setString(2, pointName.getNameTh());
@@ -749,6 +764,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -788,7 +804,7 @@ public class MapDbBean
             sql += "insert into point_info (axis_x, axis_y, type) \n";
             sql += "values (?, ?, ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, pointInfo.getAxisX());
             pstmt.setInt(2, pointInfo.getAxisY());
@@ -813,6 +829,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -826,7 +843,7 @@ public class MapDbBean
             sql += "update point_info set axis_x = ?, axis_y = ?, type = ? \n";
             sql += "where p_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, pointInfo.getAxisX());
             pstmt.setInt(2, pointInfo.getAxisY());
@@ -844,6 +861,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -857,7 +875,7 @@ public class MapDbBean
             sql += "delete from point_name \n";
             sql += "where p_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pointInfo.getPId());
             pstmt.executeUpdate();
@@ -867,7 +885,7 @@ public class MapDbBean
             sql += "delete from point_info \n";
             sql += "where p_id = ? \n";
 
-            conn = DBManager.getConnection();
+            //conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, pointInfo.getPId());
             pstmt.executeUpdate();
@@ -879,6 +897,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -892,7 +911,7 @@ public class MapDbBean
             sql += "insert into bus_line (p1_id, p2_id, distance, bus_id, type) \n";
             sql += "values (?, ?, ?, ?, ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busLine.getP1Id());
             pstmt.setLong(2, busLine.getP2Id());
@@ -910,6 +929,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -923,7 +943,7 @@ public class MapDbBean
             sql += "delete from bus_line \n";
             sql += "where p1_id = ? and p2_id = ? and bus_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busLine.getP1Id());
             pstmt.setLong(2, busLine.getP2Id());
@@ -938,6 +958,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -977,7 +998,7 @@ public class MapDbBean
             sql += "insert into bus_info (bus_no_th, bus_no_en, detail_th, detail_en, bus_pic, start_time, end_time, bus_price) \n";
             sql += "values (?, ?, ?, ?, ?, ?, ?, ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, busInfo.getBusNoTh());
             pstmt.setString(2, busInfo.getBusNoEn());
@@ -1004,6 +1025,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -1018,7 +1040,7 @@ public class MapDbBean
             sql += " start_time = ?, end_time = ?, bus_price = ? \n";
             sql += "where bus_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, busInfo.getBusNoTh());
             pstmt.setString(2, busInfo.getBusNoEn());
@@ -1041,6 +1063,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -1054,7 +1077,7 @@ public class MapDbBean
             sql += "delete from bus_line \n";
             sql += "where bus_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busInfo.getBusId());
             pstmt.executeUpdate();
@@ -1064,7 +1087,7 @@ public class MapDbBean
             sql += "delete from bus_info \n";
             sql += "where bus_id = ? \n";
 
-            conn = DBManager.getConnection();
+            //conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, busInfo.getBusId());
             pstmt.executeUpdate();
@@ -1076,6 +1099,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -1168,7 +1192,7 @@ public class MapDbBean
             String sql = "";
             sql += "delete from bus_path \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             pstmt.executeUpdate();
@@ -1180,6 +1204,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -1196,7 +1221,7 @@ public class MapDbBean
             sql += "from point_info \n";
             sql += "order by 1 \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -1217,6 +1242,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -1234,7 +1260,7 @@ public class MapDbBean
             sql += "from bus_line \n";
             sql += "order by 1 \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -1271,6 +1297,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }
@@ -1285,7 +1312,7 @@ public class MapDbBean
             sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
             sql += "values (?, ?, ?) \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, sourceId);
             pstmt.setLong(2, destinationId);
@@ -1300,6 +1327,7 @@ public class MapDbBean
         finally
         {
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
     }
 
@@ -1317,7 +1345,7 @@ public class MapDbBean
             sql += "where source_id = ? \n";
             sql += " and destination_id = ? \n";
 
-            conn = DBManager.getConnection();
+            conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, sourceId);
             pstmt.setLong(2, destinationId);
@@ -1337,6 +1365,7 @@ public class MapDbBean
         {
             SQLUtil.closeResultSet(rs);
             SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
         }
         return result;
     }

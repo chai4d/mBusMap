@@ -8,12 +8,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DBManager
+public class DBManagerBK
 {
-    private static final Logger log = LogManager.getLogger(DBManager.class);
+    private static final Logger log = LogManager.getLogger(DBManagerBK.class);
     private static Connection conn = null;
 
-    private DBManager()
+    private DBManagerBK()
     {
     }
 
