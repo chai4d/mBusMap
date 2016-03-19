@@ -79,6 +79,19 @@ public class DBPoolManager
         {
             log.error("Can't create connection object.");
             log.error(e);
+
+            destroy();
+            try
+            {
+                conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + POOL_NAME);
+                conn.setAutoCommit(true);
+                log.debug("New connection object has been created (#2).");
+            }
+            catch (Exception e2)
+            {
+                log.error("Can't create connection object (#2).");
+                log.error(e2);
+            }
         }
 
         try
