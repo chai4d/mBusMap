@@ -31,7 +31,7 @@
 		</RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="chai_4d.mbus" level="error" additivity="false">
+        <Logger name="chai_4d.mbus" level="debug" additivity="false">
             <AppenderRef ref="console"/>
             <AppenderRef ref="file-log"/>
         </Logger>
