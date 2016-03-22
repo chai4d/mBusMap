@@ -23,6 +23,8 @@ public class DBPoolManager
     private static final String host = PropertyUtil.DB.getString("host");
     private static final String port = PropertyUtil.DB.getString("port");
     private static final String sid = PropertyUtil.DB.getString("sid");
+    private static final String connectURI = "jdbc:mysql://" + host + ":" + port + "/" + sid + "?useUnicode=true&characterEncoding=UTF-8";
+
     private static final String user = PropertyUtil.DB.getString("user");
     private static final byte[] pwdEncoded = PropertyUtil.DB.getString("password").getBytes();
     private static final String password = new String(Base64.decodeBase64(pwdEncoded));
@@ -38,7 +40,6 @@ public class DBPoolManager
             log.error(e);
         }
 
-        String connectURI = "jdbc:mysql://" + host + ":" + port + "/" + sid + "?useUnicode=true&characterEncoding=UTF-8";
         try
         {
             setupDriver(connectURI, user, password);
@@ -83,6 +84,8 @@ public class DBPoolManager
             destroy();
             try
             {
+                setupDriver(connectURI, user, password);
+
                 conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + POOL_NAME);
                 conn.setAutoCommit(true);
                 log.debug("New connection object has been created (#2).");
