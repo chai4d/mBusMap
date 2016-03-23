@@ -85,78 +85,54 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener, 
         setBackground(MapConstants.controlPanel);
 
         add(lblId, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            txtId,
-            new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(txtId, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         add(lblBusNoTh, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            txtBusNoTh,
-            new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(txtBusNoTh, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         add(lblBusNoEn, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            txtBusNoEn,
-            new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(txtBusNoEn, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
-        add(
-            lblDetailTh,
-            new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(lblDetailTh, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
         JScrollPane sclDetailTh = new JScrollPane(txtDetailTh);
         sclDetailTh.setSize(new Dimension(100, 40));
         sclDetailTh.setPreferredSize(new Dimension(100, 40));
         sclDetailTh.setMinimumSize(new Dimension(100, 40));
-        add(
-            sclDetailTh,
-            new GridBagConstraints(0, 4, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(sclDetailTh, new GridBagConstraints(0, 4, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
-        add(
-            lblDetailEn,
-            new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(lblDetailEn, new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
         JScrollPane sclDetailEn = new JScrollPane(txtDetailEn);
         sclDetailEn.setSize(new Dimension(100, 40));
         sclDetailEn.setPreferredSize(new Dimension(100, 40));
         sclDetailEn.setMinimumSize(new Dimension(100, 40));
-        add(
-            sclDetailEn,
-            new GridBagConstraints(0, 6, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(sclDetailEn, new GridBagConstraints(0, 6, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         JPanel pnlTextPicture = new JPanel(new GridBagLayout());
         pnlTextPicture.setBackground(MapConstants.controlPanel);
-        pnlTextPicture.add(
-            lblPicture,
-            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        pnlTextPicture
+            .add(lblPicture, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
         pnlTextPicture.add(
             txtPicture,
             new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
-        pnlTextPicture.add(
-            butPicture,
-            new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            pnlTextPicture,
-            new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        pnlTextPicture
+            .add(butPicture, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(pnlTextPicture, new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
-        add(
-            pnlPicture,
-            new GridBagConstraints(0, 8, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(pnlPicture, new GridBagConstraints(0, 8, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
         JPanel pnlBusLine = new JPanel(new GridBagLayout());
         pnlBusLine.setBackground(MapConstants.controlPanel);
-        pnlBusLine.add(
-            pnlTwoWay,
-            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        pnlBusLine
+            .add(pnlTwoWay, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
         pnlBusLine.add(
             lblTwoWay,
             new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 10, 0));
-        pnlBusLine.add(
-            pnlOneWay,
-            new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        pnlBusLine
+            .add(pnlOneWay, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
         pnlBusLine.add(
             lblOneWay,
             new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 10, 0));
-        add(
-            pnlBusLine,
-            new GridBagConstraints(0, 9, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(pnlBusLine, new GridBagConstraints(0, 9, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
         JSpinner.DateEditor edtStartTime = new JSpinner.DateEditor(spnStartTime, "HH:mm");
         JSpinner.DateEditor edtEndTime = new JSpinner.DateEditor(spnEndTime, "HH:mm");
@@ -172,19 +148,11 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener, 
         pnlBusHours.add(
             spnEndTime,
             new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            lblBusHours,
-            new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            pnlBusHours,
-            new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(lblBusHours, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(pnlBusHours, new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
 
-        add(
-            lblBusPrice,
-            new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-        add(
-            txtBusPrice,
-            new GridBagConstraints(1, 11, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
+        add(lblBusPrice, new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+        add(txtBusPrice, new GridBagConstraints(1, 11, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
         txtId.setEnabled(false);
         txtPicture.setEnabled(false);
@@ -207,8 +175,7 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener, 
             filePicture.setDialogType(JFileChooser.CUSTOM_DIALOG);
             filePicture.setDialogTitle("Open Picture File");
 
-            filePicture
-                .addChoosableFileFilter(new ImageFilter("JPEG File Interchange Format (*.jpg)", new String[] { ImageUtil.jpeg, ImageUtil.jpg }));
+            filePicture.addChoosableFileFilter(new ImageFilter("JPEG File Interchange Format (*.jpg)", new String[] { ImageUtil.jpeg, ImageUtil.jpg }));
             filePicture.addChoosableFileFilter(new ImageFilter("PNG Portable Network Graphics Format (*.png)", ImageUtil.png));
             filePicture.addChoosableFileFilter(new ImageFilter("TIFF Tag Image File Format (*.tif)", new String[] { ImageUtil.tiff, ImageUtil.tif }));
             filePicture.addChoosableFileFilter(new ImageFilter("GIF Graphics Interchange Format (*.gif)", ImageUtil.gif));
@@ -227,7 +194,8 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener, 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = filePicture.getSelectedFile();
-            busInfo.setBusPic(file.getPath());
+            //busInfo.setBusPic(file.getPath());
+            busInfo.setBusPic("/buses/" + file.getName());
             busInfo.setEdited();
             setActivePanel();
         }

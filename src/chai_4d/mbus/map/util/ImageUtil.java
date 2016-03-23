@@ -53,6 +53,8 @@ public class ImageUtil
 
     public static File getFile(String path)
     {
-        return new File(path);
+        //return new File(path);
+        URL url = ImageUtil.class.getResource(path);
+        return new File(url.getPath());
     }
 }
