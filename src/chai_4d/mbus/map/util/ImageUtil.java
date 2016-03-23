@@ -55,6 +55,13 @@ public class ImageUtil
     {
         //return new File(path);
         URL url = ImageUtil.class.getResource(path);
-        return new File(url.getPath());
+        if (url != null)
+        {
+            return new File(url.getPath());
+        }
+        else
+        {
+            return null;
+        }
     }
 }
