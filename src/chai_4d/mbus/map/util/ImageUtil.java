@@ -50,18 +50,4 @@ public class ImageUtil
         }
         return ext;
     }
-
-    public static File getFile(String path)
-    {
-        //return new File(path);
-        URL url = ImageUtil.class.getResource(path);
-        if (url != null)
-        {
-            return new File(url.getPath());
-        }
-        else
-        {
-            return null;
-        }
-    }
 }
