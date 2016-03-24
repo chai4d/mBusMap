@@ -94,7 +94,6 @@ public class HelpDialog extends JDialog implements ActionListener
         lnkURL.setOpaque(false);
         lnkURL.setBackground(MapConstants.controlPanel);
         lnkURL.setMargin(new Insets(0, 0, 0, 0));
-        lnkURL.setToolTipText(uri.toString());
         lnkURL.addActionListener(new OpenUrlAction());
 
         JPanel linkPanel = new JPanel(new GridBagLayout());
@@ -130,6 +129,7 @@ public class HelpDialog extends JDialog implements ActionListener
         pack();
         setLocationRelativeTo(null);
         //setResizable(false);
+        butOK.requestFocus();
     }
 
     public void actionPerformed(ActionEvent e)
