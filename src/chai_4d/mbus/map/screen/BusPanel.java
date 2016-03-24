@@ -283,7 +283,7 @@ public class BusPanel extends FormPanel implements ActionListener, KeyListener, 
             txtDetailTh.setText(busInfo.getDetailTh());
             txtDetailEn.setText(busInfo.getDetailEn());
             txtPicture.setText(busInfo.getBusPic());
-            pnlPicture.setFile(ImageUtil.getFile(busInfo.getBusPic()));
+            pnlPicture.setFile(ImageUtil.createImageIcon(busInfo.getBusPic()));
             lblTwoWay.setText("(" + StringUtil.toNumString(busInfo.getCountTwoWay()) + ")");
             lblOneWay.setText("(" + StringUtil.toNumString(busInfo.getCountOneWay()) + ")");
             spnStartTime.setValue(busInfo.getStartTime());
