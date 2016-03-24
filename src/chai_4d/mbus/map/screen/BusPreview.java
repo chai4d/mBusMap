@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -17,7 +16,7 @@ public class BusPreview extends JPanel
     private static final long serialVersionUID = 6773451411640279914L;
 
     private ImageIcon thumbnail = null;
-    private File file = null;
+    private ImageIcon file = null;
 
     public BusPreview()
     {
@@ -44,7 +43,7 @@ public class BusPreview extends JPanel
         //Don't use createImageIcon (which is a wrapper for getResource)
         //because the image we're trying to load is probably not one
         //of this program's own resources.
-        ImageIcon tmpIcon = new ImageIcon(file.getPath());
+        ImageIcon tmpIcon = file;
         if (tmpIcon != null)
         {
             if (tmpIcon.getIconWidth() > 90)
@@ -83,12 +82,12 @@ public class BusPreview extends JPanel
         }
     }
 
-    public File getFile()
+    public ImageIcon getFile()
     {
         return file;
     }
 
-    public void setFile(File file)
+    public void setFile(ImageIcon file)
     {
         this.file = file;
         this.thumbnail = null;
