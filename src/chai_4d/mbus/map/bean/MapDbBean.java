@@ -655,7 +655,7 @@ public class MapDbBean
         for (int i = 0; i < list.size(); i++)
         {
             BusLine busLine = list.get(i);
-            if (busLine.getMode() != Mode.DELETE)
+            if (busLine.getMode() != Mode.DELETE && busLine.getType() == LineType.BIDIRECT)
             {
                 count++;
                 String p1 = busLine.getP1Id() + "";
@@ -675,6 +675,24 @@ public class MapDbBean
                 else
                 {
                     pointMap.put(p2, null);
+                }
+            }
+        }
+        for (int i = 0; i < list.size(); i++)
+        {
+            BusLine busLine = list.get(i);
+            if (busLine.getMode() != Mode.DELETE && busLine.getType() != LineType.BIDIRECT)
+            {
+                count++;
+                String p1 = busLine.getP1Id() + "";
+                String p2 = busLine.getP2Id() + "";
+                if (pointMap.containsKey(p1))
+                {
+                    pointMap.remove(p1);
+                }
+                if (pointMap.containsKey(p2))
+                {
+                    pointMap.remove(p2);
                 }
             }
         }
