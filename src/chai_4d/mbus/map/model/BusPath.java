@@ -13,6 +13,10 @@ public class BusPath
     private String busNoTh = null;
     private String busNoEn = null;
     private String busPrice = null;
+    private String p1NameTh = null;
+    private String p1NameEn = null;
+    private String p2NameTh = null;
+    private String p2NameEn = null;
 
     public BusPath(BusLine busLine, long p1)
     {
@@ -24,6 +28,10 @@ public class BusPath
             this.y1 = busLine.getY1();
             this.x2 = busLine.getX2();
             this.y2 = busLine.getY2();
+            this.p1NameTh = busLine.getP1NameTh();
+            this.p1NameEn = busLine.getP1NameEn();
+            this.p2NameTh = busLine.getP2NameTh();
+            this.p2NameEn = busLine.getP2NameEn();
         }
         else
         {
@@ -33,6 +41,10 @@ public class BusPath
             this.y1 = busLine.getY2();
             this.x2 = busLine.getX1();
             this.y2 = busLine.getY1();
+            this.p1NameTh = busLine.getP2NameTh();
+            this.p1NameEn = busLine.getP2NameEn();
+            this.p2NameTh = busLine.getP1NameTh();
+            this.p2NameEn = busLine.getP1NameEn();
         }
         this.distance = busLine.getDistance();
         this.busId = busLine.getBusId();
@@ -54,6 +66,10 @@ public class BusPath
         this.busNoTh = busPath.getBusNoTh();
         this.busNoEn = busPath.getBusNoEn();
         this.busPrice = busPath.getBusPrice();
+        this.p1NameTh = busPath.getP1NameTh();
+        this.p1NameEn = busPath.getP1NameEn();
+        this.p2NameTh = busPath.getP2NameTh();
+        this.p2NameEn = busPath.getP2NameEn();
     }
 
     public void printPath()
@@ -169,5 +185,45 @@ public class BusPath
     public void setBusPrice(String busPrice)
     {
         this.busPrice = busPrice;
+    }
+
+    public String getP1NameTh()
+    {
+        return p1NameTh;
+    }
+
+    public void setP1NameTh(String p1NameTh)
+    {
+        this.p1NameTh = p1NameTh;
+    }
+
+    public String getP1NameEn()
+    {
+        return p1NameEn;
+    }
+
+    public void setP1NameEn(String p1NameEn)
+    {
+        this.p1NameEn = p1NameEn;
+    }
+
+    public String getP2NameTh()
+    {
+        return p2NameTh;
+    }
+
+    public void setP2NameTh(String p2NameTh)
+    {
+        this.p2NameTh = p2NameTh;
+    }
+
+    public String getP2NameEn()
+    {
+        return p2NameEn;
+    }
+
+    public void setP2NameEn(String p2NameEn)
+    {
+        this.p2NameEn = p2NameEn;
     }
 }

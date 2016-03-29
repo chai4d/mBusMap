@@ -20,6 +20,10 @@ public class BusLine extends BaseModel
     private String busNoEn = null;
     private String busPrice = null;
     private LineType type = null;
+    private String p1NameTh = null;
+    private String p1NameEn = null;
+    private String p2NameTh = null;
+    private String p2NameEn = null;
 
     public BusLine(ResultSet rs)
     {
@@ -37,6 +41,10 @@ public class BusLine extends BaseModel
         busNoEn = SQLUtil.getString(rs, ++i);
         busPrice = SQLUtil.getString(rs, ++i);
         type = LineType.valueOf(SQLUtil.getInt(rs, ++i));
+        p1NameTh = SQLUtil.getString(rs, ++i);
+        p1NameEn = SQLUtil.getString(rs, ++i);
+        p2NameTh = SQLUtil.getString(rs, ++i);
+        p2NameEn = SQLUtil.getString(rs, ++i);
     }
 
     public BusLine(
@@ -51,7 +59,11 @@ public class BusLine extends BaseModel
         String busNoTh,
         String busNoEn,
         String busPrice,
-        LineType type)
+        LineType type,
+        String p1NameTh,
+        String p1NameEn,
+        String p2NameTh,
+        String p2NameEn)
     {
         super(Mode.INSERT);
         this.p1Id = p1Id;
@@ -66,6 +78,10 @@ public class BusLine extends BaseModel
         this.busNoEn = busNoEn;
         this.busPrice = busPrice;
         this.type = type;
+        this.p1NameTh = p1NameTh;
+        this.p1NameEn = p1NameEn;
+        this.p2NameTh = p2NameTh;
+        this.p2NameEn = p2NameEn;
     }
 
     public int getX1()
@@ -186,5 +202,45 @@ public class BusLine extends BaseModel
     public void setBusPrice(String busPrice)
     {
         this.busPrice = busPrice;
+    }
+
+    public String getP1NameTh()
+    {
+        return p1NameTh;
+    }
+
+    public void setP1NameTh(String p1NameTh)
+    {
+        this.p1NameTh = p1NameTh;
+    }
+
+    public String getP1NameEn()
+    {
+        return p1NameEn;
+    }
+
+    public void setP1NameEn(String p1NameEn)
+    {
+        this.p1NameEn = p1NameEn;
+    }
+
+    public String getP2NameTh()
+    {
+        return p2NameTh;
+    }
+
+    public void setP2NameTh(String p2NameTh)
+    {
+        this.p2NameTh = p2NameTh;
+    }
+
+    public String getP2NameEn()
+    {
+        return p2NameEn;
+    }
+
+    public void setP2NameEn(String p2NameEn)
+    {
+        this.p2NameEn = p2NameEn;
     }
 }

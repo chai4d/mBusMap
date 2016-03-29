@@ -1092,7 +1092,11 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 busSelect.getBusNoTh(),
                 busSelect.getBusNoEn(),
                 busSelect.getBusPrice(),
-                mainFrame.getLineType());
+                mainFrame.getLineType(),
+                "",
+                "",
+                "",
+                "");
             busSelect.getBusLine().add(aBusLine);
             busSelect.setEdited();
             mainFrame.onSelectBus(busSelect);
