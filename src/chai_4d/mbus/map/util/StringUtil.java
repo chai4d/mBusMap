@@ -3,6 +3,8 @@ package chai_4d.mbus.map.util;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import chai_4d.mbus.map.constant.MapConstants;
+
 public class StringUtil
 {
     public static final String NEW_LINE = System.getProperty("line.separator");
@@ -145,6 +147,20 @@ public class StringUtil
         double dy = Math.abs(y1 - y2);
         double result = Math.sqrt((dx * dx) + (dy * dy));
         return result;
+    }
+
+    public static String toDistance(double distance)
+    {
+        double metre = distance * MapConstants.DISTANCE_RATIO;
+        if (metre >= 1000)
+        {
+            double km = (metre / 1000);
+            return toAmountString(km) + " km.";
+        }
+        else
+        {
+            return toAmountString(metre) + " m.";
+        }
     }
 
     public static long getIdValue(String text)

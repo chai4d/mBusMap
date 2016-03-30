@@ -49,6 +49,8 @@ public class MapConstants
     public static final Color labelBusBGHL = new Color(122, 200, 255, 200);
     public static final Color labelBusFGHL = Color.blue;
 
+    public static final double DISTANCE_RATIO = 2.5;
+
     private MapConstants()
     {
     }
