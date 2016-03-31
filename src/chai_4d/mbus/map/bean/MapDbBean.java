@@ -1589,7 +1589,17 @@ public class MapDbBean
             }
         }
 
-        // 3. Calculate score per each Bus Choice
+        // 3. Remove the Bus Choice that return the same Bus No
+        for (int i = busChoices.size() - 1; i >= 0; i--)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            if (busChoice.isReturnSameBusNo())
+            {
+                busChoices.remove(i);
+            }
+        }
+
+        // 4. Calculate score per each Bus Choice
         int maxInterchange = 0;
         double maxPrice = 0.0;
         double maxDistance = 0.0;
@@ -1608,7 +1618,7 @@ public class MapDbBean
             busChoice.calcScorePercent(maxInterchange, maxPrice, maxDistance);
         }
 
-        // 4. Sorting the Bus Choice per scorePercent
+        // 5. Sorting the Bus Choice per scorePercent
         List<BusChoice> result = new ArrayList<BusChoice>();
         for (int i = 0; i < busChoices.size(); i++)
         {
@@ -1628,7 +1638,7 @@ public class MapDbBean
             result.add(index, busChoice);
         }
 
-        // 5. Remove duplicated and cut only top prefer choices
+        // 6. Remove duplicated and cut only top prefer choices
         BusChoice previousBusChoice = null;
         for (int i = result.size() - 1; i >= 0; i--)
         {
@@ -1654,7 +1664,7 @@ public class MapDbBean
             }
         }
 
-        // 6. (Debug) Printing the Bus Choices
+        // 7. (Debug) Printing the Bus Choices
         boolean debug = false;
         if (debug)
         {

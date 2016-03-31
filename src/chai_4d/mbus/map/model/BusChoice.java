@@ -55,7 +55,8 @@ public class BusChoice
             BusPath busPath = busPaths.get(i);
             BusPath anotherBusPath = anotherChoice.getBusPaths().get(i);
 
-            if (busPath.getBusId() != anotherBusPath.getBusId() || busPath.getP1Id() != anotherBusPath.getP1Id()
+            if (busPath.getBusId() != anotherBusPath.getBusId()
+                || busPath.getP1Id() != anotherBusPath.getP1Id()
                 || busPath.getP2Id() != anotherBusPath.getP2Id())
             {
                 return false;
@@ -72,6 +73,27 @@ public class BusChoice
             if (busPath.getP1Id() == pId || busPath.getP2Id() == pId)
             {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isReturnSameBusNo()
+    {
+        String prevKey = "";
+        List<String> keys = new ArrayList<String>();
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            String key = busPath.getBusNoEn();
+            if (!prevKey.equals(key))
+            {
+                prevKey = key;
+                if (keys.contains(key))
+                {
+                    return true;
+                }
+                keys.add(key);
             }
         }
         return false;
@@ -233,8 +255,8 @@ public class BusChoice
         // Ex: Interchange = 5/5, Price = 20/20, Distance = 345/345
         //     ScorePercent = 0% ((0/5 x 40%) + (0/20 x 25%) + (0/345 x 35%))
         this.scorePercent = ((((maxInterchange - this.noOfInterchange) / maxInterchange) * percentInterchange)
-            + (((maxPrice - this.totalPrice) / maxPrice) * percentPrice) + (((maxDistance - this.totalDistance) / maxDistance) * percentDistance))
-            * 100;
+            + (((maxPrice - this.totalPrice) / maxPrice) * percentPrice)
+            + (((maxDistance - this.totalDistance) / maxDistance) * percentDistance)) * 100;
     }
 
     public List<BusPath> getBusPaths()
