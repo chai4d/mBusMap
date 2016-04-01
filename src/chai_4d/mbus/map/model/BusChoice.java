@@ -101,13 +101,15 @@ public class BusChoice
 
     public class ABus
     {
+        private long busId = 0;
         private String busNo = null;
         private List<BusPath> busPaths = new ArrayList<BusPath>();
         private double busPrice = 0.0;
         private double busDistance = 0.0;
 
-        public ABus(String busNo, List<BusPath> busPaths)
+        public ABus(long busId, String busNo, List<BusPath> busPaths)
         {
+            this.busId = busId;
             this.busNo = busNo;
             this.busPaths = busPaths;
         }
@@ -163,6 +165,11 @@ public class BusChoice
             this.busDistance = totalDistance;
         }
 
+        public long getBusId()
+        {
+            return busId;
+        }
+
         public String getBusNo()
         {
             return busNo;
@@ -196,6 +203,7 @@ public class BusChoice
         for (int i = 0; i < busPaths.size(); i++)
         {
             BusPath busPath = busPaths.get(i);
+            long id = busPath.getBusId();
             String key = busPath.getBusNoEn();
             if (!prevKey.equals(key))
             {
@@ -204,7 +212,7 @@ public class BusChoice
 
                 List<BusPath> busPaths = new ArrayList<BusPath>();
                 busPaths.add(busPath);
-                buses.add(new ABus(key, busPaths));
+                buses.add(new ABus(id, key, busPaths));
             }
             else
             {
