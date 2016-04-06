@@ -37,6 +37,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
     private JMenuItem addLine = null;
     private JMenuItem editLine = null;
     private JMenuItem deleteLine = null;
+    private JMenuItem copyLine = null;
     private JRadioButtonMenuItem lineType1 = null;
     private JRadioButtonMenuItem lineType2 = null;
     private JRadioButtonMenuItem lineType3 = null;
@@ -106,10 +107,11 @@ public class MapMenuBar extends JMenuBar implements ActionListener
         addLine = createMenu("Add Bus Line", 21);
         editLine = createMenu("Edit Bus Line", 22);
         deleteLine = createMenu("Delete Bus Line", 23);
-        lineType1 = createRadioMenu("Use Bi-Direct Line", 24);
-        lineType2 = createRadioMenu("Use P1-to-P2 Line", 25);
-        lineType3 = createRadioMenu("Use P2-to-P1 Line", 26);
-        editPoint = createMenu("Edit Point", 27);
+        copyLine = createMenu("Copy Bus Line", 24);
+        lineType1 = createRadioMenu("Use Bi-Direct Line", 25);
+        lineType2 = createRadioMenu("Use P1-to-P2 Line", 26);
+        lineType3 = createRadioMenu("Use P2-to-P1 Line", 27);
+        editPoint = createMenu("Edit Point", 28);
         ButtonGroup groupLineType = new ButtonGroup();
         groupLineType.add(lineType1);
         groupLineType.add(lineType2);
@@ -117,6 +119,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
         menu_edit.add(addLine);
         menu_edit.add(editLine);
         menu_edit.add(deleteLine);
+        menu_edit.add(copyLine);
         menu_edit.addSeparator();
         menu_edit.add(lineType1);
         menu_edit.add(lineType2);
@@ -173,6 +176,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 addLine.setEnabled(true);
                 editLine.setEnabled(true);
                 deleteLine.setEnabled(true);
+                copyLine.setEnabled(true);
                 lineType1.setEnabled(false);
                 lineType2.setEnabled(false);
                 lineType3.setEnabled(false);
@@ -189,6 +193,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
             case ADD_BUS:
             case EDIT_BUS:
             case DEL_BUS:
+            case COPY_BUS:
                 save.setEnabled(true);
                 reset.setEnabled(true);
                 calculate.setEnabled(false);
@@ -197,6 +202,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 addLine.setEnabled(false);
                 editLine.setEnabled(false);
                 deleteLine.setEnabled(false);
+                copyLine.setEnabled(false);
                 lineType1.setEnabled(true);
                 lineType2.setEnabled(true);
                 lineType3.setEnabled(true);
@@ -219,6 +225,7 @@ public class MapMenuBar extends JMenuBar implements ActionListener
                 addLine.setEnabled(false);
                 editLine.setEnabled(false);
                 deleteLine.setEnabled(false);
+                copyLine.setEnabled(false);
                 lineType1.setEnabled(false);
                 lineType2.setEnabled(false);
                 lineType3.setEnabled(false);
@@ -302,16 +309,19 @@ public class MapMenuBar extends JMenuBar implements ActionListener
             case 23: // Delete Bus Line
                 mainFrame.onDeleteBusLine();
                 break;
-            case 24: // Use Bi-Direct Line
+            case 24: // Copy Bus Line
+                mainFrame.onCopyBusLine();
+                break;
+            case 25: // Use Bi-Direct Line
                 mainFrame.setLineType(LineType.BIDIRECT);
                 break;
-            case 25: // Use P1-to-P2 Line
+            case 26: // Use P1-to-P2 Line
                 mainFrame.setLineType(LineType.P1_P2);
                 break;
-            case 26: // Use P2-to-P1 Line
+            case 27: // Use P2-to-P1 Line
                 mainFrame.setLineType(LineType.P2_P1);
                 break;
-            case 27: // Edit Point
+            case 28: // Edit Point
                 mainFrame.onEditPoint();
                 break;
             case 31: // View Point Link

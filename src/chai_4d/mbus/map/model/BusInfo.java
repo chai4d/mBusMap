@@ -53,6 +53,21 @@ public class BusInfo extends BaseModel
         this.busPrice = "";
     }
 
+    public void cloneToNew()
+    {
+        this.getBusLine();
+        this.mode = Mode.INSERT;
+        this.busId = SQLUtil.genId();
+        this.busNoTh = "";
+        this.busNoEn = "";
+        this.detailTh = "";
+        this.detailEn = "";
+        this.busPic = "";
+        this.startTime = DateUtil.createTime(0, 0, 0);
+        this.endTime = DateUtil.createTime(0, 0, 0);
+        this.busPrice = "";
+    }
+
     public List<BusLine> getBusLine()
     {
         if (busLine == null)

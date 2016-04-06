@@ -38,7 +38,7 @@ public class MainFrame extends JFrame
     private static final long serialVersionUID = -7237892527602350628L;
 
     public static final String TITLE_NAME = "m-Bus Map Screen";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.4";
     public static final String AUTHOR = "Chai_4D";
     public static final String URL = "http://m-bus.in.th";
 
@@ -121,14 +121,16 @@ public class MainFrame extends JFrame
 
     public void onSave()
     {
+        BusPanel busPanel = null;
+        OptionDialog dialog = null;
         String result = null;
         switch (_mapMode)
         {
             case ADD_BUS:
-                BusPanel busPanel = new BusPanel(this);
+                busPanel = new BusPanel(this);
                 busPanel.setPreferredSize(new Dimension(400, 420));
                 busPanel.setBusInfo(mapPanel.getBusSelect());
-                OptionDialog dialog = new OptionDialog(this, "Bus Info", busPanel);
+                dialog = new OptionDialog(this, "Bus Info", busPanel);
                 dialog.setVisible(true);
 
                 if (dialog.isOK() == false)
@@ -157,6 +159,26 @@ public class MainFrame extends JFrame
                 if (!result.equals("true"))
                 {
                     SwingUtil.alertWarning(result);
+                }
+                break;
+            case COPY_BUS:
+                busPanel = new BusPanel(this);
+                busPanel.setPreferredSize(new Dimension(400, 420));
+                busPanel.setBusInfo(mapPanel.getBusSelect());
+                dialog = new OptionDialog(this, "Bus Info", busPanel);
+                dialog.setVisible(true);
+
+                if (dialog.isOK() == false)
+                {
+                    onSelectBus(mapPanel.getBusSelect());
+                    return;
+                }
+                result = MapDbBean.saveBus(mapPanel.getMapPoint(), mapPanel.getBusSelect());
+                if (!result.equals("true"))
+                {
+                    onSelectBus(mapPanel.getBusSelect());
+                    SwingUtil.alertWarning(result);
+                    return;
                 }
                 break;
             case EDIT_POINT:
@@ -246,6 +268,23 @@ public class MainFrame extends JFrame
         {
             setMapMode(MapMode.VIEW);
         }
+    }
+
+    public void onCopyBusLine()
+    {
+        BusSelectPanel busSelectPanel = new BusSelectPanel(this);
+        OptionDialog dialog = new OptionDialog(this, "Bus Select", busSelectPanel);
+        dialog.setVisible(true);
+
+        if (dialog.isOK() == false)
+        {
+            return;
+        }
+        BusInfo newBus = busSelectPanel.getBusSelect();
+        newBus.cloneToNew();
+        mapPanel.setBusSelect(newBus);
+        setMapMode(MapMode.COPY_BUS);
+        new MapFocus(mapPanel, mapPanel.getBusSelect()).start();
     }
 
     public void onEditPoint()

@@ -62,7 +62,7 @@ public class MapConstants
 
     public enum MapMode
     {
-        VIEW, TEST_ROUTE, ADD_BUS, EDIT_BUS, DEL_BUS, EDIT_POINT
+        VIEW, TEST_ROUTE, ADD_BUS, EDIT_BUS, DEL_BUS, COPY_BUS, EDIT_POINT
     }
 
     public enum ViewType
