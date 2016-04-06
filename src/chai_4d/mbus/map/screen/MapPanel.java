@@ -29,6 +29,7 @@ import javax.swing.event.MouseInputListener;
 
 import chai_4d.mbus.map.bean.MapDbBean;
 import chai_4d.mbus.map.constant.MapConstants;
+import chai_4d.mbus.map.constant.MapConstants.LineType;
 import chai_4d.mbus.map.constant.MapConstants.MapMode;
 import chai_4d.mbus.map.constant.MapConstants.Mode;
 import chai_4d.mbus.map.constant.MapConstants.PointType;
@@ -1085,10 +1086,27 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                     continue;
                 }
 
-                if ((busLine.getP1Id() == p1.getPId() && busLine.getP2Id() == p2.getPId())
-                    || (busLine.getP1Id() == p2.getPId() && busLine.getP2Id() == p1.getPId()))
+                if (busLine.getType() == LineType.BIDIRECT)
                 {
-                    return busLine;
+                    if ((busLine.getP1Id() == p1.getPId() && busLine.getP2Id() == p2.getPId())
+                        || (busLine.getP2Id() == p1.getPId() && busLine.getP1Id() == p2.getPId()))
+                    {
+                        return busLine;
+                    }
+                }
+                else if (busLine.getType() == LineType.P1_P2)
+                {
+                    if (busLine.getP1Id() == p1.getPId() && busLine.getP2Id() == p2.getPId())
+                    {
+                        return busLine;
+                    }
+                }
+                else if (busLine.getType() == LineType.P2_P1)
+                {
+                    if (busLine.getP2Id() == p1.getPId() && busLine.getP1Id() == p2.getPId())
+                    {
+                        return busLine;
+                    }
                 }
             }
         }
