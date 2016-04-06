@@ -55,7 +55,13 @@ public class BusInfo extends BaseModel
 
     public void cloneToNew()
     {
-        this.getBusLine();
+        List<BusLine> list = this.getBusLine();
+        for (int i = 0; i < list.size(); i++)
+        {
+            BusLine busLine = list.get(i);
+            busLine.setMode(Mode.INSERT);
+        }
+
         this.mode = Mode.INSERT;
         this.busId = SQLUtil.genId();
         this.busNoTh = "";
