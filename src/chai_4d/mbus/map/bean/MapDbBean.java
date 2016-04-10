@@ -1366,7 +1366,7 @@ public class MapDbBean
         {
             String sql = "";
             sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
-            sql += "values (?, ?, ?) \n";
+            sql += "values (?, ?, compress(?)) \n";
 
             conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -1396,7 +1396,7 @@ public class MapDbBean
         try
         {
             String sql = "";
-            sql += "select bus_path \n";
+            sql += "select cast(uncompress(bus_path) as char) \n";
             sql += "from bus_path \n";
             sql += "where source_id = ? \n";
             sql += " and destination_id = ? \n";
