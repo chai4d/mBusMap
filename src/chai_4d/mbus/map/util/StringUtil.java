@@ -9,6 +9,9 @@ public class StringUtil
 {
     public static final String NEW_LINE = System.getProperty("line.separator");
 
+    public static final String ENCODING_ISO88591 = "ISO-8859-1";
+    public static final String ENCODING_UTF8 = "UTF-8";
+
     private static final DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,###,###,###,###,###.##");
 
     private StringUtil()
@@ -41,6 +44,19 @@ public class StringUtil
     public static String toString(String s, String def)
     {
         return s == null ? toString(def) : s.trim();
+    }
+
+    public static String toStringUTF8(String s)
+    {
+        String result = toString(s);
+        try
+        {
+            result = new String(result.getBytes(ENCODING_ISO88591), ENCODING_UTF8);
+        }
+        catch (Exception e)
+        {
+        }
+        return result;
     }
 
     public static int toInt(String s)
