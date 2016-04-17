@@ -402,6 +402,45 @@ public class MapDbBean
         return result;
     }
 
+    public static List<PointName> loadPointName(String lang, String query)
+    {
+        List<PointName> result = new ArrayList<PointName>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select * \n";
+            sql += "from point_name \n";
+            sql += "where " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " like ? \n";
+            sql += "order by " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " \n";
+            sql += "limit 100 \n";
+
+            conn = DBPoolManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + query + "%");
+
+            rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+                result.add(new PointName(rs));
+            }
+            SQLUtil.printSQL(sql + "[" + lang + ", " + query + "]");
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
+        }
+        return result;
+    }
+
     public static List<PointName> loadPointNameById(long pId)
     {
         List<PointName> result = new ArrayList<PointName>();
