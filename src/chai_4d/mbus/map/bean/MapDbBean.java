@@ -415,7 +415,7 @@ public class MapDbBean
             sql += "from point_name \n";
             sql += "where " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " like ? \n";
             sql += "order by " + ("en".equalsIgnoreCase(lang) ? "name_en" : "name_th") + " \n";
-            sql += "limit 100 \n";
+            sql += "limit 40 \n";
 
             conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
