@@ -30,4 +30,14 @@ public class PropertyUtil
             return PropertyUtil.getString(RES, key);
         }
     }
+
+    static class URL
+    {
+        private static final ResourceBundle RES = ResourceBundle.getBundle("prop.url");
+
+        public static String getString(String key)
+        {
+            return PropertyUtil.getString(RES, key);
+        }
+    }
 }

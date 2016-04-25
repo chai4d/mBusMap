@@ -1,5 +1,6 @@
 package chai_4d.mbus.map.bean;
 
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ import chai_4d.mbus.map.model.PointName;
 import chai_4d.mbus.map.screen.MapPanel;
 import chai_4d.mbus.map.util.DBPoolManager;
 import chai_4d.mbus.map.util.DateUtil;
+import chai_4d.mbus.map.util.HttpURLUtil;
 import chai_4d.mbus.map.util.SQLUtil;
 import chai_4d.mbus.map.util.StringUtil;
 
@@ -1278,30 +1280,30 @@ public class MapDbBean
         return "true";
     }
 
-    public static void resetBusPath()
-    {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        try
-        {
-            String sql = "";
-            sql += "delete from bus_path \n";
-
-            conn = DBPoolManager.getConnection();
-            pstmt = conn.prepareStatement(sql);
-
-            pstmt.executeUpdate();
-        }
-        catch (Exception e)
-        {
-            log.error(e);
-        }
-        finally
-        {
-            SQLUtil.closePreparedStatement(pstmt);
-            SQLUtil.closeConnection(conn);
-        }
-    }
+    //    public static void resetBusPath()
+    //    {
+    //        Connection conn = null;
+    //        PreparedStatement pstmt = null;
+    //        try
+    //        {
+    //            String sql = "";
+    //            sql += "delete from bus_path \n";
+    //
+    //            conn = DBPoolManager.getConnection();
+    //            pstmt = conn.prepareStatement(sql);
+    //
+    //            pstmt.executeUpdate();
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            log.error(e);
+    //        }
+    //        finally
+    //        {
+    //            SQLUtil.closePreparedStatement(pstmt);
+    //            SQLUtil.closeConnection(conn);
+    //        }
+    //    }
 
     public static Map<Integer, Point> loadPointInfo()
     {
@@ -1397,72 +1399,96 @@ public class MapDbBean
         return result;
     }
 
+    //    public static void insertBusPath(long sourceId, long destinationId, String busPath)
+    //    {
+    //        Connection conn = null;
+    //        PreparedStatement pstmt = null;
+    //        try
+    //        {
+    //            String sql = "";
+    //            sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
+    //            sql += "values (?, ?, compress(?)) \n";
+    //
+    //            conn = DBPoolManager.getConnection();
+    //            pstmt = conn.prepareStatement(sql);
+    //            pstmt.setLong(1, sourceId);
+    //            pstmt.setLong(2, destinationId);
+    //            pstmt.setString(3, busPath);
+    //
+    //            pstmt.executeUpdate();
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            log.error(e);
+    //        }
+    //        finally
+    //        {
+    //            SQLUtil.closePreparedStatement(pstmt);
+    //            SQLUtil.closeConnection(conn);
+    //        }
+    //    }
+
+    //    private static String getBusPaths(long sourceId, long destinationId)
+    //    {
+    //        String result = null;
+    //        Connection conn = null;
+    //        PreparedStatement pstmt = null;
+    //        ResultSet rs = null;
+    //        try
+    //        {
+    //            String sql = "";
+    //            sql += "select cast(uncompress(bus_path) as char) \n";
+    //            sql += "from bus_path \n";
+    //            sql += "where source_id = ? \n";
+    //            sql += " and destination_id = ? \n";
+    //
+    //            conn = DBPoolManager.getConnection();
+    //            pstmt = conn.prepareStatement(sql);
+    //            pstmt.setLong(1, sourceId);
+    //            pstmt.setLong(2, destinationId);
+    //
+    //            rs = pstmt.executeQuery();
+    //            if (rs.next())
+    //            {
+    //                result = SQLUtil.getString(rs, 1);
+    //            }
+    //            SQLUtil.printSQL(sql + "[" + sourceId + ", " + destinationId + "]");
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            log.error(e);
+    //        }
+    //        finally
+    //        {
+    //            SQLUtil.closeResultSet(rs);
+    //            SQLUtil.closePreparedStatement(pstmt);
+    //            SQLUtil.closeConnection(conn);
+    //        }
+    //        return result;
+    //    }
+
+    public static void resetBusPath()
+    {
+        HttpURLUtil.sendGet("?act=resetBusPath");
+    }
+
     public static void insertBusPath(long sourceId, long destinationId, String busPath)
     {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+        String param = "";
         try
         {
-            String sql = "";
-            sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
-            sql += "values (?, ?, compress(?)) \n";
-
-            conn = DBPoolManager.getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, sourceId);
-            pstmt.setLong(2, destinationId);
-            pstmt.setString(3, busPath);
-
-            pstmt.executeUpdate();
+            param = "?act=insertBusPath&sourceId=" + sourceId + "&destinationId=" + destinationId + "&busPath=" + URLEncoder.encode(busPath, "UTF-8");
         }
         catch (Exception e)
         {
             log.error(e);
         }
-        finally
-        {
-            SQLUtil.closePreparedStatement(pstmt);
-            SQLUtil.closeConnection(conn);
-        }
+        HttpURLUtil.sendGet(param);
     }
 
     private static String getBusPaths(long sourceId, long destinationId)
     {
-        String result = null;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try
-        {
-            String sql = "";
-            sql += "select cast(uncompress(bus_path) as char) \n";
-            sql += "from bus_path \n";
-            sql += "where source_id = ? \n";
-            sql += " and destination_id = ? \n";
-
-            conn = DBPoolManager.getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, sourceId);
-            pstmt.setLong(2, destinationId);
-
-            rs = pstmt.executeQuery();
-            if (rs.next())
-            {
-                result = SQLUtil.getString(rs, 1);
-            }
-            SQLUtil.printSQL(sql + "[" + sourceId + ", " + destinationId + "]");
-        }
-        catch (Exception e)
-        {
-            log.error(e);
-        }
-        finally
-        {
-            SQLUtil.closeResultSet(rs);
-            SQLUtil.closePreparedStatement(pstmt);
-            SQLUtil.closeConnection(conn);
-        }
-        return result;
+        return HttpURLUtil.sendGet("?act=getBusPaths&sourceId=" + sourceId + "&destinationId=" + destinationId);
     }
 
     private static BusChoice lookupBusChoice(List<BusChoice> busChoices, long sourceId, BusPath busPath)
