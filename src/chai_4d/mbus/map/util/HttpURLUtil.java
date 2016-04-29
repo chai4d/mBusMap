@@ -12,6 +12,8 @@ public class HttpURLUtil
 {
     private static final Logger log = LogManager.getLogger(HttpURLUtil.class);
 
+    public static final String callweb = PropertyUtil.URL.getString("callweb");
+
     private static final String url = PropertyUtil.URL.getString("url");
     private static final String USER_AGENT = "Mozilla/5.0";
 

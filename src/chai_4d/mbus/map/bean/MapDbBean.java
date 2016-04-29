@@ -1427,48 +1427,50 @@ public class MapDbBean
         }
     }
 
-    //    private static String getBusPaths(long sourceId, long destinationId)
-    //    {
-    //        String result = null;
-    //        Connection conn = null;
-    //        PreparedStatement pstmt = null;
-    //        ResultSet rs = null;
-    //        try
-    //        {
-    //            String sql = "";
-    //            sql += "select cast(uncompress(bus_path) as char) \n";
-    //            sql += "from bus_path \n";
-    //            sql += "where source_id = ? \n";
-    //            sql += " and destination_id = ? \n";
-    //
-    //            conn = DBPoolManager.getConnection();
-    //            pstmt = conn.prepareStatement(sql);
-    //            pstmt.setLong(1, sourceId);
-    //            pstmt.setLong(2, destinationId);
-    //
-    //            rs = pstmt.executeQuery();
-    //            if (rs.next())
-    //            {
-    //                result = SQLUtil.getString(rs, 1);
-    //            }
-    //            SQLUtil.printSQL(sql + "[" + sourceId + ", " + destinationId + "]");
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            log.error(e);
-    //        }
-    //        finally
-    //        {
-    //            SQLUtil.closeResultSet(rs);
-    //            SQLUtil.closePreparedStatement(pstmt);
-    //            SQLUtil.closeConnection(conn);
-    //        }
-    //        return result;
-    //    }
-
     private static String getBusPaths(long sourceId, long destinationId)
     {
-        return HttpURLUtil.sendGet("?act=getBusPaths&sourceId=" + sourceId + "&destinationId=" + destinationId);
+        if (HttpURLUtil.callweb.equals("true"))
+        {
+            return HttpURLUtil.sendGet("?act=getBusPaths&sourceId=" + sourceId + "&destinationId=" + destinationId);
+        }
+        else
+        {
+            String result = null;
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            try
+            {
+                String sql = "";
+                sql += "select cast(uncompress(bus_path) as char) \n";
+                sql += "from bus_path \n";
+                sql += "where source_id = ? \n";
+                sql += " and destination_id = ? \n";
+
+                conn = DBPoolManager.getConnection();
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setLong(1, sourceId);
+                pstmt.setLong(2, destinationId);
+
+                rs = pstmt.executeQuery();
+                if (rs.next())
+                {
+                    result = SQLUtil.getString(rs, 1);
+                }
+                SQLUtil.printSQL(sql + "[" + sourceId + ", " + destinationId + "]");
+            }
+            catch (Exception e)
+            {
+                log.error(e);
+            }
+            finally
+            {
+                SQLUtil.closeResultSet(rs);
+                SQLUtil.closePreparedStatement(pstmt);
+                SQLUtil.closeConnection(conn);
+            }
+            return result;
+        }
     }
 
     private static BusChoice lookupBusChoice(List<BusChoice> busChoices, long sourceId, BusPath busPath)
