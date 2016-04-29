@@ -1,6 +1,5 @@
 package chai_4d.mbus.map.bean;
 
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1280,30 +1279,30 @@ public class MapDbBean
         return "true";
     }
 
-    //    public static void resetBusPath()
-    //    {
-    //        Connection conn = null;
-    //        PreparedStatement pstmt = null;
-    //        try
-    //        {
-    //            String sql = "";
-    //            sql += "delete from bus_path \n";
-    //
-    //            conn = DBPoolManager.getConnection();
-    //            pstmt = conn.prepareStatement(sql);
-    //
-    //            pstmt.executeUpdate();
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            log.error(e);
-    //        }
-    //        finally
-    //        {
-    //            SQLUtil.closePreparedStatement(pstmt);
-    //            SQLUtil.closeConnection(conn);
-    //        }
-    //    }
+    public static void resetBusPath()
+    {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try
+        {
+            String sql = "";
+            sql += "delete from bus_path \n";
+
+            conn = DBPoolManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
+        finally
+        {
+            SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
+        }
+    }
 
     public static Map<Integer, Point> loadPointInfo()
     {
@@ -1399,34 +1398,34 @@ public class MapDbBean
         return result;
     }
 
-    //    public static void insertBusPath(long sourceId, long destinationId, String busPath)
-    //    {
-    //        Connection conn = null;
-    //        PreparedStatement pstmt = null;
-    //        try
-    //        {
-    //            String sql = "";
-    //            sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
-    //            sql += "values (?, ?, compress(?)) \n";
-    //
-    //            conn = DBPoolManager.getConnection();
-    //            pstmt = conn.prepareStatement(sql);
-    //            pstmt.setLong(1, sourceId);
-    //            pstmt.setLong(2, destinationId);
-    //            pstmt.setString(3, busPath);
-    //
-    //            pstmt.executeUpdate();
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            log.error(e);
-    //        }
-    //        finally
-    //        {
-    //            SQLUtil.closePreparedStatement(pstmt);
-    //            SQLUtil.closeConnection(conn);
-    //        }
-    //    }
+    public static void insertBusPath(long sourceId, long destinationId, String busPath)
+    {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try
+        {
+            String sql = "";
+            sql += "insert into bus_path (source_id, destination_id, bus_path) \n";
+            sql += "values (?, ?, compress(?)) \n";
+
+            conn = DBPoolManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, sourceId);
+            pstmt.setLong(2, destinationId);
+            pstmt.setString(3, busPath);
+
+            pstmt.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
+        finally
+        {
+            SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
+        }
+    }
 
     //    private static String getBusPaths(long sourceId, long destinationId)
     //    {
@@ -1466,25 +1465,6 @@ public class MapDbBean
     //        }
     //        return result;
     //    }
-
-    public static void resetBusPath()
-    {
-        HttpURLUtil.sendGet("?act=resetBusPath");
-    }
-
-    public static void insertBusPath(long sourceId, long destinationId, String busPath)
-    {
-        String param = "";
-        try
-        {
-            param = "?act=insertBusPath&sourceId=" + sourceId + "&destinationId=" + destinationId + "&busPath=" + URLEncoder.encode(busPath, "UTF-8");
-        }
-        catch (Exception e)
-        {
-            log.error(e);
-        }
-        HttpURLUtil.sendGet(param);
-    }
 
     private static String getBusPaths(long sourceId, long destinationId)
     {
