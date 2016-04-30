@@ -1429,7 +1429,7 @@ public class MapDbBean
 
     private static String getBusPaths(long sourceId, long destinationId)
     {
-        if (HttpURLUtil.callweb.equals("true"))
+        if (HttpURLUtil.online.equals("true"))
         {
             return HttpURLUtil.sendGet("?act=getBusPaths&sourceId=" + sourceId + "&destinationId=" + destinationId);
         }
