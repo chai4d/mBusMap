@@ -66,7 +66,8 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
                     continue;
                 }
                 dijkstra.execute(sourcePoint);
-                txtTaskOutput.append(sourcePoint + " : ");
+                txtTaskOutput.append(StringUtil.toNumString(i) + ". " + sourcePoint + " : ");
+                int j = 0;
                 for (Map.Entry destination : points.entrySet())
                 {
                     Point destinationPoint = (Point) destination.getValue();
@@ -90,12 +91,16 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
                             }
                         }
                         MapDbBean.insertBusPath(sourcePoint.getId(), destinationPoint.getId(), busPath);
-                        txtTaskOutput.append(".");
+                        j++;
+                        if (j <= 100)
+                        {
+                            txtTaskOutput.append(".");
+                        }
                     }
                 }
                 setProgress((i * 100) / total);
                 i++;
-                txtTaskOutput.append(" completed.\n");
+                txtTaskOutput.append(" completed. (" + StringUtil.toNumString(j) + ")\n");
             }
             return null;
         }
