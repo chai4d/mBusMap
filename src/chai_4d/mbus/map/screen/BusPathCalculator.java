@@ -50,7 +50,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
             setProgress(0);
             MapDbBean.resetBusPath();
 
-            Map<Integer, Point> points = MapDbBean.loadPointInfo();
+            Map<Integer, Point> points = MapDbBean.loadPointInfoHasName();
             List<Line> lines = MapDbBean.loadBusLine(points);
             Graph graph = new Graph(points, lines);
             DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
