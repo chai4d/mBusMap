@@ -5,12 +5,16 @@ public class Point
     final private int id;
     final private int axisX;
     final private int axisY;
+    final private String nameTh;
+    final private String nameEn;
 
-    public Point(int id, int axisX, int axisY)
+    public Point(int id, int axisX, int axisY, String nameTh, String nameEn)
     {
         this.id = id;
         this.axisX = axisX;
         this.axisY = axisY;
+        this.nameTh = nameTh;
+        this.nameEn = nameEn;
     }
 
     public int getId()
@@ -26,6 +30,16 @@ public class Point
     public int getAxisY()
     {
         return axisY;
+    }
+
+    public String getNameTh()
+    {
+        return nameTh;
+    }
+
+    public String getNameEn()
+    {
+        return nameEn;
     }
 
     public String getName()
@@ -46,13 +60,17 @@ public class Point
     @Override
     public boolean equals(Object obj)
     {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         String sId = id + "";
         Point other = (Point) obj;
         String otherId = other.id + "";
-        if (!sId.equals(otherId)) return false;
+        if (!sId.equals(otherId))
+            return false;
         return true;
     }
 

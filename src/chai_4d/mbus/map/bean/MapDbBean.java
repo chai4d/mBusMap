@@ -1304,7 +1304,7 @@ public class MapDbBean
         }
     }
 
-    public static Map<Integer, Point> loadPointInfoHasName()
+    public static Map<Integer, Point> loadPointInfo()
     {
         Map<Integer, Point> result = new HashMap<Integer, Point>();
         Connection conn = null;
@@ -1313,12 +1313,10 @@ public class MapDbBean
         try
         {
             String sql = "";
-            sql += "select p.p_id, p.axis_x, p.axis_y \n";
-            sql += "from point_info p \n";
-            sql += "where p.p_id in ( \n";
-            sql += "  select n.p_id \n";
-            sql += "  from point_name n \n";
-            sql += ") \n";
+            sql += "select p.p_id, p.axis_x, p.axis_y, min(n.name_th), min(n.name_en) \n";
+            sql += "from point_info p left outer join point_name n \n";
+            sql += "  on p.p_id = n.p_id \n";
+            sql += "group by p.p_id \n";
             sql += "order by 1 \n";
 
             conn = DBPoolManager.getConnection();
@@ -1330,7 +1328,9 @@ public class MapDbBean
                 int id = rs.getInt(1);
                 int axisX = rs.getInt(2);
                 int axisY = rs.getInt(3);
-                result.put(id, new Point(id, axisX, axisY));
+                String nameTh = rs.getString(4);
+                String nameEn = rs.getString(5);
+                result.put(id, new Point(id, axisX, axisY, nameTh, nameEn));
             }
             SQLUtil.printSQL(sql);
         }

@@ -32,6 +32,7 @@ import chai_4d.mbus.map.dijkstra.engine.DijkstraAlgorithm;
 import chai_4d.mbus.map.dijkstra.model.Graph;
 import chai_4d.mbus.map.dijkstra.model.Line;
 import chai_4d.mbus.map.dijkstra.model.Point;
+import chai_4d.mbus.map.util.StringUtil;
 
 public class BusPathCalculator extends JDialog implements ActionListener, PropertyChangeListener
 {
@@ -50,7 +51,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
             setProgress(0);
             MapDbBean.resetBusPath();
 
-            Map<Integer, Point> points = MapDbBean.loadPointInfoHasName();
+            Map<Integer, Point> points = MapDbBean.loadPointInfo();
             List<Line> lines = MapDbBean.loadBusLine(points);
             Graph graph = new Graph(points, lines);
             DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
@@ -60,11 +61,19 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
             for (Map.Entry source : points.entrySet())
             {
                 Point sourcePoint = (Point) source.getValue();
+                if (StringUtil.isEmpty(sourcePoint.getNameTh()) && StringUtil.isEmpty(sourcePoint.getNameEn()))
+                {
+                    continue;
+                }
                 dijkstra.execute(sourcePoint);
                 txtTaskOutput.append(sourcePoint + " : ");
                 for (Map.Entry destination : points.entrySet())
                 {
                     Point destinationPoint = (Point) destination.getValue();
+                    if (StringUtil.isEmpty(destinationPoint.getNameTh()) && StringUtil.isEmpty(destinationPoint.getNameEn()))
+                    {
+                        continue;
+                    }
                     LinkedList<Point> path = dijkstra.getPath(destinationPoint);
                     if (path != null && path.size() > 0)
                     {
