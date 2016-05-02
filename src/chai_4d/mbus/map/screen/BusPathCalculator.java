@@ -49,7 +49,7 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
         public Void doInBackground()
         {
             setProgress(0);
-            MapDbBean.resetBusPath();
+            //MapDbBean.resetBusPath();
 
             Map<Integer, Point> points = MapDbBean.loadPointInfo();
             List<Line> lines = MapDbBean.loadBusLine(points);
@@ -76,42 +76,56 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
                 {
                     continue;
                 }
-                dijkstra.execute(sourcePoint);
-                txtTaskOutput.append(StringUtil.toNumString(index_source + 1) + ". " + sourcePoint + " : ");
-                int index_dest = 0;
-                for (Map.Entry destination : points.entrySet())
+                index_source++;
+
+                int count_dest = MapDbBean.countBusPath(sourcePoint.getId());
+                if (count_dest > 0)
                 {
-                    Point destinationPoint = (Point) destination.getValue();
-                    if (StringUtil.isEmpty(destinationPoint.getNameTh()) && StringUtil.isEmpty(destinationPoint.getNameEn()))
+                    txtTaskOutput.append(StringUtil.toNumString(index_source) + ". " + sourcePoint + " : ");
+                    for (int i = 0; i < 100; i++)
                     {
-                        continue;
-                    }
-                    LinkedList<Point> path = dijkstra.getPath(destinationPoint);
-                    if (path != null && path.size() > 0)
-                    {
-                        String busPath = "";
-                        for (Point point : path)
-                        {
-                            if (busPath.equals(""))
-                            {
-                                busPath += "" + point.getId();
-                            }
-                            else
-                            {
-                                busPath += "->" + point.getId();
-                            }
-                        }
-                        MapDbBean.insertBusPath(sourcePoint.getId(), destinationPoint.getId(), busPath);
-                        index_dest++;
-                        if (index_dest <= 100)
-                        {
-                            txtTaskOutput.append(".");
-                        }
+                        txtTaskOutput.append(".");
                     }
                 }
-                index_source++;
+                else
+                {
+                    dijkstra.execute(sourcePoint);
+                    txtTaskOutput.append(StringUtil.toNumString(index_source) + ". " + sourcePoint + " : ");
+                    int index_dest = 0;
+                    for (Map.Entry destination : points.entrySet())
+                    {
+                        Point destinationPoint = (Point) destination.getValue();
+                        if (StringUtil.isEmpty(destinationPoint.getNameTh()) && StringUtil.isEmpty(destinationPoint.getNameEn()))
+                        {
+                            continue;
+                        }
+                        LinkedList<Point> path = dijkstra.getPath(destinationPoint);
+                        if (path != null && path.size() > 0)
+                        {
+                            String busPath = "";
+                            for (Point point : path)
+                            {
+                                if (busPath.equals(""))
+                                {
+                                    busPath += "" + point.getId();
+                                }
+                                else
+                                {
+                                    busPath += "->" + point.getId();
+                                }
+                            }
+                            MapDbBean.insertBusPath(sourcePoint.getId(), destinationPoint.getId(), busPath);
+                            index_dest++;
+                            if (index_dest <= 100)
+                            {
+                                txtTaskOutput.append(".");
+                            }
+                        }
+                    }
+                    count_dest = index_dest;
+                }
                 setProgress((index_source * 100) / total_source);
-                txtTaskOutput.append(" completed. (" + StringUtil.toNumString(index_dest) + ")\n");
+                txtTaskOutput.append(" completed. (" + StringUtil.toNumString(count_dest) + ")\n");
             }
             return null;
         }

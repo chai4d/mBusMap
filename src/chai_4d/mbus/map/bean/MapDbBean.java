@@ -1279,7 +1279,7 @@ public class MapDbBean
         return "true";
     }
 
-    public static void resetBusPath()
+    /*    public static void resetBusPath()
     {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -1287,10 +1287,10 @@ public class MapDbBean
         {
             String sql = "";
             sql += "delete from bus_path \n";
-
+    
             conn = DBPoolManager.getConnection();
             pstmt = conn.prepareStatement(sql);
-
+    
             pstmt.executeUpdate();
         }
         catch (Exception e)
@@ -1302,7 +1302,7 @@ public class MapDbBean
             SQLUtil.closePreparedStatement(pstmt);
             SQLUtil.closeConnection(conn);
         }
-    }
+    }*/
 
     public static Map<Integer, Point> loadPointInfo()
     {
@@ -1388,6 +1388,43 @@ public class MapDbBean
                 }
             }
             SQLUtil.printSQL(sql);
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
+        finally
+        {
+            SQLUtil.closeResultSet(rs);
+            SQLUtil.closePreparedStatement(pstmt);
+            SQLUtil.closeConnection(conn);
+        }
+        return result;
+    }
+
+    public static int countBusPath(long sourceId)
+    {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try
+        {
+            String sql = "";
+            sql += "select count(1) \n";
+            sql += "from bus_path \n";
+            sql += "where source_id = ? \n";
+
+            conn = DBPoolManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, sourceId);
+
+            rs = pstmt.executeQuery();
+            if (rs.next())
+            {
+                result = SQLUtil.getInt(rs, 1);
+            }
+            SQLUtil.printSQL(sql + "[" + sourceId + "]");
         }
         catch (Exception e)
         {
