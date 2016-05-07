@@ -36,6 +36,8 @@ import chai_4d.mbus.map.util.StringUtil;
 
 public class MapDbBean
 {
+    public static final boolean DEBUG_CALC_PATH = true;
+
     private static final Logger log = LogManager.getLogger(MapDbBean.class);
 
     private MapDbBean()
@@ -1545,7 +1547,6 @@ public class MapDbBean
 
     private static BusChoice hasAlternativeChoice(List<BusChoice> busChoices, BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = false;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath != null && lastBusPath.getBusId() != busPath.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
         {
@@ -1555,10 +1556,6 @@ public class MapDbBean
             {
                 BusPath newBusPath = new BusPath(newBusLine, lastBusPath.getP2Id());
                 alternative.getBusPaths().add(newBusPath);
-                if (debug)
-                {
-                    newBusPath.printPath();
-                }
                 busChoices.add(alternative);
                 return alternative;
             }
@@ -1568,15 +1565,10 @@ public class MapDbBean
 
     private static BusPath addBusPath(BusChoice busChoice, BusPath busPath)
     {
-        boolean debug = false;
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath == null)
         {
             busChoice.getBusPaths().add(busPath);
-            if (debug)
-            {
-                busPath.printPath();
-            }
             return busPath;
         }
         else
@@ -1586,10 +1578,6 @@ public class MapDbBean
                 if (busChoice.isContainPoint(busPath.getP2Id()) == false)
                 {
                     busChoice.getBusPaths().add(busPath);
-                    if (debug)
-                    {
-                        busPath.printPath();
-                    }
                     return busPath;
                 }
             }
@@ -1600,10 +1588,6 @@ public class MapDbBean
                 {
                     BusPath newBusPath = new BusPath(newBusLine, lastBusPath.getP2Id());
                     busChoice.getBusPaths().add(newBusPath);
-                    if (debug)
-                    {
-                        newBusPath.printPath();
-                    }
                     return newBusPath;
                 }
             }
@@ -1635,6 +1619,10 @@ public class MapDbBean
                         BusChoice alternative = hasAlternativeChoice(busChoices, busChoice, busPath);
                         if (alternative != null)
                         {
+                            if (DEBUG_CALC_PATH)
+                            {
+                                alternative.getLastBusPath().printPath();
+                            }
                             alternatives.add(alternative);
                         }
 
@@ -1642,6 +1630,10 @@ public class MapDbBean
 
                         if (busPath != null)
                         {
+                            if (DEBUG_CALC_PATH)
+                            {
+                                busPath.printPath();
+                            }
                             recursiveCalcBusChoice(busChoices, busPath.getP2Id(), destinationId, timeToGo);
                         }
                     }
@@ -1753,8 +1745,7 @@ public class MapDbBean
         }
 
         // 7. (Debug) Printing the Bus Choices
-        boolean debug = false;
-        if (debug)
+        if (DEBUG_CALC_PATH)
         {
             for (int i = 0; i < result.size(); i++)
             {
