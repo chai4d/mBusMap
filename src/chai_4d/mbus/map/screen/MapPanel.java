@@ -454,10 +454,10 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                     hBusNo.put(busLine.getBusId(), busInfo);
                 }
 
-                int x1 = busLine.getX1() - startX;
-                int y1 = busLine.getY1() - startY;
-                int x2 = busLine.getX2() - startX;
-                int y2 = busLine.getY2() - startY;
+                int x1 = Math.min(busLine.getX1(), busLine.getX2()) - startX;
+                int y1 = Math.min(busLine.getY1(), busLine.getY2()) - startY;
+                int x2 = Math.max(busLine.getX1(), busLine.getX2()) - startX;
+                int y2 = Math.max(busLine.getY1(), busLine.getY2()) - startY;
 
                 String sBus = null;
                 if (busInfo.getBusNoTh().equals(busInfo.getBusNoEn()))
@@ -468,8 +468,8 @@ public class MapPanel extends JComponent implements MouseInputListener, MouseWhe
                 {
                     sBus = busInfo.getBusNoTh() + "/" + busInfo.getBusNoEn();
                 }
-                int x = x1 + (x2 - x1) / 2;
-                int y = y1 + (y2 - y1) / 2;
+                int x = x1 + ((x2 - x1) / 2);
+                int y = y1 + ((y2 - y1) / 2);
 
                 String key = x + "|" + y;
                 String label = null;
