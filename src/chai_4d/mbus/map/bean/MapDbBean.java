@@ -1536,7 +1536,7 @@ public class MapDbBean
         }
         if (busChoices.size() < MapConstants.MAX_CHOICES)
         {
-            BusChoice busChoice = new BusChoice();
+            BusChoice busChoice = new BusChoice(busChoices.size() + 1);
             busChoices.add(busChoice);
             return busChoice;
         }
@@ -1548,7 +1548,7 @@ public class MapDbBean
         BusPath lastBusPath = busChoice.getLastBusPath();
         if (lastBusPath != null && lastBusPath.getBusId() != busPath.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
         {
-            BusChoice alternative = busChoice.clone();
+            BusChoice alternative = busChoice.clone(busChoices.size() + 1);
             BusLine newBusLine = loadNextBusLine(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
             if (newBusLine != null)
             {
@@ -1596,6 +1596,9 @@ public class MapDbBean
     private static void recursiveCalcBusChoice(List<BusChoice> busChoices, long sourceId, long destinationId, Date timeToGo)
     {
         String busPaths = getBusPaths(sourceId, destinationId);
+
+        log.info("P1=" + sourceId + ", P2=" + destinationId + " : " + busPaths);
+
         if (StringUtil.isEmpty(busPaths) == false)
         {
             StringTokenizer token = new StringTokenizer(busPaths, "->");
@@ -1605,6 +1608,9 @@ public class MapDbBean
                 long p2 = StringUtil.toLong(token.nextToken());
 
                 List<BusLine> busLines = loadBusLineByP1P2(sourceId, p2, timeToGo);
+
+                log.info(sourceId + "->" + p2 + " : count=" + busLines.size());
+
                 List<BusChoice> alternatives = new ArrayList<BusChoice>();
                 for (int i = 0; i < busLines.size(); i++)
                 {
@@ -1617,7 +1623,7 @@ public class MapDbBean
                         BusChoice alternative = hasAlternativeChoice(busChoices, busChoice, busPath);
                         if (alternative != null)
                         {
-                            log.info("[ALT] " + alternative.getLastBusPath().printPathStr());
+                            log.info("[ALT-" + alternative.getChoiceNo() + "] " + alternative.getLastBusPath().printPathStr());
                             alternatives.add(alternative);
                         }
 
@@ -1625,11 +1631,12 @@ public class MapDbBean
 
                         if (busPath != null)
                         {
-                            log.info(busPath.printPathStr());
+                            log.info("[BAS-" + busChoice.getChoiceNo() + "] " + busPath.printPathStr());
                             recursiveCalcBusChoice(busChoices, busPath.getP2Id(), destinationId, timeToGo);
                         }
                     }
                 }
+
                 for (int i = 0; i < alternatives.size(); i++)
                 {
                     BusChoice busChoice = alternatives.get(i);
