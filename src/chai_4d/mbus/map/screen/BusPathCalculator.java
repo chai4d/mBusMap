@@ -56,28 +56,14 @@ public class BusPathCalculator extends JDialog implements ActionListener, Proper
             Graph graph = new Graph(points, lines);
             DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
 
-            int total_source = 0;
-            for (Map.Entry source : points.entrySet())
-            {
-                Point sourcePoint = (Point) source.getValue();
-                if (StringUtil.isEmpty(sourcePoint.getNameTh()) && StringUtil.isEmpty(sourcePoint.getNameEn()))
-                {
-                    continue;
-                }
-                total_source++;
-            }
+            int total_source = points.size();
             txtTaskOutput.append("Total Source = " + StringUtil.toNumString(total_source) + "\n");
 
             int index_source = 0;
             for (Map.Entry source : points.entrySet())
             {
                 Point sourcePoint = (Point) source.getValue();
-                if (StringUtil.isEmpty(sourcePoint.getNameTh()) && StringUtil.isEmpty(sourcePoint.getNameEn()))
-                {
-                    continue;
-                }
                 index_source++;
-
                 int count_dest = MapDbBean.countBusPath(sourcePoint.getId());
                 if (count_dest > 0)
                 {
