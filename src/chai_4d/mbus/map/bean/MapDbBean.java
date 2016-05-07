@@ -1753,7 +1753,7 @@ public class MapDbBean
 
             log.info(
                 " -> Score ("
-                    + StringUtil.toNumString(resultChoice.getScorePercent())
+                    + resultChoice.getScorePercent()
                     + "%) : Interchange="
                     + resultChoice.getNoOfInterchange()
                     + ", Price="
