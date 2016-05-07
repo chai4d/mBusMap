@@ -11,8 +11,8 @@ public class MapConstants
     public static final int MOUSE_BUTTON_LEFT = MouseEvent.BUTTON1;
     public static final int MOUSE_BUTTON_RIGHT = MouseEvent.BUTTON3;
 
-    public static final int pointSizeOut = 10;
-    public static final int pointSizeIn = 6;
+    public static final int pointSizeOut = 14;
+    public static final int pointSizeIn = 10;
 
     public static final int lineSize = 6;
 
@@ -41,7 +41,7 @@ public class MapConstants
     public static final Color labelBG = new Color(255, 255, 255, 150);
     public static final Color labelFG = Color.black;
 
-    public static final int MAX_CHOICES = 100;
+    public static final int MAX_CHOICES = 10000;
     public static final int PREFER_CHOICES = 5;
 
     public static final Color labelBusBG = new Color(255, 255, 255, 200);

@@ -54,7 +54,6 @@ public class MainFrame extends JFrame
     private List<ViewType> _viewType = new ArrayList<ViewType>()
     {
         private static final long serialVersionUID = -6898590205538578737L;
-
         {
             add(ViewType.VIEW_POINT_LINK);
             add(ViewType.VIEW_POINT_NAME);
