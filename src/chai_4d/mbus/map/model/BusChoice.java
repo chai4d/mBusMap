@@ -7,7 +7,13 @@ import chai_4d.mbus.map.util.StringUtil;
 
 public class BusChoice
 {
+    private int choiceNo = 0;
     private List<BusPath> busPaths = new ArrayList<BusPath>();
+
+    public BusChoice(int choiceNo)
+    {
+        this.choiceNo = choiceNo;
+    }
 
     public BusPath getFirstBusPath()
     {
@@ -33,9 +39,9 @@ public class BusChoice
         }
     }
 
-    public BusChoice clone()
+    public BusChoice clone(int clonedChoiceNo)
     {
-        BusChoice cloned = new BusChoice();
+        BusChoice cloned = new BusChoice(clonedChoiceNo);
         for (int i = 0; i < busPaths.size(); i++)
         {
             BusPath originalBusPath = busPaths.get(i);
@@ -264,6 +270,16 @@ public class BusChoice
         this.scorePercent = ((((maxInterchange - this.noOfInterchange) / maxInterchange) * percentInterchange)
             + (((maxPrice - this.totalPrice) / maxPrice) * percentPrice)
             + (((maxDistance - this.totalDistance) / maxDistance) * percentDistance)) * 100;
+    }
+
+    public int getChoiceNo()
+    {
+        return choiceNo;
+    }
+
+    public void setChoiceNo(int choiceNo)
+    {
+        this.choiceNo = choiceNo;
     }
 
     public List<BusPath> getBusPaths()
