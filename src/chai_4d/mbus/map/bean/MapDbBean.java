@@ -36,8 +36,6 @@ import chai_4d.mbus.map.util.StringUtil;
 
 public class MapDbBean
 {
-    public static final boolean DEBUG_CALC_PATH = true;
-
     private static final Logger log = LogManager.getLogger(MapDbBean.class);
 
     private MapDbBean()
@@ -1619,10 +1617,7 @@ public class MapDbBean
                         BusChoice alternative = hasAlternativeChoice(busChoices, busChoice, busPath);
                         if (alternative != null)
                         {
-                            if (DEBUG_CALC_PATH)
-                            {
-                                alternative.getLastBusPath().printPath();
-                            }
+                            log.info("[ALT] " + alternative.getLastBusPath().printPathStr());
                             alternatives.add(alternative);
                         }
 
@@ -1630,10 +1625,7 @@ public class MapDbBean
 
                         if (busPath != null)
                         {
-                            if (DEBUG_CALC_PATH)
-                            {
-                                busPath.printPath();
-                            }
+                            log.info(busPath.printPathStr());
                             recursiveCalcBusChoice(busChoices, busPath.getP2Id(), destinationId, timeToGo);
                         }
                     }
@@ -1744,26 +1736,32 @@ public class MapDbBean
             }
         }
 
-        // 7. (Debug) Printing the Bus Choices
-        if (DEBUG_CALC_PATH)
+        // 7. (info) Printing the Bus Choices
+        log.info("========================");
+        log.info("Printing the Bus Choices");
+        for (int i = 0; i < result.size(); i++)
         {
-            for (int i = 0; i < result.size(); i++)
-            {
-                BusChoice resultChoice = result.get(i);
+            BusChoice resultChoice = result.get(i);
 
-                System.out.println("[Choice " + (i + 1) + "]");
-                System.out.print(resultChoice.printPath());
-                System.out.println(
-                    " -> Score ("
-                        + StringUtil.toNumString(resultChoice.getScorePercent())
-                        + "%) : Interchange="
-                        + resultChoice.getNoOfInterchange()
-                        + ", Price="
-                        + resultChoice.getTotalPrice()
-                        + ", Distance="
-                        + resultChoice.getTotalDistance());
+            log.info("[Choice " + (i + 1) + "]");
+
+            List paths = resultChoice.printPathStr();
+            for (int j = 0; paths != null && j < paths.size(); j++)
+            {
+                log.info(paths.get(j));
             }
+
+            log.info(
+                " -> Score ("
+                    + StringUtil.toNumString(resultChoice.getScorePercent())
+                    + "%) : Interchange="
+                    + resultChoice.getNoOfInterchange()
+                    + ", Price="
+                    + resultChoice.getTotalPrice()
+                    + ", Distance="
+                    + resultChoice.getTotalDistance());
         }
+        log.info("========================");
         return result;
     }
 }

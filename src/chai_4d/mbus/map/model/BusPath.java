@@ -72,9 +72,9 @@ public class BusPath
         this.p2NameEn = busPath.getP2NameEn();
     }
 
-    public void printPath()
+    public String printPathStr()
     {
-        System.out.println(this.getBusNoEn() + ", P1=" + this.getP1Id() + ", P2=" + this.getP2Id());
+        return this.getBusNoEn() + ", P1=" + this.getP1Id() + ", P2=" + this.getP2Id();
     }
 
     public int getX1()

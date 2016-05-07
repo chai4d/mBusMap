@@ -6,7 +6,7 @@
 	<Properties>
 		<Property name="log-path">${sys:user.home}/logs</Property>
 		<Property name="archive-path">${log-path}/archive</Property>
-		<Property name="pattern">[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+7} [%.5X{sessionId}][%X{clientIpAddress}] %c{1} - %msg%n</Property>
+		<Property name="pattern">[%level] %d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+7} %c{1} - %msg%n</Property>
 	</Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
@@ -31,7 +31,7 @@
 		</RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="chai_4d.mbus" level="error" additivity="false">
+        <Logger name="chai_4d.mbus" level="info" additivity="false">
             <AppenderRef ref="console"/>
             <AppenderRef ref="file-log"/>
         </Logger>

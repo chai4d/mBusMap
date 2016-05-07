@@ -237,16 +237,15 @@ public class BusChoice
         this.totalDistance = sTotalDistance;
     }
 
-    public String printPath()
+    public List<String> printPathStr()
     {
-        StringBuffer result = new StringBuffer();
+        List result = new ArrayList<String>();
         for (int i = 0; i < buses.size(); i++)
         {
             ABus aBus = buses.get(i);
-            result.append(" -> " + (i + 1) + ") " + aBus.getBusNo() + " : Price=" + aBus.getBusPrice() + ", Distance=" + aBus.getBusDistance());
-            result.append(StringUtil.NEW_LINE);
+            result.add(" -> " + (i + 1) + ") " + aBus.getBusNo() + " : Price=" + aBus.getBusPrice() + ", Distance=" + aBus.getBusDistance());
         }
-        return result.toString();
+        return result;
     }
 
     private double scorePercent = 0.0;
