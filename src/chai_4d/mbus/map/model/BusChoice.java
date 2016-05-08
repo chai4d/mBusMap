@@ -1,6 +1,7 @@
 package chai_4d.mbus.map.model;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import chai_4d.mbus.map.util.StringUtil;
@@ -94,6 +95,30 @@ public class BusChoice
             }
         }
         return true;
+    }
+
+    public boolean equalBus(BusChoice anotherChoice)
+    {
+        if (anotherChoice == null || anotherChoice.getBusPaths() == null)
+        {
+            return false;
+        }
+
+        Hashtable key1 = new Hashtable<String, String>();
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            key1.put(busPath.getBusId(), busPath.getBusId());
+        }
+
+        Hashtable key2 = new Hashtable<String, String>();
+        for (int i = 0; i < anotherChoice.getBusPaths().size(); i++)
+        {
+            BusPath busPath = anotherChoice.getBusPaths().get(i);
+            key2.put(busPath.getBusId(), busPath.getBusId());
+        }
+
+        return (key1.equals(key2));
     }
 
     public boolean isContainPoint(long pId)
