@@ -1521,31 +1521,31 @@ public class MapDbBean
         busChoices.add(busChoice);
     }
 
-    private static void hasAlternativeChoice(List<BusChoice> alternatives, List<BusChoice> busChoices, BusPath busPath)
-    {
-        if (busChoices.size() >= MapConstants.MAX_CHOICES)
-        {
-            return;
-        }
-
-        for (int i = 0; i < busChoices.size(); i++)
-        {
-            BusChoice busChoice = busChoices.get(i);
-            BusPath lastBusPath = busChoice.getLastBusPath();
-            if (lastBusPath.getBusId() != busPath.getBusId()
-                && busChoice.isContainBus(busPath.getBusId()) == false
-                && busChoices.size() < MapConstants.MAX_CHOICES)
-            {
-                BusPath newBusPath = loadNextBusPath(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
-                if (newBusPath != null)
-                {
-                    BusChoice alternative = busChoice.clone(alternatives.size() + 1);
-                    alternative.getBusPaths().add(newBusPath);
-                    alternatives.add(alternative);
-                }
-            }
-        }
-    }
+    //    private static void hasAlternativeChoice(List<BusChoice> alternatives, List<BusChoice> busChoices, BusPath busPath)
+    //    {
+    //        if (busChoices.size() >= MapConstants.MAX_CHOICES)
+    //        {
+    //            return;
+    //        }
+    //
+    //        for (int i = 0; i < busChoices.size(); i++)
+    //        {
+    //            BusChoice busChoice = busChoices.get(i);
+    //            BusPath lastBusPath = busChoice.getLastBusPath();
+    //            if (lastBusPath.getBusId() != busPath.getBusId()
+    //                && busChoice.isContainBus(busPath.getBusId()) == false
+    //                && busChoices.size() < MapConstants.MAX_CHOICES)
+    //            {
+    //                BusPath newBusPath = loadNextBusPath(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
+    //                if (newBusPath != null)
+    //                {
+    //                    BusChoice alternative = busChoice.clone(alternatives.size() + 1);
+    //                    alternative.getBusPaths().add(newBusPath);
+    //                    alternatives.add(alternative);
+    //                }
+    //            }
+    //        }
+    //    }
 
     private static void addBusPathWithBusId(List<BusChoice> busChoices, long sourceId, BusPath busPath)
     {
@@ -1603,7 +1603,7 @@ public class MapDbBean
             for (int j = 0; j < busChoices.size(); j++)
             {
                 BusChoice busChoice = busChoices.get(j);
-                if (busChoice.equalChoice(alternative))
+                if (busChoice.equalChoice(alternative) || busChoice.equalBus(alternative))
                 {
                     duplicate = true;
                     break;
@@ -1657,7 +1657,7 @@ public class MapDbBean
 
                 log.info("count=" + busPaths.size());
 
-                List<BusChoice> alternatives = new ArrayList<BusChoice>();
+                //                List<BusChoice> alternatives = new ArrayList<BusChoice>();
                 if (originalSourceId == sourceId)
                 {
                     for (int i = 0; i < busPaths.size(); i++)
@@ -1668,11 +1668,11 @@ public class MapDbBean
                 }
                 else
                 {
-                    for (int i = 0; i < busPaths.size(); i++)
-                    {
-                        BusPath busPath = busPaths.get(i);
-                        hasAlternativeChoice(alternatives, busChoices, busPath);
-                    }
+                    //                    for (int i = 0; i < busPaths.size(); i++)
+                    //                    {
+                    //                        BusPath busPath = busPaths.get(i);
+                    //                        hasAlternativeChoice(alternatives, busChoices, busPath);
+                    //                    }
                     for (int i = 0; i < busPaths.size(); i++)
                     {
                         BusPath busPath = busPaths.get(i);
@@ -1697,17 +1697,17 @@ public class MapDbBean
                 }
                 recursiveCalcBusChoice(originalSourceId, busChoices, p2, destinationId, timeToGo);
 
-                for (int i = 0; i < alternatives.size(); i++)
-                {
-                    BusChoice busChoice = alternatives.get(i);
-                    log.info("[A-" + busChoice.getChoiceNo() + "] " + busChoice.printBusPathsStr());
-                }
-                for (int i = 0; i < alternatives.size(); i++)
-                {
-                    BusChoice busChoice = alternatives.get(i);
-                    BusPath busPath = busChoice.getLastBusPath();
-                    recursiveCalcBusChoice(originalSourceId, busChoices, busPath.getP2Id(), destinationId, timeToGo);
-                }
+                //                for (int i = 0; i < alternatives.size(); i++)
+                //                {
+                //                    BusChoice busChoice = alternatives.get(i);
+                //                    log.info("[A-" + busChoice.getChoiceNo() + "] " + busChoice.printBusPathsStr());
+                //                }
+                //                for (int i = 0; i < alternatives.size(); i++)
+                //                {
+                //                    BusChoice busChoice = alternatives.get(i);
+                //                    BusPath busPath = busChoice.getLastBusPath();
+                //                    recursiveCalcBusChoice(originalSourceId, busChoices, busPath.getP2Id(), destinationId, timeToGo);
+                //                }
             }
         }
     }
