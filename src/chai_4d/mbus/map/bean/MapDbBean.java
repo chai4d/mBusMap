@@ -172,9 +172,9 @@ public class MapDbBean
         return result;
     }
 
-    public static List<BusLine> loadBusLineByP1P2(long pId1, long pId2, Date timeToGo)
+    public static List<BusPath> loadBusPathByP1P2(long pId1, long pId2, Date timeToGo)
     {
-        List<BusLine> result = new ArrayList<BusLine>();
+        List<BusPath> result = new ArrayList<BusPath>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -232,7 +232,7 @@ public class MapDbBean
             rs = pstmt.executeQuery();
             while (rs.next())
             {
-                result.add(new BusLine(rs));
+                result.add(new BusPath(new BusLine(rs), pId1));
             }
             SQLUtil.printSQL(sql + "[" + pId1 + ", " + pId2 + ", " + timeToGo + "]");
         }
@@ -249,9 +249,9 @@ public class MapDbBean
         return result;
     }
 
-    public static BusLine loadNextBusLine(long busId, long pId1, long pId2)
+    public static BusPath loadNextBusPath(long busId, long pId1, long pId2)
     {
-        BusLine result = null;
+        BusPath result = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -304,7 +304,7 @@ public class MapDbBean
             rs = pstmt.executeQuery();
             if (rs.next())
             {
-                result = new BusLine(rs);
+                result = new BusPath(new BusLine(rs), pId2);
             }
             SQLUtil.printSQL(sql + "[" + busId + ", " + pId1 + ", " + pId2 + "]");
         }
@@ -1468,7 +1468,7 @@ public class MapDbBean
         }
     }
 
-    private static String getBusPaths(long sourceId, long destinationId)
+    private static String getBusPathsStr(long sourceId, long destinationId)
     {
         if (HttpURLUtil.online.equals("true"))
         {
@@ -1514,7 +1514,40 @@ public class MapDbBean
         }
     }
 
-    private static BusChoice lookupBusChoice(List<BusChoice> busChoices, long sourceId, BusPath busPath)
+    private static void addFirstBusPath(List<BusChoice> busChoices, BusPath busPath)
+    {
+        BusChoice busChoice = new BusChoice(busChoices.size() + 1);
+        busChoice.getBusPaths().add(busPath);
+        busChoices.add(busChoice);
+    }
+
+    private static void hasAlternativeChoice(List<BusChoice> alternatives, List<BusChoice> busChoices, BusPath busPath)
+    {
+        if (busChoices.size() >= MapConstants.MAX_CHOICES)
+        {
+            return;
+        }
+
+        for (int i = 0; i < busChoices.size(); i++)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            BusPath lastBusPath = busChoice.getLastBusPath();
+            if (lastBusPath.getBusId() != busPath.getBusId()
+                && busChoice.isContainBus(busPath.getBusId()) == false
+                && busChoices.size() < MapConstants.MAX_CHOICES)
+            {
+                BusPath newBusPath = loadNextBusPath(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
+                if (newBusPath != null)
+                {
+                    BusChoice alternative = busChoice.clone(alternatives.size() + 1);
+                    alternative.getBusPaths().add(newBusPath);
+                    alternatives.add(alternative);
+                }
+            }
+        }
+    }
+
+    private static void addBusPathWithBusId(List<BusChoice> busChoices, long sourceId, BusPath busPath)
     {
         for (int i = 0; i < busChoices.size(); i++)
         {
@@ -1522,55 +1555,70 @@ public class MapDbBean
             BusPath lastBusPath = busChoice.getLastBusPath();
             if (lastBusPath.getP2Id() == sourceId && lastBusPath.getBusId() == busPath.getBusId())
             {
-                return busChoice;
+                busChoice.getBusPaths().add(busPath);
             }
         }
+    }
+
+    private static void addBusPathWithAnotherBus(List<BusChoice> busChoices, long sourceId, BusPath busPath)
+    {
         for (int i = 0; i < busChoices.size(); i++)
         {
             BusChoice busChoice = busChoices.get(i);
             BusPath lastBusPath = busChoice.getLastBusPath();
-            if (lastBusPath.getP2Id() == sourceId)
+            if (lastBusPath.getP2Id() == sourceId && lastBusPath.getBusId() != busPath.getBusId() && StringUtil.isEmpty(lastBusPath.getP2NameEn()) == false)
             {
-                return busChoice;
+                busChoice.getBusPaths().add(busPath);
             }
         }
-        if (busChoices.size() < MapConstants.MAX_CHOICES)
-        {
-            BusChoice busChoice = new BusChoice(busChoices.size() + 1);
-            busChoices.add(busChoice);
-            return busChoice;
-        }
-        return null;
     }
 
-    private static BusChoice hasAlternativeChoice(List<BusChoice> busChoices, BusChoice busChoice, BusPath busPath)
+    private static void addBusPathAlternativeBus(List<BusChoice> busChoices, long sourceId, BusPath busPath)
     {
-        BusPath lastBusPath = busChoice.getLastBusPath();
-        if (lastBusPath != null && lastBusPath.getBusId() != busPath.getBusId() && busChoices.size() < MapConstants.MAX_CHOICES)
+        if (busChoices.size() >= MapConstants.MAX_CHOICES)
         {
-            BusChoice alternative = busChoice.clone(busChoices.size() + 1);
-            BusLine newBusLine = loadNextBusLine(lastBusPath.getBusId(), lastBusPath.getP1Id(), lastBusPath.getP2Id());
-            if (newBusLine != null)
+            return;
+        }
+
+        List<BusChoice> alternativeChoices = new ArrayList<BusChoice>();
+        for (int i = 0; i < busChoices.size(); i++)
+        {
+            BusChoice busChoice = busChoices.get(i);
+            BusPath lastBusPath = busChoice.getLastBusPath();
+            if (lastBusPath.getP1Id() == sourceId
+                && lastBusPath.getBusId() != busPath.getBusId()
+                && busChoice.isContainBus(busPath.getBusId()) == false
+                && StringUtil.isEmpty(lastBusPath.getP1NameEn()) == false)
             {
-                BusPath newBusPath = new BusPath(newBusLine, lastBusPath.getP2Id());
-                alternative.getBusPaths().add(newBusPath);
+                BusChoice alternative = busChoice.clone(alternativeChoices.size() + 1);
+                alternative.getBusPaths().remove(alternative.getBusPaths().size() - 1);
+                alternative.getBusPaths().add(busPath);
+                alternativeChoices.add(alternative);
+            }
+        }
+        for (int i = 0; i < alternativeChoices.size(); i++)
+        {
+            BusChoice alternative = alternativeChoices.get(i);
+            boolean duplicate = false;
+            for (int j = 0; j < busChoices.size(); j++)
+            {
+                BusChoice busChoice = busChoices.get(j);
+                if (busChoice.equalChoice(alternative))
+                {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (duplicate == false && busChoices.size() < MapConstants.MAX_CHOICES)
+            {
+                alternative.setChoiceNo(busChoices.size() + 1);
                 busChoices.add(alternative);
-                return alternative;
             }
         }
-        return null;
     }
 
-    private static BusPath addBusPath(BusChoice busChoice, BusPath busPath)
+    /*    private static void addBusPath(List<BusChoice> busChoices, long sourceId, BusPath busPath)
     {
-        BusPath lastBusPath = busChoice.getLastBusPath();
-        if (lastBusPath == null)
-        {
-            busChoice.getBusPaths().add(busPath);
-            return busPath;
-        }
-        else
-        {
             if (lastBusPath.getP1Id() != busPath.getP2Id())
             {
                 if (busChoice.isContainPoint(busPath.getP2Id()) == false)
@@ -1589,59 +1637,76 @@ public class MapDbBean
                     return newBusPath;
                 }
             }
-        }
-        return null;
-    }
+    }*/
 
-    private static void recursiveCalcBusChoice(List<BusChoice> busChoices, long sourceId, long destinationId, Date timeToGo)
+    private static void recursiveCalcBusChoice(long originalSourceId, List<BusChoice> busChoices, long sourceId, long destinationId, Date timeToGo)
     {
-        String busPaths = getBusPaths(sourceId, destinationId);
+        String busPathsStr = getBusPathsStr(sourceId, destinationId);
 
-        log.info("P1=" + sourceId + ", P2=" + destinationId + " : " + busPaths);
+        log.info("P1=" + sourceId + ", P2=" + destinationId + " : " + busPathsStr);
 
-        if (StringUtil.isEmpty(busPaths) == false)
+        if (StringUtil.isEmpty(busPathsStr) == false)
         {
-            StringTokenizer token = new StringTokenizer(busPaths, "->");
+            StringTokenizer token = new StringTokenizer(busPathsStr, "->");
             token.nextToken();
             if (token.hasMoreTokens())
             {
                 long p2 = StringUtil.toLong(token.nextToken());
 
-                List<BusLine> busLines = loadBusLineByP1P2(sourceId, p2, timeToGo);
+                List<BusPath> busPaths = loadBusPathByP1P2(sourceId, p2, timeToGo);
 
-                log.info(sourceId + "->" + p2 + " : count=" + busLines.size());
+                log.info("count=" + busPaths.size());
 
                 List<BusChoice> alternatives = new ArrayList<BusChoice>();
-                for (int i = 0; i < busLines.size(); i++)
+                if (originalSourceId == sourceId)
                 {
-                    BusLine busLine = busLines.get(i);
-                    BusPath busPath = new BusPath(busLine, sourceId);
-
-                    BusChoice busChoice = lookupBusChoice(busChoices, sourceId, busPath);
-                    if (busChoice != null)
+                    for (int i = 0; i < busPaths.size(); i++)
                     {
-                        BusChoice alternative = hasAlternativeChoice(busChoices, busChoice, busPath);
-                        if (alternative != null)
-                        {
-                            log.info("[ALT-" + alternative.getChoiceNo() + "] " + alternative.getLastBusPath().printPathStr());
-                            alternatives.add(alternative);
-                        }
-
-                        busPath = addBusPath(busChoice, busPath);
-
-                        if (busPath != null)
-                        {
-                            log.info("[BAS-" + busChoice.getChoiceNo() + "] " + busPath.printPathStr());
-                            recursiveCalcBusChoice(busChoices, busPath.getP2Id(), destinationId, timeToGo);
-                        }
+                        BusPath busPath = busPaths.get(i);
+                        addFirstBusPath(busChoices, busPath);
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < busPaths.size(); i++)
+                    {
+                        BusPath busPath = busPaths.get(i);
+                        hasAlternativeChoice(alternatives, busChoices, busPath);
+                    }
+                    for (int i = 0; i < busPaths.size(); i++)
+                    {
+                        BusPath busPath = busPaths.get(i);
+                        addBusPathWithBusId(busChoices, sourceId, busPath);
+                    }
+                    for (int i = 0; i < busPaths.size(); i++)
+                    {
+                        BusPath busPath = busPaths.get(i);
+                        addBusPathWithAnotherBus(busChoices, sourceId, busPath);
+                    }
+                    for (int i = 0; i < busPaths.size(); i++)
+                    {
+                        BusPath busPath = busPaths.get(i);
+                        addBusPathAlternativeBus(busChoices, sourceId, busPath);
+                    }
+                }
+
+                for (int i = 0; i < busChoices.size(); i++)
+                {
+                    BusChoice busChoice = busChoices.get(i);
+                    log.info("[B-" + busChoice.getChoiceNo() + "] " + busChoice.printBusPathsStr());
+                }
+                recursiveCalcBusChoice(originalSourceId, busChoices, p2, destinationId, timeToGo);
 
                 for (int i = 0; i < alternatives.size(); i++)
                 {
                     BusChoice busChoice = alternatives.get(i);
+                    log.info("[A-" + busChoice.getChoiceNo() + "] " + busChoice.printBusPathsStr());
+                }
+                for (int i = 0; i < alternatives.size(); i++)
+                {
+                    BusChoice busChoice = alternatives.get(i);
                     BusPath busPath = busChoice.getLastBusPath();
-                    recursiveCalcBusChoice(busChoices, busPath.getP2Id(), destinationId, timeToGo);
+                    recursiveCalcBusChoice(originalSourceId, busChoices, busPath.getP2Id(), destinationId, timeToGo);
                 }
             }
         }
@@ -1652,7 +1717,7 @@ public class MapDbBean
         List<BusChoice> busChoices = new ArrayList<BusChoice>();
 
         // 1. Calculate potential Bus Choices 
-        recursiveCalcBusChoice(busChoices, sourceId, destinationId, timeToGo);
+        recursiveCalcBusChoice(sourceId, busChoices, sourceId, destinationId, timeToGo);
 
         // 2. Remove the Bus Choice that can't reach to destination
         for (int i = busChoices.size() - 1; i >= 0; i--)
@@ -1760,7 +1825,7 @@ public class MapDbBean
 
             log.info(
                 " -> Score ("
-                    + resultChoice.getScorePercent()
+                    + StringUtil.toNumString(resultChoice.getScorePercent())
                     + "%) : Interchange="
                     + resultChoice.getNoOfInterchange()
                     + ", Price="
