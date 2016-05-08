@@ -39,6 +39,31 @@ public class BusChoice
         }
     }
 
+    public String printBusPathsStr()
+    {
+        String prevKey = "";
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            String key = busPath.getBusNoEn();
+            if (!prevKey.equals(key))
+            {
+                result.append("[" + key + "]");
+            }
+            if (prevKey == "")
+            {
+                result.append(busPath.getP1Id() + "->" + busPath.getP2Id());
+            }
+            else
+            {
+                result.append("->" + busPath.getP2Id());
+            }
+            prevKey = key;
+        }
+        return result.toString();
+    }
+
     public BusChoice clone(int clonedChoiceNo)
     {
         BusChoice cloned = new BusChoice(clonedChoiceNo);
@@ -77,6 +102,19 @@ public class BusChoice
         {
             BusPath busPath = busPaths.get(i);
             if (busPath.getP1Id() == pId || busPath.getP2Id() == pId)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isContainBus(long busId)
+    {
+        for (int i = 0; i < busPaths.size(); i++)
+        {
+            BusPath busPath = busPaths.get(i);
+            if (busPath.getBusId() == busId)
             {
                 return true;
             }
@@ -259,6 +297,7 @@ public class BusChoice
     public void calcScorePercent(int maxInterchange, double maxPrice, double maxDistance)
     {
         // Weight of Interchange = 40%, Price = 25%, Distance = 35%
+
         double percentInterchange = 0.4;
         double percentPrice = 0.25;
         double percentDistance = 0.35;
@@ -267,9 +306,17 @@ public class BusChoice
         //     ScorePercent = 24.06% ((3/5 x 40%) + (20/20 x 25%) + (100/345 x 35%))
         // Ex: Interchange = 5/5, Price = 20/20, Distance = 345/345
         //     ScorePercent = 0% ((0/5 x 40%) + (0/20 x 25%) + (0/345 x 35%))
-        this.scorePercent = ((((maxInterchange - this.noOfInterchange) / maxInterchange) * percentInterchange)
-            + (((maxPrice - this.totalPrice) / maxPrice) * percentPrice)
-            + (((maxDistance - this.totalDistance) / maxDistance) * percentDistance)) * 100;
+
+        double scoreInterchange = ((maxInterchange - this.noOfInterchange) * percentInterchange) / maxInterchange;
+        double scorePrice = ((maxPrice - this.totalPrice) * percentPrice) / maxPrice;
+        double scoreDistance = ((maxDistance - this.totalDistance) * percentDistance) / maxDistance;
+
+        if (Double.isNaN(scorePrice))
+        {
+            scorePrice = percentPrice;
+        }
+
+        this.scorePercent = (scoreInterchange + scorePrice + scoreDistance) * 100;
     }
 
     public int getChoiceNo()
