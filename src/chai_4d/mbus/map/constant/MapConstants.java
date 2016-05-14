@@ -41,8 +41,8 @@ public class MapConstants
     public static final Color labelBG = new Color(255, 255, 255, 150);
     public static final Color labelFG = Color.black;
 
-    public static final int MAX_CHOICES = 10000;
-    public static final int PREFER_CHOICES = 10;
+    public static final int MAX_CHOICES = 5000;
+    public static final int PREFER_CHOICES = 5;
 
     public static final Color labelBusBG = new Color(255, 255, 255, 200);
     public static final Color labelBusFG = Color.black;
